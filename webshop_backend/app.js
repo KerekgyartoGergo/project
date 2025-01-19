@@ -109,7 +109,24 @@ app.post('/api/register', (req, res) => {
                 if (err) {
                     return res.status(500).json({ error: 'Hiba az adatbázis művelet során!' });
                 }
-                res.status(201).json({ message: 'Sikeres regisztráció!' });
+                
+                
+                
+                
+                
+                // Új felhasználó user_id-ja
+                const newUserId = result.insertId;
+                
+                // kosár létrehozása
+                const sql2 = 'INSERT INTO carts (cart_id, user_id) VALUES (NULL, ?)';
+                pool.query(sql2, [newUserId], (err, result) => {
+                    if (err) {
+                        return res.status(500).json({ error: 'Hiba az új SQL-ben!' });
+                    }
+                    
+                    res.status(201).json({ message: 'Sikeres regisztráció!, kosár létrehozva!' });
+                    //res.status(201).json({ message: 'Kosár létrehozva' });
+                });
             });
         });
     });
