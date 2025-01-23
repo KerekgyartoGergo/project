@@ -193,7 +193,7 @@ app.post('/api/logout', authenticateToken, (req, res) => {
 // tesztelés a jwt-re
 app.get('/api/logintest', authenticateToken, (req, res) => {
     return res.status(200).json({ message: 'bent vagy' });
-});
+});55
 
 
 
