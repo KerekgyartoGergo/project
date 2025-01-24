@@ -1,0 +1,253 @@
+/* alap beállítások */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #383838;
+}
+
+/* --- a fejléc a menüvel --- */
+header {
+    background-color: #292828;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center; /* függőleges igazítás */
+    justify-content: space-between; /* vízszintes igazítás */
+    position: sticky;
+    top: 0;
+    z-index:1000 ;
+}
+
+.menu-logo, .menu-logo-arany {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    user-select: none;
+    padding: none;
+    font-family:Comic Sans MS, Comic Sans, cursive;
+
+}
+
+.menu-logo-arany {
+    color: #A59568;
+}
+
+
+/* menü alapállapotban */
+nav {
+    display: flex;
+    gap: 2rem;
+    font-size: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+}
+
+.icon-home, .icon-user, .icon-logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: ease 500ms;
+}
+
+
+
+.icon-home:hover,
+.icon-user:hover,
+.icon-logout:hover {
+    transform: scale(1.1);
+}
+.icon-home:hover,
+.icon-user:hover{
+    transform: scale(1.1);
+    background-color: #383838;
+}
+.icon-logout:hover {
+    transform: scale(1.1);
+    background-color: red;
+
+}
+
+/* hamburger menü */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    background-color: #292828;
+}
+
+.hamburger-menu span {
+    display: block;
+    height: 4px;
+    background-color: #A59568;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle:checked~nav {
+    display: flex;
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        background-color: white;
+        padding: 10px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        font-size: 1.5rem;
+        display: none;
+    }
+}
+
+
+/* --- tartalom (ahol lesznek a képek --- */
+.container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* sorminta */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+/* kártyák */
+.card {
+    flex: 0 1 calc((100% - 40px) / 5);
+    background-color: #c4c4c425;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgb(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: ease 500ms;
+}
+
+.card:hover {
+    transform: scale(1.01);
+}
+
+.card img {
+    width: 100%;
+}
+
+/* kártya fejléc */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    color: white;
+}
+
+.card-header img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* a kártya közepe */
+.card-body {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+.pic-div {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+.pic-div img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: inherit;
+    object-fit: contain;
+}
+
+/*kártya lábléc*/
+
+.card-footer{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    color: white;
+    font-weight: 500;
+}
+
+.card-footer i{
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    width: 60px;
+    height: 60px;
+    font-size: 2.5rem;
+    background-color: silver;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: ease 500ms;
+    
+}
+
+.card-footer i:hover{
+    transform: scale(1.05);
+}
+
+
+@media screen and (max-width:915px) {
+    .card {
+        flex: 0 1 calc((100% - 20px) / 3);
+    }
+}
+
+@media screen and (max-width:426px) {
+    .card {
+        flex: 0 1 100%;
+    }
+}

@@ -1,3 +1,4 @@
+/* alap beállítások */
 *{
     margin: 0;
     padding: 0;
@@ -51,7 +52,7 @@ body{
 }
 
 .reg{
-    background-color: #383838;
+    background-color: #292828;
     margin-top: 20px;
 }
 
