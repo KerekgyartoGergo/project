@@ -251,7 +251,6 @@ nav a {
     font-weight: 700;
 }
 
-
 @media screen and (max-width:915px) {
     .card {
         flex: 0 1 calc((100% - 20px) / 3);
@@ -260,10 +259,24 @@ nav a {
 
 @media screen and (max-width:426px) {
     .card {
+        flex: 0 1 100%;
         flex: 0 1 calc((100%-10px ) / 2);
     }
     .cart, #btnCart{
-        width: 80px;
         font-size: 0.8rem;
     }
+}
+
+
+
+
+.kategoria{
+    background-color: red;
+    padding: 30px 30px;
+    display: flex;
+    align-items: center; /* függőleges igazítás */
+    justify-content: space-between; /* vízszintes igazítás */
+    position: sticky;
+    top: 0;
+    z-index:1000 ;
 }
