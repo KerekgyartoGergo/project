@@ -1,0 +1,87 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #383838;
+}
+
+
+.tarolo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 5rem;
+    margin-top: -15%;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #292828;
+
+    
+}
+
+.focim{
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 800;
+    font-family:Comic Sans MS, Comic Sans, cursive;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.focim_arany{
+    color: #A59568;
+}
+
+
+.login{
+    background-color: #A59568;
+    border-radius: 20px;
+    padding: 15px;
+    width: 500px;
+    margin: 50px 0 20px 0;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#btnLogin{
+    font-size: 1.5rem;
+    color: white;
+    background-color: inherit;
+    border: none;
+    cursor: inherit;
+}
+
+.login:hover{
+    transform: scale(1.01);
+}
+
+
+.input{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    border: 3px solid black;
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+input{
+    font-size: 1.5rem;
+    padding: 10px 0;
+    width: 90%;
+    border: none;
+    outline: none;
+    background-color: #292828;
+    color: white;
+}
