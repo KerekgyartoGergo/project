@@ -163,7 +163,13 @@ app.post('/api/login', (req, res) => {
         const user = result[0];
         bcrypt.compare(psw, user.psw, (err, isMatch) => {
             if (isMatch) {
-                const token = jwt.sign({ id: user.user_id }, JWT_SECRET, { expiresIn: '1y' });
+
+                // Ellenőrizzük, hogy admin-e
+                const { role } = user;
+               
+
+
+                const token = jwt.sign({ id: user.user_id, role: role }, JWT_SECRET, { expiresIn: '1y' });
                 
                 res.cookie('auth_token', token, {
                     httpOnly: true,
@@ -172,7 +178,8 @@ app.post('/api/login', (req, res) => {
                     maxAge: 1000 * 60 * 60 * 24 * 30 * 12
                 });
 
-                return res.status(200).json({ message: 'Sikeres bejelentkezés' });
+                return res.status(200).json({ message: 'Sikeres bejelentkezés', role:role });
+                
             } else {
                 return res.status(401).json({ error: 'rossz a jelszó' });
             }
