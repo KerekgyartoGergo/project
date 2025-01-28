@@ -23,14 +23,14 @@ const PORT = process.env.PORT;
 const HOSTNAME = process.env.HOSTNAME;
 
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,           // Az adatbázis-szerver címe, környezeti változóként megadva.
-    user: process.env.DB_USER,           // Az adatbázishoz való csatlakozáshoz használt felhasználónév, környezeti változóként megadva.
-    password: process.env.DB_PASSWORD,   // Az adatbázishoz való csatlakozáshoz használt jelszó, környezeti változóként megadva.
-    database: process.env.DB_DATABASE,   // Az adatbázis neve, környezeti változóként megadva.
-    timezone: 'Z',                       // Az időzóna beállítása UTC-re ('Z').
-    waitForConnections: true,            // Ha igaz, akkor várakozik a szabad kapcsolat elérhetővé válására, ha a medence elérte a maximális kapcsolat limitet.
-    connectionLimit: 10,                 // A medencében egyszerre elérhető maximális kapcsolatok száma.
-    queueLimit: 0                        // A várólistán lévő kérések maximális száma, ha eléri a maximális kapcsolat limitet. 0 esetén nincs korlátozás.
+    host: process.env.DB_HOST,           
+    user: process.env.DB_USER,           
+    password: process.env.DB_PASSWORD,   
+    database: process.env.DB_DATABASE,   
+    timezone: 'Z',                       
+    waitForConnections: true,            
+    connectionLimit: 10,                 
+    queueLimit: 0                        
 });
 
 
