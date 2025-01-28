@@ -122,7 +122,6 @@ app.post('/api/register', (req, res) => {
                     }
                     
                     res.status(201).json({ message: 'Sikeres regisztráció!, kosár létrehozva!' });
-                    //res.status(201).json({ message: 'Kosár létrehozva' });
                 });
             });
         });
