@@ -102,17 +102,14 @@ app.post('/api/register', (req, res) => {
                 // Ha létezik már felhasználó ugyanazzal az emaillel
                 return res.status(400).json({ error: 'Ez az email már regisztrálva van!' });
             }
+
     
             // Ha az email nem létezik, folytathatjuk a regisztrációval
             const sql = 'INSERT INTO users (user_id, user_name, email, psw, role) VALUES (NULL, ?, ?, ?, ?)';
             pool.query(sql, [user_name, email, hash, role], (err, result) => {
                 if (err) {
                     return res.status(500).json({ error: 'Hiba az adatbázis művelet során!' });
-                }
-                
-                
-                
-                
+                }                               
                 
                 // Új felhasználó user_id-ja
                 const newUserId = result.insertId;
