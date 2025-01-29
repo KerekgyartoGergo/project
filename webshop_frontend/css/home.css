@@ -12,7 +12,7 @@ body {
 
 /* --- a fejléc a menüvel --- */
 header {
-    background-color: #292828;
+    background-color: #313131;
     padding: 20px 30px;
     display: flex;
     align-items: center; /* függőleges igazítás */
@@ -62,18 +62,13 @@ nav a {
 
 
 .icon-home:hover,
-.icon-user:hover,
-.icon-logout:hover {
-    transform: scale(1.1);
-}
-.icon-home:hover,
 .icon-user:hover{
     transform: scale(1.1);
-    background-color: #383838;
+    background-color: #464545;
 }
 .icon-logout:hover {
     transform: scale(1.1);
-    background-color: red;
+    background-color: rgb(221, 75, 75);
 
 }
 
@@ -235,7 +230,7 @@ nav a {
     border-radius: 20px;
     padding: 15px;
     width: 150px;
-    margin: 10px 50% 20px 20%;
+    margin: auto;
     display: flex;
 
     justify-content: center;
@@ -264,6 +259,7 @@ nav a {
     }
     .cart, #btnCart{
         font-size: 0.8rem;
+
     }
 }
 
@@ -271,12 +267,44 @@ nav a {
 
 
 .kategoria{
-    background-color: red;
-    padding: 30px 30px;
-    display: flex;
-    align-items: center; /* függőleges igazítás */
-    justify-content: space-between; /* vízszintes igazítás */
-    position: sticky;
+    background-color: #A59568;
+    padding: 10px;
     top: 0;
     z-index:1000 ;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+
+    
+}
+.kat{
+    background-color: #776a44;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 15px;
+    margin-left: 15px;
+    color: white;
+    font-weight: 500;
+}
+.kat:hover{
+    transform: scale(1.05);
+    background-color: #4b432b;
+}
+
+
+@media screen and (max-width:915px) {
+    .kategoria {
+        flex: 0 1 calc((100% - 20px) / 3);
+    }
+}
+
+@media screen and (max-width:426px) {
+    .kategoria {
+        gap: 10px;
+    }
+    .kategoria, .kat{
+        font-size: 0.8rem;
+    }
 }
