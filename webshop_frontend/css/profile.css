@@ -15,10 +15,8 @@ header {
     background-color: #313131;
     padding: 20px 30px;
     display: flex;
-    align-items: center;
-    /* függőleges igazítás */
-    justify-content: space-between;
-    /* vízszintes igazítás */
+    align-items: center; /* függőleges igazítás */
+    justify-content: space-between; /* vízszintes igazítás */
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -153,38 +151,7 @@ main {
     gap: 40px;
 }
 
-/* profilkép módosítás */
-.edit-pic {
-    height: 150px;
-    width: 150px;
-    border-radius: 50%;
-    background-image: url('../images/transparent.jpg');
-    background-position: center;
-    background-size: cover;
-    position: relative;
-}
 
-.edit-pic button {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #a59568;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    right: -10px;
-    top: 90px;
-    transition: ease 500ms;
-}
-
-.edit-pic button:hover {
-    transform: scale(1.1);
-}
-
-.edit-pic button i {
-    color: #a59568;
-    font-size: 1.5rem;
-}
 
 /* név és jelszó módosítása gombok */
 .edit-button {
@@ -197,6 +164,7 @@ main {
     justify-content: center;
     align-items: center;
     transition: ease 500ms;
+    color: white;
 }
 
 .edit-button:hover {
@@ -205,7 +173,7 @@ main {
 
 .edit-button button {
     font-size: 1.5rem;
-    color: #a59568;
+    color: white;
     background-color: inherit;
     border: none;
     cursor: inherit;
