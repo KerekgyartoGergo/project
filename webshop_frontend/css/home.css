@@ -62,18 +62,13 @@ nav a {
 
 
 .icon-home:hover,
-.icon-user:hover,
-.icon-logout:hover {
-    transform: scale(1.1);
-}
-.icon-home:hover,
 .icon-user:hover{
     transform: scale(1.1);
-    background-color: #383838;
+    background-color: #464545;
 }
 .icon-logout:hover {
     transform: scale(1.1);
-    background-color: red;
+    background-color: rgb(221, 75, 75);
 
 }
 
@@ -235,7 +230,7 @@ nav a {
     border-radius: 20px;
     padding: 15px;
     width: 150px;
-    margin: 10px 0 0 25%;
+    margin: auto;
     display: flex;
 
     justify-content: center;
@@ -264,6 +259,7 @@ nav a {
     }
     .cart, #btnCart{
         font-size: 0.8rem;
+
     }
 }
 

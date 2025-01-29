@@ -57,7 +57,7 @@ function authenticateToken(req, res, next) {
 
 // regisztráció
 app.post('/api/register', (req, res) => {
-    const { user_name, email, psw, role } = req.body;
+    const { user_name, email, psw} = req.body;
     const errors = [];
 
     if (!validator.isEmail(email)) {
@@ -76,10 +76,7 @@ app.post('/api/register', (req, res) => {
         return res.status(400).json({ errors });
     }
 
-    const allowedRoles = ['user', 'admin'];
-    if (!allowedRoles.includes(role)) {
-        errors.push({ error: 'Érvénytelen szerepkör!' });
-    }
+  
 
     if (errors.length > 0) {
         return res.status(400).json({ errors });
@@ -105,8 +102,8 @@ app.post('/api/register', (req, res) => {
 
     
             // Ha az email nem létezik, folytathatjuk a regisztrációval
-            const sql = 'INSERT INTO users (user_id, user_name, email, psw, role) VALUES (NULL, ?, ?, ?, ?)';
-            pool.query(sql, [user_name, email, hash, role], (err, result) => {
+            const sql = 'INSERT INTO users (user_id, user_name, email, psw, role) VALUES (NULL, ?, ?, ?, "user")';
+            pool.query(sql, [user_name, email, hash], (err, result) => {
                 if (err) {
                     return res.status(500).json({ error: 'Hiba az adatbázis művelet során!' });
                 }                               
@@ -196,6 +193,68 @@ app.post('/api/logout', authenticateToken, (req, res) => {
 // tesztelés a jwt-re
 app.get('/api/logintest', authenticateToken, (req, res) => {
     return res.status(200).json({ message: 'bent vagy' });
+});
+
+
+
+
+//admin fiók létrehozása
+app.post('/api/adminRegister', (req, res) => {
+    const { user_name, email, psw} = req.body;
+    const errors = [];
+
+    if (!validator.isEmail(email)) {
+        errors.push({ error: 'Nem valós email cím!' });
+    }
+
+    if (validator.isEmpty(user_name)) {
+        errors.push({ error: 'Töltsd ki a nevet!' });
+    }
+
+    if (!validator.isLength(psw, { min: 6 })) {
+        errors.push({ error: 'A jelszónak legalább 6 karakternek kell lennie!' });
+    }
+
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
+
+
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
+
+
+
+    bcrypt.hash(psw, 10, (err, hash) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba a hashelés során!' });
+        }
+    
+        // Először ellenőrizzük, hogy az email már szerepel-e az adatbázisban
+        const checkEmailSql = 'SELECT * FROM users WHERE email = ?';
+        pool.query(checkEmailSql, [email], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Adatbázis hiba!' });
+            }
+            if (result.length > 0) {
+                // Ha létezik már felhasználó ugyanazzal az emaillel
+                return res.status(400).json({ error: 'Ez az email már regisztrálva van!' });
+            }
+
+    
+            // Ha az email nem létezik, folytathatjuk a regisztrációval
+            const sql = 'INSERT INTO users (user_id, user_name, email, psw, role) VALUES (NULL, ?, ?, ?, "admin")';
+            pool.query(sql, [user_name, email, hash], (err, result) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Hiba az adatbázis művelet során!' });
+                }                               
+            
+                    
+                res.status(201).json({ message: 'Admin fiók létrehozva!' });
+            });
+        });
+    });
 });
 
 
