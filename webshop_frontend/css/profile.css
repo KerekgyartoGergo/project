@@ -1,0 +1,218 @@
+/* alap beállítások */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #383838;
+}
+
+/* --- a fejléc a menüvel --- */
+header {
+    background-color: #313131;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    /* függőleges igazítás */
+    justify-content: space-between;
+    /* vízszintes igazítás */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.menu-logo, .menu-logo-arany {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    user-select: none;
+    padding: none;
+    font-family:Comic Sans MS, Comic Sans, cursive;
+
+}
+
+.menu-logo-arany {
+    color: #A59568;
+}
+
+
+
+
+/* menü alapállapotban */
+nav {
+    display: flex;
+    gap: 2rem;
+    font-size: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+}
+
+.icon-home,
+.icon-logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: ease 500ms;
+}
+
+.icon-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: ease 500ms;
+    background-color: #555454;
+
+}
+
+
+
+
+
+
+.icon-logout {
+    
+    color: white;
+}
+.icon-user:hover,
+.icon-home:hover {
+transform: scale(1.1);
+background-color: #464545;
+
+}
+
+.icon-logout:hover {
+    transform: scale(1.1);
+    background-color: red;
+}
+
+/* hamburger menü */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    background-color: #a59568;
+}
+
+.hamburger-menu span {
+    display: block;
+    height: 4px;
+    background-color: #a59568;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle:checked~nav {
+    display: flex;
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        background-color: #a59568;
+        padding: 10px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        font-size: 1.5rem;
+        display: none;
+    }
+}
+
+/* --- tartalom --- */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* profilkép módosítás */
+.edit-pic {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    background-image: url('../images/transparent.jpg');
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+.edit-pic button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #a59568;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    top: 90px;
+    transition: ease 500ms;
+}
+
+.edit-pic button:hover {
+    transform: scale(1.1);
+}
+
+.edit-pic button i {
+    color: #a59568;
+    font-size: 1.5rem;
+}
+
+/* név és jelszó módosítása gombok */
+.edit-button {
+    background-color: #a59568;
+    width: 500px;
+    padding: 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: ease 500ms;
+}
+
+.edit-button:hover {
+    transform: scale(1.01);
+}
+
+.edit-button button {
+    font-size: 1.5rem;
+    color: #a59568;
+    background-color: inherit;
+    border: none;
+    cursor: inherit;
+}
+
+@media screen and (max-width: 428px) {
+    .edit-button {
+        width: 350px;
+    }
+}
