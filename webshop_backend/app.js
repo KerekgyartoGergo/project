@@ -23,14 +23,14 @@ const PORT = process.env.PORT;
 const HOSTNAME = process.env.HOSTNAME;
 
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,           // Az adatbázis-szerver címe, környezeti változóként megadva.
-    user: process.env.DB_USER,           // Az adatbázishoz való csatlakozáshoz használt felhasználónév, környezeti változóként megadva.
-    password: process.env.DB_PASSWORD,   // Az adatbázishoz való csatlakozáshoz használt jelszó, környezeti változóként megadva.
-    database: process.env.DB_DATABASE,   // Az adatbázis neve, környezeti változóként megadva.
-    timezone: 'Z',                       // Az időzóna beállítása UTC-re ('Z').
-    waitForConnections: true,            // Ha igaz, akkor várakozik a szabad kapcsolat elérhetővé válására, ha a medence elérte a maximális kapcsolat limitet.
-    connectionLimit: 10,                 // A medencében egyszerre elérhető maximális kapcsolatok száma.
-    queueLimit: 0                        // A várólistán lévő kérések maximális száma, ha eléri a maximális kapcsolat limitet. 0 esetén nincs korlátozás.
+    host: process.env.DB_HOST,           
+    user: process.env.DB_USER,           
+    password: process.env.DB_PASSWORD,   
+    database: process.env.DB_DATABASE,   
+    timezone: 'Z',                       
+    waitForConnections: true,            
+    connectionLimit: 10,                 
+    queueLimit: 0                        
 });
 
 
@@ -102,17 +102,14 @@ app.post('/api/register', (req, res) => {
                 // Ha létezik már felhasználó ugyanazzal az emaillel
                 return res.status(400).json({ error: 'Ez az email már regisztrálva van!' });
             }
+
     
             // Ha az email nem létezik, folytathatjuk a regisztrációval
             const sql = 'INSERT INTO users (user_id, user_name, email, psw, role) VALUES (NULL, ?, ?, ?, ?)';
             pool.query(sql, [user_name, email, hash, role], (err, result) => {
                 if (err) {
                     return res.status(500).json({ error: 'Hiba az adatbázis művelet során!' });
-                }
-                
-                
-                
-                
+                }                               
                 
                 // Új felhasználó user_id-ja
                 const newUserId = result.insertId;
@@ -125,7 +122,6 @@ app.post('/api/register', (req, res) => {
                     }
                     
                     res.status(201).json({ message: 'Sikeres regisztráció!, kosár létrehozva!' });
-                    //res.status(201).json({ message: 'Kosár létrehozva' });
                 });
             });
         });
@@ -163,7 +159,13 @@ app.post('/api/login', (req, res) => {
         const user = result[0];
         bcrypt.compare(psw, user.psw, (err, isMatch) => {
             if (isMatch) {
-                const token = jwt.sign({ id: user.user_id }, JWT_SECRET, { expiresIn: '1y' });
+
+                // Ellenőrizzük, hogy admin-e
+                const { role } = user;
+               
+
+
+                const token = jwt.sign({ id: user.user_id, role: role }, JWT_SECRET, { expiresIn: '1y' });
                 
                 res.cookie('auth_token', token, {
                     httpOnly: true,
@@ -172,7 +174,8 @@ app.post('/api/login', (req, res) => {
                     maxAge: 1000 * 60 * 60 * 24 * 30 * 12
                 });
 
-                return res.status(200).json({ message: 'Sikeres bejelentkezés' });
+                return res.status(200).json({ message: 'Sikeres bejelentkezés', role:role });
+                
             } else {
                 return res.status(401).json({ error: 'rossz a jelszó' });
             }
