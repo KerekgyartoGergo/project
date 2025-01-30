@@ -1,0 +1,393 @@
+/* alap beállítások */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#header{
+    animation: loaderAnimation 1.5s ease-in-out;
+
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #383838;
+}
+
+/*lábléc*/
+.footer {
+    background-color: #292929;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%; 
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center; 
+    flex-direction: column; 
+    overflow: hidden;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px; 
+    width: 100%; 
+    padding: 0 20px; 
+    box-sizing: border-box; 
+    flex-wrap: wrap; 
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 2px; 
+}
+
+.footer-column ul li {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.footer-column a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    background-color: #222;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0;
+    position: relative;
+    bottom: -20px;
+    left: 0;
+}
+
+.footer-column-title {
+    cursor: pointer;
+    margin-bottom: 20px; 
+    text-align: center; 
+}
+
+/* Responsive design */
+
+
+@media (max-width: 768px) {
+    .footer-column {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .footer-column ul {
+        display: none;
+    }
+    .footer-column ul li {
+        text-align: left;
+    }
+
+    .footer-column.active ul {
+        display: block;
+    }
+    .footer-column-title {
+        text-align: center;
+    }
+    .footer-content{
+        margin: auto;
+    
+    }
+}
+/* --- a fejléc a menüvel --- */
+header {
+    background-color: #313131;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center; /* függőleges igazítás */
+    justify-content: space-between; /* vízszintes igazítás */
+    position: sticky;
+    top: 0;
+    z-index:1000 ;
+}
+
+.menu-logo, .menu-logo-arany {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    user-select: none;
+    padding: none;
+    font-family:Comic Sans MS, Comic Sans, cursive;
+    cursor: pointer;
+
+}
+
+.menu-logo-arany {
+    color: #A59568;
+}
+
+
+/* menü alapállapotban */
+nav {
+    display: flex;
+    gap: 1rem;
+    font-size: 2rem;}
+
+nav a {
+    text-decoration: none;
+    color: white;
+}
+
+.icon-home, .icon-user, .icon-logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: ease 500ms;
+}
+
+
+
+.icon-home:hover,
+.icon-user:hover{
+    transform: scale(1.1);
+    background-color: #464545;
+}
+.icon-logout:hover {
+    transform: scale(1.1);
+    background-color: rgb(221, 75, 75);
+
+}
+
+/* hamburger menü */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    background-color: #292828;
+}
+
+.hamburger-menu span {
+    display: block;
+    height: 4px;
+    background-color: #A59568;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle:checked~nav {
+    display: flex;
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        background-color: #292929;
+        padding: 10px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        font-size: 1.5rem;
+        display: none;
+    }
+}
+
+
+/* --- tartalom (ahol lesznek a képek --- */
+.container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* sorminta */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+/* kártyák */
+.card {
+    width: 1000px;
+    background-color: #292929;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.card-content {
+    flex-grow: 1;
+}
+
+.card-text {
+    font-size: 16px;
+    color: white;
+    margin: 0;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.card-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.card-quantity {
+    width: 60px;
+    padding: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid inherit;
+    border-radius: 5px;
+    background-color: #464545;
+    color: white;
+}
+
+.card-delete {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.card-delete:hover {
+    background-color: #cc0000;
+}
+
+
+
+.cart{
+    background-color: #A59568;
+    border-radius: 20px;
+    padding: 15px;
+    width: 150px;
+    margin: auto;
+    display: flex;
+
+    justify-content: center;
+    cursor: pointer;
+    
+}
+#btnCart{
+    font-size: 1rem;
+    color: white;
+    background-color: inherit;
+    border: none;
+    cursor: inherit;
+    font-weight: 700;
+}
+
+@media screen and (max-width:915px) {
+    .card {
+        flex: 0 1 calc((100% - 20px) / 3);
+    }
+}
+
+@media screen and (max-width:426px) {
+    .card {
+        flex: 0 1 100%;
+        flex: 0 1 calc((100%-10px ) / 2);
+    }
+    .cart, #btnCart{
+        font-size: 0.8rem;
+
+    }
+}
+
+
+
+
+.kategoria{
+    background-color: #A59568;
+    padding: 10px;
+    top: 0;
+    z-index:1000 ;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+
+    
+}
+.kat{
+    background-color: #776a44;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 15px;
+    margin-left: 15px;
+    color: white;
+    font-weight: 500;
+}
+.kat:hover{
+    transform: scale(1.05);
+    background-color: #4b432b;
+}
+
+
+@media screen and (max-width:915px) {
+    .kategoria {
+        flex: 0 1 calc((100% - 20px) / 3);
+    }
+}
+
+@media screen and (max-width:426px) {
+    .kategoria {
+        gap: 10px;
+    }
+    .kategoria, .kat{
+        font-size: 0.8rem;
+    }
+}
+
+@keyframes loaderAnimation {
+    0% { opacity: 0; transform: translatey(30px); }
+    100% { opacity: 1; transform: translatey(0); }
+  }
+    
