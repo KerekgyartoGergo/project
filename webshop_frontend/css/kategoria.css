@@ -361,7 +361,7 @@ nav a {
 
 
 .kategoria{
-    background-color: #A59568;
+    background-color: #292929;
     padding: 10px;
     top: 0;
     z-index:1000 ;
@@ -369,22 +369,18 @@ nav a {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: flex-start;
+    justify-content: center;
 
     
 }
 .kat{
-    background-color: #776a44;
-    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.13);
+    font-size: 2rem;
     padding: 10px;
     border-radius: 15px;
     margin-left: 15px;
     color: white;
     font-weight: 500;
-}
-.kat:hover{
-    transform: scale(1.05);
-    background-color: #4b432b;
 }
 
 
