@@ -21,6 +21,7 @@ body {
     justify-content: flex-end; /* Középre igazítja a tartalmat vízszintesen */
     align-items: center; /* Középre igazítja a tartalmat függőlegesen */
     flex-direction: column; /* A tartalom függőlegesen rendeződik */
+    overflow: hidden;
 }
 
 .footer-content {
@@ -31,7 +32,6 @@ body {
     padding: 0 20px; /* Padding a szélek mentén */
     box-sizing: border-box; /* A padding beleszámít a szélességbe */
     flex-wrap: wrap; /* Ha nincs elég hely, az oszlopok törődnek */
-    margin-left: 20rem;
 }
 
 .footer-column {
@@ -48,7 +48,7 @@ body {
 
 .footer-column ul li {
     margin: 10px 0;
-    text-align: left;
+    text-align: center;
 }
 
 .footer-column a {
@@ -74,7 +74,7 @@ body {
 .footer-column-title {
     cursor: pointer;
     margin-bottom: 20px; /* Cím és linkek közötti tér */
-    text-align: left; /* Címek balra igazítva */
+    text-align: center; /* Címek balra igazítva */
 }
 
 /* Responsive design */
