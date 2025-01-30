@@ -120,13 +120,13 @@ background-color: #464545;
     cursor: pointer;
     width: 30px;
     height: 25px;
-    background-color: #a59568;
+    background-color: #292828;
 }
 
 .hamburger-menu span {
     display: block;
     height: 4px;
-    background-color: #a59568;
+    background-color: #A59568;
     border-radius: 2px;
     width: 100%;
 }
@@ -148,7 +148,7 @@ background-color: #464545;
         flex-direction: row;
         justify-content: space-around;
         width: 100%;
-        background-color: #a59568;
+        background-color: #292929;
         padding: 10px;
         position: absolute;
         top: 70px;

@@ -1,5 +1,6 @@
 const btnLogout =document.getElementsByClassName ('icon-logout')[0];
 const btnProfile =document.getElementsByClassName ('icon-user')[0];
+const btnCart =document.getElementsByClassName ('icon-home')[0];
 
 
 btnLogout.addEventListener('click', ()=>{
@@ -8,6 +9,10 @@ btnLogout.addEventListener('click', ()=>{
 
 btnProfile.addEventListener('click', ()=>{
     window.location.href='../webshop_frontend/profile.html';
+});
+
+btnCart.addEventListener('click', ()=>{
+    window.location.href='../webshop_frontend/cart.html';
 });
 
 
