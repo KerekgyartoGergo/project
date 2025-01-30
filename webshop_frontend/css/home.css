@@ -11,20 +11,96 @@ body {
 }
 
 /*lábléc*/
-footer{
+.footer {
     background-color: #292929;
-    padding: 20px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index:1000 ;
     color: white;
-    
+    padding: 20px 0;
+    text-align: center;
+    width: 100%; /* Teljes szélesség */
+    display: flex;
+    justify-content: flex-end; /* Középre igazítja a tartalmat vízszintesen */
+    align-items: center; /* Középre igazítja a tartalmat függőlegesen */
+    flex-direction: column; /* A tartalom függőlegesen rendeződik */
 }
 
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px; /* Korlátozza a tartalom szélességét */
+    width: 100%; /* Teljes szélességű a szülőn belül */
+    padding: 0 20px; /* Padding a szélek mentén */
+    box-sizing: border-box; /* A padding beleszámít a szélességbe */
+    flex-wrap: wrap; /* Ha nincs elég hely, az oszlopok törődnek */
+    margin-left: 20rem;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 2px; /* A címek és linkek közötti tér eltávolítása */
+}
+
+.footer-column ul li {
+    margin: 10px 0;
+    text-align: left;
+}
+
+.footer-column a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    background-color: #222;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0;
+    position: relative;
+    bottom: -20px;
+    left: 0;
+}
+
+.footer-column-title {
+    cursor: pointer;
+    margin-bottom: 20px; /* Cím és linkek közötti tér */
+    text-align: left; /* Címek balra igazítva */
+}
+
+/* Responsive design */
+
+
+@media (max-width: 768px) {
+    .footer-column {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .footer-column ul {
+        display: none;
+    }
+
+    .footer-column.active ul {
+        display: block;
+    }
+    .footer-column-title {
+        text-align: center; /* Címek balra igazítva */
+    }
+    .footer-content{
+        margin: auto;
+    
+    }
+}
 /* --- a fejléc a menüvel --- */
 header {
     background-color: #313131;
