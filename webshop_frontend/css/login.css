@@ -13,7 +13,9 @@ body{
     height: 100vh;
     background-color: #383838;
 }
-
+#header {
+    animation: loaderAnimation 1.5s ease-in-out;
+}
 /*lábléc*/
 footer{
     background-color: #292929;
@@ -101,3 +103,7 @@ input{
     background-color: #292828;
     color: white;
 }
+@keyframes loaderAnimation {
+    0% { opacity: 0; transform: translatey(30px); }
+    100% { opacity: 1; transform: translatey(0); }
+  }
