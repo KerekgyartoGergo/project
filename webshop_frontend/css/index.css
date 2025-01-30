@@ -86,3 +86,18 @@ body{
         font-weight: 600;
     }
 }
+
+/*lábléc*/
+footer{
+    background-color: #292929;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index:1000 ;
+    color: white;
+    
+}
