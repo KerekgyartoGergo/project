@@ -9,6 +9,7 @@ const path = require('path');
 const validator = require('validator');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { log } = require('console');
 
 const app = express();
 app.use(express.json());
@@ -344,6 +345,45 @@ app.post('/api/upload', authenticateToken, upload.single('pic'), (req, res) => {
 });
 
 
+//kosárhoz ad
+app.post('/api/addCart', authenticateToken, (req, res) => {
+    if (req.user.role === 'admin') {
+        return res.status(403).json({ error: 'Adminnak nincs kosara' });
+    }
+
+    const { product_id, quantity } = req.body;
+
+    if (!product_id || !quantity){
+        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni' });
+    }
+
+    // Lekérdezzük a felhasználóhoz tartozó kosár azonosítót
+    const getCartId = 'SELECT cart_id FROM carts WHERE user_id = ?;';
+    pool.query(getCartId, [req.user.userId], (err, cartResult) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+        
+        if (cartResult.length === 0) {
+            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
+        }
+
+        const cart_id = cartResult[0].cart_id;
+        console.log("cart_id");
+
+        // Beszúrjuk a terméket a kosárba
+        const insertCartItemQuery = 'INSERT INTO cart_items (cart_item_id, cart_id, product_id, quantity) VALUES (NULL, ?, ?, ?)';
+        pool.query(insertCartItemQuery, [cart_id, product_id, quantity], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+            }
+
+            return res.status(201).json({ message: 'Termék kosárhoz adva', product_id: result.insertId });
+        });
+    });
+});
 
 
 
