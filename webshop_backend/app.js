@@ -442,6 +442,84 @@ app.post('/api/deleteCart', authenticateToken, (req, res) => {
 
 
 
+
+
+//admin parancsok
+
+//felhasználó törlése
+app.delete('/api/deleteUser', authenticateToken, (req, res) => {
+    const { user_id } = req.body;
+
+    // Ellenőrizzük, hogy a felhasználó admin-e
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultság a törléshez' });
+    }
+
+    // SQL tranzakció indítása
+    pool.getConnection((err, connection) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Adatbázis kapcsolat hiba' });
+        }
+
+        connection.beginTransaction(err => {
+            if (err) {
+                connection.release();
+                console.error(err);
+                return res.status(500).json({ error: 'Tranzakciós hiba' });
+            }
+
+            // 1. Töröljük a felhasználóhoz tartozó kosár elemeket
+            connection.query('DELETE FROM cart_items WHERE cart_id IN (SELECT cart_id FROM carts WHERE user_id = ?)', [user_id], (err) => {
+                if (err) return rollbackTransaction(err, connection, res);
+                console.log("Töröljük a felhasználóhoz tartozó kosár elemeket");
+                
+                // 2. Töröljük a felhasználó kosarát
+                connection.query('DELETE FROM carts WHERE user_id = ?', [user_id], (err) => {
+                    if (err) return rollbackTransaction(err, connection, res);
+                    console.log("Töröljük a felhasználó kosarát");
+
+                    // 3. Töröljük a felhasználó rendeléseit
+                    connection.query('DELETE FROM orders WHERE user_id = ?', [user_id], (err) => {
+                        if (err) return rollbackTransaction(err, connection, res);
+                        console.log("Töröljük a felhasználó rendeléseit");
+
+                        
+                        // 4. Töröljük magát a felhasználót
+                        connection.query('DELETE FROM users WHERE user_id = ?', [user_id], (err, result) => {
+                            if (err) return rollbackTransaction(err, connection, res);
+                            console.log("Töröljük magát a felhasználót");
+
+                            
+                            if (result.affectedRows === 0) {
+                                return rollbackTransaction({ message: 'Felhasználó nem található' }, connection, res, 404);
+                            }
+
+                            // Ha minden sikeres, commit-oljuk a tranzakciót
+                            connection.commit(err => {
+                                if (err) return rollbackTransaction(err, connection, res);
+                                connection.release();
+                                return res.status(204).send(); // Sikeres törlés
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
+// Hibakezelő rollback függvény
+function rollbackTransaction(err, connection, res, status = 500) {
+    console.error(err);
+    connection.rollback(() => {
+        connection.release();
+        res.status(status).json({ error: err.message || 'Hiba történt' });
+    });
+}
+
+
+
+
 app.listen(PORT, HOSTNAME, () => {
     console.log(`IP: http://${HOSTNAME}:${PORT}`);
 });
