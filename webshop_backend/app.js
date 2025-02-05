@@ -358,30 +358,37 @@ app.post('/api/addCart', authenticateToken, (req, res) => {
     }
 
     // Lekérdezzük a felhasználóhoz tartozó kosár azonosítót
-    const getCartId = 'SELECT cart_id FROM carts WHERE user_id = ?;';
-    pool.query(getCartId, [req.user.userId], (err, cartResult) => {
+    const getCartId = 'SELECT cart_id FROM carts WHERE user_id = ?';
+    pool.query(getCartId, [req.user.id], (err, cartResult) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
         }
+        console.log(req.user.id);
         
-        if (cartResult.length === 0) {
+        // Ellenőrizzük, hogy van-e eredmény és hogy a cartResult nem üres tömb
+        if (!cartResult || cartResult.length === 0) {
             return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
         }
-
+    
+        // Ellenőrizzük, hogy a cartResult[0] objektum tartalmazza-e a cart_id mezőt
+        if (!cartResult[0].cart_id) {
+            return res.status(500).json({ error: 'A kosár azonosítója nem található' });
+        }
+    
         const cart_id = cartResult[0].cart_id;
-        console.log("cart_id");
 
         // Beszúrjuk a terméket a kosárba
         const insertCartItemQuery = 'INSERT INTO cart_items (cart_item_id, cart_id, product_id, quantity) VALUES (NULL, ?, ?, ?)';
         pool.query(insertCartItemQuery, [cart_id, product_id, quantity], (err, result) => {
+            console.log('alalddsas'); 
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
             }
 
             return res.status(201).json({ message: 'Termék kosárhoz adva', product_id: result.insertId });
-        });
+        }); 
     });
 });
 
