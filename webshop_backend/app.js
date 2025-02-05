@@ -473,7 +473,7 @@ app.delete('/api/deleteUser', authenticateToken, (req, res) => {
             connection.query('DELETE FROM cart_items WHERE cart_id IN (SELECT cart_id FROM carts WHERE user_id = ?)', [user_id], (err) => {
                 if (err) return rollbackTransaction(err, connection, res);
                 console.log("Töröljük a felhasználóhoz tartozó kosár elemeket");
-                
+
                 // 2. Töröljük a felhasználó kosarát
                 connection.query('DELETE FROM carts WHERE user_id = ?', [user_id], (err) => {
                     if (err) return rollbackTransaction(err, connection, res);
@@ -517,6 +517,35 @@ function rollbackTransaction(err, connection, res, status = 500) {
     });
 }
 
+
+//user to admin
+app.put('/api/updateUserRole', authenticateToken, (req, res) => {
+    const { user_id, role } = req.body;
+
+    // Ellenőrizzük, hogy a kérés indítója admin-e
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultság a módosításhoz' });
+    }
+
+    // Ellenőrizzük, hogy a megadott role érvényes-e
+    if (!['user', 'admin'].includes(role)) {
+        return res.status(400).json({ error: 'Érvénytelen szerepkör' });
+    }
+
+    const sql = 'UPDATE users SET role = ? WHERE user_id = ?';
+    pool.query(sql, [role, user_id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Felhasználó nem található' });
+        }
+
+        return res.status(200).json({ message: 'Szerepkör sikeresen frissítve' });
+    });
+});
 
 
 
