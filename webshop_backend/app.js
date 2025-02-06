@@ -551,8 +551,31 @@ app.post('/api/upload', authenticateToken, upload.single('pic'), (req, res) => {
 });
 
 
-//termék szerkesztése
+//egy termék lekérdezése
+app.get('/api/getItem/', authenticateToken, (req, res) => {
+    const { id } = req.body;
 
+    if (!id) {
+        return res.status(400).json({ error: 'Az ID megadása kötelező' });
+    }
+
+    const sql = 'SELECT * FROM products WHERE product_id = ?';
+    pool.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'A termék nem található' });
+        }
+
+        return res.status(200).json(result[0]);
+    });
+});
+
+
+//termék szerkesztése
 app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) => {
 
 
