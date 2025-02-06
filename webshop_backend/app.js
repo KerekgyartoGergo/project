@@ -313,36 +313,6 @@ app.get('/api/products', authenticateToken, (req, res) => {
     });
 });
 
-// új termek feltöltése
-app.post('/api/upload', authenticateToken, upload.single('pic'), (req, res) => {
-
-
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ error: 'Nincs jogosultságod termék feltöltésére' });
-    }
-
-    const pic = req.file ? req.file.filename : null;
-
-    if (pic === null) {
-        return res.status(400).json({ error: 'Válassz ki egy képet' });
-    }
-
-    const { name, description, price, stock, category_id } = req.body;
-
-    if (!name || !description || !price || !stock || !category_id) {
-        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni' });
-    }
-
-    const sql = 'INSERT INTO products (product_id, name, description, price, stock, category_id, pic) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
-    pool.query(sql, [name, description, price, stock, category_id, pic], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
-        }
-
-        return res.status(201).json({ message: 'Termék sikeresen feltöltve', product_id: result.insertId });
-    });
-});
 
 
 //kosárhoz ad
@@ -544,6 +514,72 @@ app.put('/api/updateUserRole', authenticateToken, (req, res) => {
         }
 
         return res.status(200).json({ message: 'Szerepkör sikeresen frissítve' });
+    });
+});
+
+
+
+// új termek feltöltése
+app.post('/api/upload', authenticateToken, upload.single('pic'), (req, res) => {
+
+
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultságod termék feltöltésére' });
+    }
+
+    const pic = req.file ? req.file.filename : null;
+
+    if (pic === null) {
+        return res.status(400).json({ error: 'Válassz ki egy képet' });
+    }
+
+    const { name, description, price, stock, category_id } = req.body;
+
+    if (!name || !description || !price || !stock || !category_id) {
+        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni' });
+    }
+
+    const sql = 'INSERT INTO products (product_id, name, description, price, stock, category_id, pic) VALUES (NULL, ?, ?, ?, ?, ?, ?)';
+    pool.query(sql, [name, description, price, stock, category_id, pic], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        return res.status(201).json({ message: 'Termék sikeresen feltöltve', product_id: result.insertId });
+    });
+});
+
+
+//termék szerkesztése
+
+app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) => {
+
+
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultságod termék feltöltésére' });
+    }
+
+    const pic = req.file ? req.file.filename : null;
+
+
+    
+    const { name, description, price, stock, category_id, id } = req.body;
+    
+    if(!id){
+        return res.status(403).json({ error: 'adj meg egy id-t' });
+
+    }
+
+    const sql = 'UPDATE products SET name = COALESCE(NULLIF(?, ""), name), description = COALESCE(NULLIF(?, ""), description), price = COALESCE(NULLIF(?, ""), price), stock = COALESCE(NULLIF(?, ""), stock), category_id = COALESCE(NULLIF(?, ""), category_id), pic = COALESCE(NULLIF(?, ""), pic) WHERE products.product_id = ?';
+
+    pool.query(sql, [name, description, price, stock, category_id, pic, id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        return res.status(201).json({ message: 'Termék sikeresen frissítve', product_id: result.insertId });
     });
 });
 
