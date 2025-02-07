@@ -81,11 +81,11 @@ function authenticateToken(req, res, next) {
         return res.status(403).json({ error: 'Nincs token' });
     }
 
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
             return res.status(403).json({ error: 'Van token, csak épp nem érvényes' });
         }
-        req.user = decoded;
+        req.user = user;
         next();
     });
 }
