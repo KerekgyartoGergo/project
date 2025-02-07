@@ -611,6 +611,9 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
 
 
 //email küldés
+
+const EMAIL_PSW = process.env.EMAIL_PSW;
+
 app.post('/api/send-email', async (req, res) => {
     const { to, subject, text } = req.body;
 
@@ -623,7 +626,7 @@ app.post('/api/send-email', async (req, res) => {
         service: 'gmail',
         auth: {
             user: 'the.shop.orderinfo@gmail.com',
-            pass: 'akhk chok isgs mwip' // Fontos: Használj környezeti változókat vagy titkos tárhelyet!
+            pass: EMAIL_PSW 
         }
     });
 
