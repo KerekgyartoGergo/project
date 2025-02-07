@@ -10,6 +10,7 @@ const validator = require('validator');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { log } = require('console');
+const nodemailer = require('nodemailer');
 
 const app = express();
 app.use(express.json());
@@ -604,6 +605,41 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
 
         return res.status(201).json({ message: 'Termék sikeresen frissítve', product_id: result.insertId });
     });
+});
+
+
+
+
+//email küldés
+app.post('/api/send-email', async (req, res) => {
+    const { to, subject, text } = req.body;
+
+    if (!to || !subject || !text) {
+        return res.status(400).json({ error: 'Hiányzó mezők: to, subject, text' });
+    }
+
+    // Nodemailer konfiguráció
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'the.shop.orderinfo@gmail.com',
+            pass: 'akhk chok isgs mwip' // Fontos: Használj környezeti változókat vagy titkos tárhelyet!
+        }
+    });
+
+    const mailOptions = {
+        from: 'the.shop.orderinfo@gmail.com',
+        to,
+        subject,
+        text
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        res.json({ message: 'E-mail elküldve!', info });
+    } catch (error) {
+        res.status(500).json({ error: 'Hiba történt az e-mail küldésekor', details: error.message });
+    }
 });
 
 
