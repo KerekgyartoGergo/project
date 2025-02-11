@@ -3,6 +3,13 @@ const btnReg =document.getElementsByClassName ('reg')[0];
 btnReg.addEventListener('click', register);
 
 
+document.addEventListener('keydown', function(event){
+    if (event.key === 'Enter'){
+        register();
+    }
+})
+
+
 async function register(){
     const email =document.getElementById('email').value;
     const user_name =document.getElementById('name').value;

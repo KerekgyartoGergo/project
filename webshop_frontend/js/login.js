@@ -2,6 +2,12 @@ const btnLogin =document.getElementsByClassName ('login')[0];
 
 btnLogin.addEventListener('click', login);
 
+document.addEventListener('keydown', function(event){
+    if (event.key === 'Enter'){
+        login();
+    }
+})
+
 
 async function login() {
     const email =document.getElementById('email').value;
