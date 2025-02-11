@@ -27,9 +27,10 @@
 
         <nav>
             <a href="#header" class="icon-home">
-                <i class="fa-solid fa-bag-shopping"></i>            </a>
+                <i class="fa-solid fa-bag-shopping"></i>
+            </a>
             <a href="#" class="icon-user">
-                <i class="fa-regular fa-user"></i>            
+                <i class="fa-regular fa-user"></i>
             </a>
             <a href="#" class="icon-logout">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -37,25 +38,31 @@
         </nav>
     </header>
 
-    <main>  
-        <div class="edit-button" id="editName">
-            <button type="button" id="btnName">Név módosítása</button>
+    <main>
+        <div class="card">
+            <h2>Név módosítása</h2>
+            <input type="text" id="nameInput" placeholder="Új név">
+            <button class="mentes" id="saveName">Mentés</button>
         </div>
-        <div class="edit-button" id="editPsw">
-            <button type="button" id="btnName">Jelszó módosítása</button>
+        <div class="card">
+            <h2>Jelszó módosítása</h2>
+            <input type="password" id="passwordInput" placeholder="Új jelszó">
+            <input type="password" id="confirmPasswordInput" placeholder="Jelszó megerősítése">
+            <button class="mentes" id="savePassword">Mentés</button>
         </div>
-            
+        <div class="card">
+            <h2>Szállítási adatok</h2>
+            <input type="text" placeholder="Cím">
+            <input type="text" placeholder="Város">
+            <input type="text" placeholder="Irányítószám">
+            <button class="mentes">Mentés</button>
         </div>
     </main>
 
-
     <footer>
-        Ügyfélfiók a Dunde Mifflin -nál!
+        Ügyfélfiók a Dunder Mifflin-nál!
     </footer>
 
-<script src="js/profile.js"></script>
-
-
+    <script src="js/profile.js"></script>
 </body>
-
 </html>

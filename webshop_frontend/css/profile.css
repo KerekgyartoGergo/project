@@ -9,11 +9,13 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #383838;
 }
+
 #header {
     animation: loaderAnimation 1.5s ease-in-out;
 }
-/*lábléc*/
-footer{
+
+/* lábléc */
+footer {
     background-color: #292929;
     padding: 20px 30px;
     display: flex;
@@ -22,9 +24,8 @@ footer{
     position: fixed;
     bottom: 0;
     width: 100%;
-    z-index:1000 ;
+    z-index: 1000;
     color: white;
-    
 }
 
 /* --- a fejléc a menüvel --- */
@@ -45,17 +46,13 @@ header {
     text-transform: uppercase;
     user-select: none;
     padding: none;
-    font-family:Comic Sans MS, Comic Sans, cursive;
+    font-family: Comic Sans MS, Comic Sans, cursive;
     cursor: pointer;
-
 }
 
 .menu-logo-arany {
     color: #A59568;
 }
-
-
-
 
 /* menü alapállapotban */
 nav {
@@ -89,23 +86,16 @@ nav a {
     border-radius: 50%;
     transition: ease 500ms;
     background-color: #555454;
-
 }
-
-
-
-
-
 
 .icon-logout {
-    
     color: white;
 }
+
 .icon-user:hover,
 .icon-home:hover {
-transform: scale(1.1);
-background-color: #464545;
-
+    transform: scale(1.1);
+    background-color: #464545;
 }
 
 .icon-logout:hover {
@@ -161,6 +151,7 @@ background-color: #464545;
 
 /* --- tartalom --- */
 main {
+    padding: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -169,7 +160,45 @@ main {
     gap: 40px;
 }
 
+/* kártya stílusok */
+.card {
+    background-color: #313131;
+    width: 1000px;
+    height: 500px;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: white;
+    margin-bottom: 20px;
+}
 
+
+.card input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+}
+
+.card .mentes {
+    background-color: #a59568;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: ease 500ms;
+}
+
+.card .mentes:hover {
+    transform: scale(1.05);
+}
 
 /* név és jelszó módosítása gombok */
 .edit-button {
@@ -203,8 +232,7 @@ main {
     }
 }
 
-
 @keyframes loaderAnimation {
     0% { opacity: 0; transform: translatey(30px); }
     100% { opacity: 1; transform: translatey(0); }
-  }
+}

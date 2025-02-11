@@ -1,8 +1,16 @@
 const btnLogout =document.getElementsByClassName ('icon-logout')[0];
 const btnProfile =document.getElementsByClassName ('icon-user')[0];
 const btnCart =document.getElementsByClassName ('icon-cart')[0];
+const katElements = Array.from(document.getElementsByClassName('kat'));
 
 window.addEventListener('DOMContentLoaded', getProducts)
+
+katElements.forEach(kat => {
+    kat.addEventListener('click', () => {
+        window.location.href = '../webshop_frontend/kategoria.html';
+    });
+});
+
 
 
 btnProfile.addEventListener('click', ()=>{
