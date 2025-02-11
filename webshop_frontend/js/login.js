@@ -1,6 +1,9 @@
 const btnLogin =document.getElementsByClassName ('login')[0];
 
+
 btnLogin.addEventListener('click', login);
+
+
 
 document.addEventListener('keydown', function(event){
     if (event.key === 'Enter'){
@@ -10,37 +13,41 @@ document.addEventListener('keydown', function(event){
 
 
 async function login() {
-    const email =document.getElementById('email').value;
-    const psw =document.getElementById('psw').value;
+    const email = document.getElementById('email').value;
+    const psw = document.getElementById('psw').value;
 
     console.log(email, psw);
 
-    const res =await fetch('http://127.0.0.1:3000/api/login', {
+    const res = await fetch('http://127.0.0.1:3000/api/login', {
         method: 'POST',
-        headers:{
+        headers: {
             'content-type': 'application/json'
         },
-        body: JSON.stringify({email, psw}),
-        credentials:'include'
+        body: JSON.stringify({ email, psw }),
+        credentials: 'include'
     });
 
-    const data =await res.json();
+    const data = await res.json();
     console.log(data);
-
-
 
     if (res.ok) {
         alert(data.message);
-        window.location.href ='../webshop_frontend/home.html';
-    } else if(data.errors){
-        let errorMessage ='';
-        for (let i = 0; i < data.errors.length; i++){
-            errorMessage += `${data.errors[i].error}\n`
+        
+        // Ellenőrizzük a felhasználó szerepkörét
+        if (data.role === 'admin') {
+            window.location.href = '../webshop_frontend/admin.html';
+        } else {
+            window.location.href = '../webshop_frontend/home.html';
+        }
+    } else if (data.errors) {
+        let errorMessage = '';
+        for (let i = 0; i < data.errors.length; i++) {
+            errorMessage += `${data.errors[i].error}\n`;
         }
         alert(errorMessage);
-    }else if(data.error){
+    } else if (data.error) {
         alert(data.error);
-    }else {
-        alert('ismeretlen hiba')
+    } else {
+        alert('Ismeretlen hiba');
     }
 }

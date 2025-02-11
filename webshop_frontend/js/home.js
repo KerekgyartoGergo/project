@@ -93,7 +93,7 @@ function renderProducts(products){
 
         const price =document.createElement('div');
         price.classList.add('price');
-        price.textContent=`${product.price}`;
+        price.textContent=`${product.price} HUF`;
 
 
         const cart =document.createElement('div');
