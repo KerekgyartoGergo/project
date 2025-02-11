@@ -417,6 +417,32 @@ app.post('/api/deleteCart', authenticateToken, (req, res) => {
 
 //admin parancsok
 
+
+
+// az összes felhasználó lekérdezése
+app.get('/api/users', authenticateToken, (req, res) => {
+    const sql = 'SELECT * FROM users';
+    
+        // Ellenőrizzük, hogy a felhasználó admin-e
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ error: 'Nincs jogosultság a törléshez' });
+        }
+
+    pool.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Nincs még termék' });
+        }
+
+        return res.status(200).json(result);
+    });
+});
+
+
+
 //felhasználó törlése
 app.delete('/api/deleteUser', authenticateToken, (req, res) => {
     const { user_id } = req.body;
