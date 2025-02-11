@@ -243,6 +243,7 @@ nav a {
     align-items: center;
     padding: 20px;
     box-sizing: border-box;
+    gap: 10px;
 }
 
 .card-image {
@@ -253,7 +254,7 @@ nav a {
 }
 
 .card-content {
-    flex-grow: 1;
+    width: 100%;
 }
 
 .card-text {
@@ -269,6 +270,7 @@ nav a {
 }
 
 .card-price {
+    text-align: right;
     font-size: 20px;
     font-weight: bold;
     color: white;
@@ -323,11 +325,7 @@ nav a {
     font-weight: 700;
 }
 
-@media screen and (max-width:915px) {
-    .card {
-        flex: 0 1 calc((100% - 20px) / 3);
-    }
-}
+
 
 @media screen and (max-width:426px) {
     .card {
@@ -337,6 +335,9 @@ nav a {
     .cart, #btnCart{
         font-size: 0.8rem;
 
+    }
+    .card-text{
+        font-size: 10px;
     }
 }
 

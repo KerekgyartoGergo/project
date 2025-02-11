@@ -10,6 +10,11 @@ body {
     background-color: #383838;
 }
 
+input{
+    background-color: #292828;
+    color: white;
+}
+
 #header {
     animation: loaderAnimation 1.5s ease-in-out;
 }
@@ -155,16 +160,13 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     flex-direction: column;
-    gap: 40px;
 }
 
 /* kártya stílusok */
 .card {
     background-color: #313131;
     width: 1000px;
-    height: 500px;
     border-radius: 20px;
     padding: 20px;
     display: flex;
@@ -173,7 +175,9 @@ main {
     align-items: center;
     gap: 20px;
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    padding: 20px;
+    margin-bottom: 60px;
 }
 
 
@@ -226,13 +230,20 @@ main {
     cursor: inherit;
 }
 
-@media screen and (max-width: 428px) {
-    .edit-button {
-        width: 350px;
-    }
-}
 
 @keyframes loaderAnimation {
     0% { opacity: 0; transform: translatey(30px); }
     100% { opacity: 1; transform: translatey(0); }
+}
+
+
+@media screen and (max-width: 430px){
+    .card{
+        width: 380px;
+
+    }
+    .focim{
+        font-size: 4rem;
+        font-weight: 600;
+    }
 }
