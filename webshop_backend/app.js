@@ -164,7 +164,7 @@ app.post('/api/register', (req, res) => {
 });
 
 
-// login
+// v
 app.post('/api/login', (req, res) => {
     const { email, psw } = req.body;
     const errors = [];
@@ -422,7 +422,7 @@ app.post('/api/deleteCart', authenticateToken, (req, res) => {
 // az összes felhasználó lekérdezése
 app.get('/api/users', authenticateToken, (req, res) => {
     const sql = 'SELECT * FROM users';
-    
+
         // Ellenőrizzük, hogy a felhasználó admin-e
         if (req.user.role !== 'admin') {
             return res.status(403).json({ error: 'Nincs jogosultság a törléshez' });
