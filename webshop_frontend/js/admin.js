@@ -41,6 +41,10 @@ async function getUsers () {
 }
 
 
+
+
+
+
 function renderUsers(users) {
     const tbody = document.querySelector('.usersList');
     tbody.innerHTML = '';
@@ -61,6 +65,9 @@ function renderUsers(users) {
         tdRole.textContent = user.role;
 
         const tdActions = document.createElement('td');
+        const gombokDiv = document.createElement('div');
+        gombokDiv.classList.add('gombok');
+
         
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
@@ -69,13 +76,69 @@ function renderUsers(users) {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete');
         deleteButton.textContent = 'Törlés';
+        deleteButton.addEventListener('click', () => deleteUser(user.user_id)); // Event listener a törléshez
 
         tdActions.append(editButton, deleteButton);
+
+        tdActions.appendChild(gombokDiv);
+        gombokDiv.appendChild(editButton);
+        gombokDiv.appendChild(deleteButton);
+
         
         tr.append(tdIndex, tdName, tdEmail, tdRole, tdActions);
         tbody.appendChild(tr);
     });
 }
+
+
+async function deleteUser(userId) {
+    console.log(userId);
+
+    // Token lekérése (pl. localStorage-ból)
+    const token = localStorage.getItem('token'); // VAGY sessionStorage.getItem('token');
+
+    if (!token) {
+        alert('Nincs bejelentkezve, hiányzó token!');
+        return;
+    }
+
+    try {
+        const res = await fetch(`http://127.0.0.1:3000/api/deleteUser`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Token hozzáadása
+            },
+            body: JSON.stringify({ user_id: userId })
+        });
+
+        let data;
+        try {
+            data = await res.json();
+        } catch (jsonError) {
+            alert('Hibás válasz formátum');
+            return;
+        }
+
+        console.log(data);
+
+        if (res.ok) {
+            alert(data.message);
+        } else if (data?.errors) {
+            alert(data.errors.map(e => e.error).join('\n'));
+        } else if (data?.error) {
+            alert(data.error);
+        } else {
+            alert('Ismeretlen hiba');
+        }
+    } catch (error) {
+        console.error('Hálózati vagy egyéb hiba:', error);
+        alert('Nem sikerült kapcsolatot létesíteni a szerverrel.');
+    }
+}
+
+
+
 
 
 
@@ -131,6 +194,8 @@ function renderProducts(products) {
 
         // Szerkesztés és törlés gombok
         const actionsCell = document.createElement('td');
+        const gombokDiv = document.createElement('div');
+        gombokDiv.classList.add('gombok');
         const editButton = document.createElement('button');
         editButton.textContent = 'Szerkesztés';
         editButton.classList.add('edit');
@@ -147,8 +212,9 @@ function renderProducts(products) {
             console.log('Törlés:', product);
         });
 
-        actionsCell.appendChild(editButton);
-        actionsCell.appendChild(deleteButton);
+        actionsCell.appendChild(gombokDiv);
+        gombokDiv.appendChild(editButton);
+        gombokDiv.appendChild(deleteButton);
         row.appendChild(actionsCell);
 
         // Hozzáadjuk a sort a táblázathoz

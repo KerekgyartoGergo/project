@@ -273,6 +273,23 @@ button {
     color: white;
 }
 
+.gombok {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    gap: 15%; 
+}
+
+.productsList img{
+    max-width: 150px;
+}
+
+.productsList {
+    text-align: center;
+    vertical-align: middle;
+
+}
+
 
 
 
