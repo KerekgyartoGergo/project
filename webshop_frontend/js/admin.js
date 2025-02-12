@@ -92,51 +92,45 @@ function renderUsers(users) {
 
 
 async function deleteUser(userId) {
-    console.log(userId);
-
-    // Token lekérése (pl. localStorage-ból)
-    const token = localStorage.getItem('token'); // VAGY sessionStorage.getItem('token');
-
-    if (!token) {
-        alert('Nincs bejelentkezve, hiányzó token!');
-        return;
-    }
-
     try {
-        const res = await fetch(`http://127.0.0.1:3000/api/deleteUser`, {
+        const res = await fetch('http://127.0.0.1:3000/api/deleteUser', {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Token hozzáadása
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ user_id: userId })
+            body: JSON.stringify({ user_id: userId }),
+            credentials: 'include' // Hitelesítési adatok automatikus küldése
         });
 
+        // Naplózás a válasz előtt
+        console.log('HTTP status:', res.status);
+        
+        // Megpróbáljuk beolvasni a válasz adatokat JSON formátumban
         let data;
         try {
             data = await res.json();
-        } catch (jsonError) {
-            alert('Hibás válasz formátum');
-            return;
+        } catch (err) {
+            // Ha a JSON parsing hibát okoz, naplózunk és feltételezhetjük, hogy a válasz nem JSON formátumú
+            console.error('JSON parsing error:', err);
+            data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
         }
-
+        
         console.log(data);
 
         if (res.ok) {
-            alert(data.message);
-        } else if (data?.errors) {
-            alert(data.errors.map(e => e.error).join('\n'));
-        } else if (data?.error) {
+            alert('Felhasználó sikeresen törölve');
+            getUsers();
+            // További műveletek, például a felhasználó eltávolítása a felületről
+        } else if (data.error) {
             alert(data.error);
         } else {
             alert('Ismeretlen hiba');
         }
     } catch (error) {
-        console.error('Hálózati vagy egyéb hiba:', error);
-        alert('Nem sikerült kapcsolatot létesíteni a szerverrel.');
+        console.error('Hálózati hiba történt:', error);
+        alert('Hálózati hiba történt');
     }
 }
-
 
 
 
