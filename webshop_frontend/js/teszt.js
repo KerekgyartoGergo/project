@@ -51,3 +51,4 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('productImage').style.display = 'none';
     }
 });
+// aaaaaaaaaaaaaaaaaaaaa
