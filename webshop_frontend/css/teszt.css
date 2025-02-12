@@ -318,22 +318,55 @@ nav a {
         z-index: 999;
     }
 
-    /* Termék részletek */
+ /* Asztali nézet: Kép és leírás egymás mellett */
+@media screen and (min-width: 769px) {
     .product-detail {
+        display: flex;
+        justify-content: flex-start;  /* Kép és leírás egymás mellett */
+        align-items: center;  /* Kép és leírás középre igazítása */
+        gap: 30px;  /* Térköz a kép és a leírás között */
+        margin-top: 20px;
+    }
+
+    .product-image {
+        flex: 1 1 50%;  /* Kép a rendelkezésre álló tér felét foglalja el */
+        max-width: 100%;  /* Kép ne nőjön túl a konténeren */
+        height: auto;  /* Kép magassága automatikusan igazodik */
+    }
+
+    /* Kép konténer */
+    .product-image-container {
+        width: 100%; /* Konténer szélessége */
+        height: auto;  /* Kép automatikus magassága */
+        display: flex;
+        justify-content: center;  /* Kép középre igazítása konténeren belül */
+        align-items: center;  /* Kép középre igazítása konténeren belül */
+    }
+
+    .product-info {
+        flex: 1 1 50%;  /* Leírás a rendelkezésre álló tér másik felét foglalja el */
+        display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 20px;
+        justify-content: center;  /* Leírás középre igazítása */
+        max-width: 600px;  /* Maximális szélesség a leírásnak */
+    }
+}
+
+/* Mobil nézet: A kód érintetlenül marad */
+@media screen and (max-width: 768px) {
+    .product-detail {
+        flex-direction: column;  /* Kép és leírás egymás alatt legyenek mobil nézetben */
+        align-items: center;  /* Kép és leírás középre igazítása mobilon */
+        gap: 20px;  /* Térköz a kép és a leírás között mobilon */
     }
 
     .product-image,
     .product-info {
-        flex: none;
-        width: 100%;
+        width: 100%;  /* Kép és leírás szélessége 100% */
     }
+}
 
-    .product-info {
-        text-align: center;
-    }
+
 
     /* Kosár gomb */
     .add-to-cart-btn {
