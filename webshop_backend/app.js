@@ -466,37 +466,41 @@ app.delete('/api/deleteUser', authenticateToken, (req, res) => {
                 return res.status(500).json({ error: 'Tranzakciós hiba' });
             }
 
-            // 1. Töröljük a felhasználóhoz tartozó kosár elemeket
-            connection.query('DELETE FROM cart_items WHERE cart_id IN (SELECT cart_id FROM carts WHERE user_id = ?)', [user_id], (err) => {
+            // 1. Töröljük a felhasználóhoz tartozó rendelési tételeket
+            connection.query('DELETE FROM order_items WHERE order_id IN (SELECT order_id FROM orders WHERE user_id = ?)', [user_id], (err) => {
                 if (err) return rollbackTransaction(err, connection, res);
-                console.log("Töröljük a felhasználóhoz tartozó kosár elemeket");
+                console.log("Töröljük a felhasználóhoz tartozó rendelési tételeket");
 
-                // 2. Töröljük a felhasználó kosarát
-                connection.query('DELETE FROM carts WHERE user_id = ?', [user_id], (err) => {
+                // 2. Töröljük a felhasználó rendeléseit
+                connection.query('DELETE FROM orders WHERE user_id = ?', [user_id], (err) => {
                     if (err) return rollbackTransaction(err, connection, res);
-                    console.log("Töröljük a felhasználó kosarát");
+                    console.log("Töröljük a felhasználó rendeléseit");
 
-                    // 3. Töröljük a felhasználó rendeléseit
-                    connection.query('DELETE FROM orders WHERE user_id = ?', [user_id], (err) => {
+                    // 3. Töröljük a felhasználóhoz tartozó kosár elemeket
+                    connection.query('DELETE FROM cart_items WHERE cart_id IN (SELECT cart_id FROM carts WHERE user_id = ?)', [user_id], (err) => {
                         if (err) return rollbackTransaction(err, connection, res);
-                        console.log("Töröljük a felhasználó rendeléseit");
+                        console.log("Töröljük a felhasználóhoz tartozó kosár elemeket");
 
-                        
-                        // 4. Töröljük magát a felhasználót
-                        connection.query('DELETE FROM users WHERE user_id = ?', [user_id], (err, result) => {
+                        // 4. Töröljük a felhasználó kosarát
+                        connection.query('DELETE FROM carts WHERE user_id = ?', [user_id], (err) => {
                             if (err) return rollbackTransaction(err, connection, res);
-                            console.log("Töröljük magát a felhasználót");
+                            console.log("Töröljük a felhasználó kosarát");
 
-                            
-                            if (result.affectedRows === 0) {
-                                return rollbackTransaction({ message: 'Felhasználó nem található' }, connection, res, 404);
-                            }
-
-                            // Ha minden sikeres, commit-oljuk a tranzakciót
-                            connection.commit(err => {
+                            // 5. Töröljük magát a felhasználót
+                            connection.query('DELETE FROM users WHERE user_id = ?', [user_id], (err, result) => {
                                 if (err) return rollbackTransaction(err, connection, res);
-                                connection.release();
-                                return res.status(204).send(); // Sikeres törlés
+                                console.log("Töröljük magát a felhasználót");
+
+                                if (result.affectedRows === 0) {
+                                    return rollbackTransaction({ message: 'Felhasználó nem található' }, connection, res, 404);
+                                }
+
+                                // Ha minden sikeres, commit-oljuk a tranzakciót
+                                connection.commit(err => {
+                                    if (err) return rollbackTransaction(err, connection, res);
+                                    connection.release();
+                                    return res.status(204).send(); // Sikeres törlés
+                                });
                             });
                         });
                     });
