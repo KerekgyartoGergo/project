@@ -215,3 +215,5 @@ function renderProducts(products) {
         tbody.appendChild(row);
     });
 }
+
+//proba
