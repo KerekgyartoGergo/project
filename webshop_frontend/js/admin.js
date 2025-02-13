@@ -140,6 +140,8 @@ async function deleteUser(userId) {
 }
 
 //felhasználó szerkeztése
+
+
 async function editUser(userId) {
     try {
         const res = await fetch('http://127.0.0.1:3000/api/updateUserRole', {
@@ -243,7 +245,7 @@ function renderProducts(products) {
         editButton.textContent = 'Szerkesztés';
         editButton.classList.add('edit');
         editButton.addEventListener('click', () => {
-            // Szerkesztés logika itt
+            modal.style.display = "block";
             console.log('Szerkesztés:', product);
         });
 
@@ -307,3 +309,57 @@ async function deleteItem(productId) {
         alert('A törlési művelet megszakítva');
     }
 }
+
+
+//termék szerkesztése
+
+const modal = document.getElementById("editModal");
+
+const span = document.getElementsByClassName("close")[0];
+span.addEventListener('click', () => {
+    modal.style.display = "none";
+});
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+
+document.getElementById("editForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/updateItem', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include' // Hitelesítési adatok automatikus küldése
+        });
+
+        console.log('HTTP status:', res.status);
+
+        let data;
+        try {
+            data = await res.json();
+        } catch (err) {
+            console.error('JSON parsing error:', err);
+            data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+        }
+
+        console.log(data);
+
+        if (res.ok) {
+            alert('Termék sikeresen frissítve');
+            modal.style.display = "none";
+            // További műveletek, például a termék frissítése a felületen
+        } else if (data.error) {
+            alert(data.error);
+        } else {
+            alert('Ismeretlen hiba');
+        }
+    } catch (error) {
+        console.error('Hálózati hiba történt:', error);
+        alert('Hálózati hiba történt');
+    }
+});

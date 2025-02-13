@@ -344,3 +344,82 @@ button {
         font-size: 0.8rem;
     }
 }
+
+
+
+
+/* A modal háttér stílusa */
+.modal {
+    display: none; /* Alapértelmezés szerint rejtve */
+    position: fixed; /* Rögzített pozíció */
+    z-index: 1000; /* Legyen minden más elem felett */
+    left: 0;
+    top: 0;
+    width: 100%; /* Teljes szélesség */
+    height: 100%; /* Teljes magasság */
+    overflow: auto; /* Görgetés engedélyezése, ha szükséges */
+    background-color: rgb(0,0,0)!important; /* Fekete háttér */
+    background-color: rgba(0,0,0,0.4)!important; /* Fekete háttér áttetszővé téve */
+    padding-top: 50px; /* Tartalom elhelyezése a tetejétől */
+}
+
+/* A modal tartalom doboza */
+.modal-content {
+    background-color: #383838;
+    margin: 5% auto; /* 5% felülről és középre igazítva */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Szélesség, lehet igazítani */
+    max-width: 500px; /* Maximális szélesség */
+    border-radius: 10px; /* Kerekített sarkok */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Árnyék hozzáadása */
+}
+
+/* A bezáró gomb stílusa */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* A form elemek stílusa */
+#editForm label {
+    margin-top: 10px;
+    display: block;
+    font-weight: bold;
+}
+
+#editForm input[type="text"],
+#editForm input[type="number"],
+#editForm input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
+}
+
+#editForm button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50; /* Zöld háttér */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#editForm button[type="submit"]:hover {
+    background-color: #45a049; /* Sötétebb zöld hover esetén */
+}
