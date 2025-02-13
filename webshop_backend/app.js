@@ -521,30 +521,36 @@ function rollbackTransaction(err, connection, res, status = 500) {
 
 //user to admin
 app.put('/api/updateUserRole', authenticateToken, (req, res) => {
-    const { user_id, role } = req.body;
+    const { user_id } = req.body;
 
     // Ellenőrizzük, hogy a kérés indítója admin-e
     if (req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Nincs jogosultság a módosításhoz' });
     }
 
-    // Ellenőrizzük, hogy a megadott role érvényes-e
-    if (!['user', 'admin'].includes(role)) {
-        return res.status(400).json({ error: 'Érvénytelen szerepkör' });
-    }
-
-    const sql = 'UPDATE users SET role = ? WHERE user_id = ?';
-    pool.query(sql, [role, user_id], (err, result) => {
+    const sqlGetRole = 'SELECT role FROM users WHERE user_id = ?';
+    pool.query(sqlGetRole, [user_id], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
         }
 
-        if (result.affectedRows === 0) {
+        if (results.length === 0) {
             return res.status(404).json({ error: 'Felhasználó nem található' });
         }
 
-        return res.status(200).json({ message: 'Szerepkör sikeresen frissítve' });
+        const currentRole = results[0].role;
+        const newRole = currentRole === 'user' ? 'admin' : 'user';
+
+        const sqlUpdateRole = 'UPDATE users SET role = ? WHERE user_id = ?';
+        pool.query(sqlUpdateRole, [newRole, user_id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+            }
+
+            return res.status(200).json({ message: 'Szerepkör sikeresen frissítve', newRole });
+        });
     });
 });
 

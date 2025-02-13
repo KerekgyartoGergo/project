@@ -71,7 +71,9 @@ function renderUsers(users) {
         
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
-        editButton.textContent = 'Szerkesztés';
+        editButton.textContent = 'User <==> Admin';
+        editButton.addEventListener('click', () => editUser(user.user_id)); // Event listener a szerkeztéshez
+
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete');
@@ -92,9 +94,55 @@ function renderUsers(users) {
 
 
 async function deleteUser(userId) {
+    if (confirm('Biztosan törölni akarod a felhasználót?')) {
+        try {
+            const res = await fetch('http://127.0.0.1:3000/api/deleteUser', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: userId }),
+                credentials: 'include' // Hitelesítési adatok automatikus küldése
+            });
+
+            // Naplózás a válasz előtt
+            console.log('HTTP status:', res.status);
+            
+            // Megpróbáljuk beolvasni a válasz adatokat JSON formátumban
+            let data;
+            try {
+                data = await res.json();
+            } catch (err) {
+                // Ha a JSON parsing hibát okoz, naplózunk és feltételezhetjük, hogy a válasz nem JSON formátumú
+                console.error('JSON parsing error:', err);
+                data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+            }
+            
+            console.log(data);
+
+            if (res.ok) {
+                alert('Felhasználó sikeresen törölve');
+                getUsers();
+                // További műveletek, például a felhasználó eltávolítása a felületről
+            } else if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Ismeretlen hiba');
+            }
+        } catch (error) {
+            console.error('Hálózati hiba történt:', error);
+            alert('Hálózati hiba történt');
+        }
+    } else {
+        alert('A törlési művelet megszakítva');
+    }
+}
+
+
+async function editUser(userId) {
     try {
-        const res = await fetch('http://127.0.0.1:3000/api/deleteUser', {
-            method: 'DELETE',
+        const res = await fetch('http://127.0.0.1:3000/api/updateUserRole', {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -118,9 +166,9 @@ async function deleteUser(userId) {
         console.log(data);
 
         if (res.ok) {
-            alert('Felhasználó sikeresen törölve');
+            alert('Szerepkör sikeresen frissítve');
             getUsers();
-            // További műveletek, például a felhasználó eltávolítása a felületről
+            // További műveletek, például a felhasználó szerepkörének frissítése a felületen
         } else if (data.error) {
             alert(data.error);
         } else {
