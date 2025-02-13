@@ -209,9 +209,9 @@ function renderProducts(products) {
         // Létrehozunk egy új sort a táblázatban
         const row = document.createElement('tr');
 
-        // Termék azonosítója (product.id)
+        // Termék azonosítója
         const idCell = document.createElement('td');
-        idCell.textContent = product.product_id; // Itt a product.id-t használjuk
+        idCell.textContent = product.product_id;
         row.appendChild(idCell);
 
         // Termék neve
@@ -226,8 +226,18 @@ function renderProducts(products) {
 
         // Termék leírása
         const descriptionCell = document.createElement('td');
-        descriptionCell.textContent = product.description || 'Nincs leírás'; // Ha nincs leírás, akkor "Nincs leírás" szöveg jelenik meg
+        descriptionCell.textContent = product.description || 'Nincs leírás';
         row.appendChild(descriptionCell);
+
+        // Készlet (Stock)
+        const stockCell = document.createElement('td');
+        stockCell.textContent = product.stock;
+        row.appendChild(stockCell);
+
+        // Kategória azonosító (Category ID)
+        const categoryCell = document.createElement('td');
+        categoryCell.textContent = product.category_id;
+        row.appendChild(categoryCell);
 
         // Termék képe
         const imageCell = document.createElement('td');
@@ -245,15 +255,13 @@ function renderProducts(products) {
         editButton.textContent = 'Szerkesztés';
         editButton.classList.add('edit');
         editButton.addEventListener('click', () => {
-            modal.style.display = "block";
-            console.log('Szerkesztés:', product);
+            openEditModal(product);
         });
 
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Törlés';
         deleteButton.classList.add('delete');
-        deleteButton.addEventListener('click', () => deleteItem(product.product_id)); 
-
+        deleteButton.addEventListener('click', () => deleteItem(product.product_id));
 
         actionsCell.appendChild(gombokDiv);
         gombokDiv.appendChild(editButton);
@@ -311,24 +319,35 @@ async function deleteItem(productId) {
 }
 
 
-//termék szerkesztése
-
+// Termék szerkesztése
 const modal = document.getElementById("editModal");
-
 const span = document.getElementsByClassName("close")[0];
+let currentProductId = null;
+
 span.addEventListener('click', () => {
     modal.style.display = "none";
 });
 
-span.onclick = function() {
-    modal.style.display = "none";
-}
+function openEditModal(product) {
+    // Betöltjük a termék adatait a modalba
+    document.getElementById('name').value = product.name;
+    document.getElementById('price').value = product.price;
+    document.getElementById('description').value = product.description || '';
+    document.getElementById('stock').value = product.stock || '';
+    document.getElementById('category_id').value = product.category_id || '';
+    document.getElementById('pic').src = `http://127.0.0.1:3000/uploads/${product.pic}`;
+    
+    // Termék ID mentése egy változóba
+    currentProductId = product.product_id;
 
+    modal.style.display = "block";
+}
 
 document.getElementById("editForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
+    formData.append('id', currentProductId); // ID hozzáadása automatikusan
 
     try {
         const res = await fetch('http://127.0.0.1:3000/api/updateItem', {
@@ -336,9 +355,9 @@ document.getElementById("editForm").addEventListener("submit", async function(ev
             body: formData,
             credentials: 'include' // Hitelesítési adatok automatikus küldése
         });
-
+        
         console.log('HTTP status:', res.status);
-
+        
         let data;
         try {
             data = await res.json();
@@ -351,6 +370,7 @@ document.getElementById("editForm").addEventListener("submit", async function(ev
 
         if (res.ok) {
             alert('Termék sikeresen frissítve');
+            getProducts ();
             modal.style.display = "none";
             // További műveletek, például a termék frissítése a felületen
         } else if (data.error) {
