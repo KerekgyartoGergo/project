@@ -4,18 +4,33 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;  /* Biztosítjuk, hogy a body teljes magasságú legyen */
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #383838;
     color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Teljes magasság */
+}
+
+main {
+    flex: 1; /* A fő tartalom feltölti a maradék helyet */
+}
+
+#header {
+    animation: loaderAnimation 1.5s ease-in-out;
 }
 
 header {
     background-color: #313131;
     padding: 20px 30px;
     display: flex;
-    align-items: center; 
-    justify-content: space-between; 
+    align-items: center;
+    justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -66,6 +81,7 @@ nav a {
     background-color: rgb(221, 75, 75);
 }
 
+/* Kép stílus */
 .large-product-img {
     max-width: 80%;
     margin: 0 auto;
@@ -73,6 +89,7 @@ nav a {
     border-radius: 15px;
 }
 
+/* Kosár gomb */
 .add-to-cart-btn {
     background-color: #A59568;
     color: white;
@@ -88,6 +105,96 @@ nav a {
     background-color: #776a44;
 }
 
+.product-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.product-image {
+    flex: 1;
+}
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 600px;
+}
+
+.product-specs {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.specs-column {
+    flex: 1;
+    min-width: 200px;
+    padding: 15px;
+    border: 1px solid #A59568;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.specs-column h3 {
+    font-size: 1.2rem;
+    color: #A59568;
+    margin-bottom: 10px;
+}
+
+.specs-column p {
+    font-size: 1rem;
+    color: white;
+}
+
+/* Product Cart (Kosárban) */
+.product-cart {
+    background-color: #c4c4c425;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.card-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* Kép elrendezése */
+.pic-div {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+.pic-div img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border-radius: inherit;
+}
+
+/* Footer fixálása az oldal aljára */
 .footer {
     background-color: #292929;
     color: white;
@@ -95,10 +202,13 @@ nav a {
     text-align: center;
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
-    overflow: hidden;
+    position: relative; /* Eltávolítva az absolute pozicionálás */
+    z-index: 10;
+    margin-top: auto;
+    margin-bottom: 0; 
 }
 
 .footer-content {
@@ -154,44 +264,48 @@ nav a {
     text-align: center;
 }
 
-.hamburger-menu {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    width: 30px;
-    height: 25px;
-    background-color: #292828;
-}
 
-.hamburger-menu span {
-    display: block;
-    height: 4px;
-    background-color: #A59568;
-    border-radius: 2px;
-    width: 100%;
-}
-
-.menu-toggle {
-    display: none;
-}
-
-.menu-toggle:checked ~ nav {
-    display: flex;
-}
-
-nav {
-    display: flex;
-    gap: 1rem;
-    font-size: 2rem;
-}
-
+/* Mobil nézet (media query) */
 @media screen and (max-width: 768px) {
+    /* Hamburger menü */
     .hamburger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        width: 30px;
+        height: 25px;
+        background-color: #292828;
+    }
+
+    .hamburger-menu span {
+        display: block;
+        height: 4px;
+        background-color: #A59568;
+        border-radius: 2px;
+        width: 100%;
+    }
+
+    .menu-toggle {
+        display: none;
+    }
+
+    .menu-toggle:checked ~ nav {
         display: flex;
     }
 
+    /* Header */
+    header {
+        padding: 10px 20px;
+    }
+
+    .menu-logo {
+        font-size: 1.5rem;
+    }
+
     nav {
+        gap: 1rem;
+        display: none;
         flex-direction: column;
         justify-content: space-between;
         width: 100%;
@@ -201,125 +315,52 @@ nav {
         top: 70px;
         left: 0;
         font-size: 1.5rem;
-        display: none;
         z-index: 999;
     }
 
-    .menu-toggle:checked ~ nav {
-        display: flex; 
+    /* Termék részletek */
+    .product-detail {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
     }
 
-    .menu-toggle {
-        display: none; 
+    .product-image,
+    .product-info {
+        flex: none;
+        width: 100%;
+    }
+
+    .product-info {
+        text-align: center;
+    }
+
+    /* Kosár gomb */
+    .add-to-cart-btn {
+        width: 100%;
+    }
+
+    /* Footer */
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-column {
+        padding: 20px;
+        width: 100%;
+        text-align: center;
     }
 }
 
+/* Asztali nézet: Checkbox eltávolítása */
 @media screen and (min-width: 769px) {
-    nav {
-        display: flex;
+    .menu-toggle {
+        display: none; /* Checkbox elrejtése */
     }
-
-    .hamburger-menu {
-        display: none;
-    }
-}
-
-.container {
-    width: 100%;
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 10px;
-}
-
-.card {
-    display: flex;
-    flex-direction: column;
-    background-color: #c4c4c425;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgb(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: ease 500ms;
-}
-
-.card-body {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    flex-grow: 1;
-}
-
-.card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.card-actions-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; 
-    gap: 10px;
-}
-
-.card-price {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 10px;
-}
-
-.add-to-cart-btn {
-    background-color: #A59568;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-}
-
-.add-to-cart-btn:hover {
-    background-color: #776a44;
-}
-
-.pic-div {
-    position: relative;
-    width: 100%;
-    padding-top: 100%;
-    overflow: hidden;
-    border-radius: inherit;
-}
-
-.pic-div img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    border-radius: inherit;
-}
-
-.kategoria a {
-    text-decoration: none;
-    color: white;
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-weight: 600;
-    background-color: #776a44;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.kategoria a:hover {
-    background-color: #4b432b;
-    transform: scale(1.05);
 }
 
 @keyframes loaderAnimation {
     0% { opacity: 0; transform: translatey(30px); }
     100% { opacity: 1; transform: translatey(0); }
-}
+}  
