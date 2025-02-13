@@ -51,3 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('productImage').style.display = 'none';
     }
 });
+
+
+async function logout(){
+    const res =await fetch('http://127.0.0.1:3000/api/logout',{
+        method:'POST',
+        credentials: 'include'
+    });
+
+    const data =await res.json();
+
+    if(res.ok){
+        alert(data.message);
+        window.location.href='../webshop_frontend/index.html';
+    }else{
+        alert('Hiba a kijelentkezéskor!')
+    }
+}

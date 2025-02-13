@@ -387,6 +387,68 @@ nav a {
     }
 }
 
+.order-summary {
+    background-color: #292929;
+    padding: 30px; /* Növeld a paddingot */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    width: 400px; /* Növeljük a szélességet */
+    position: absolute; /* Módosítottuk fixed-ről absolute-ra */
+    top: 50%; /* Középen elhelyezkedik a képernyő vertikális irányban */
+    right: 8%; /* A jobb oldalhoz igazítva */
+    transform: translateY(-50%); /* A konténer középre igazítása függőlegesen */
+    z-index: 1000;
+}
+
+.order-summary h2 {
+    font-size: 2rem; /* Növeld a cím betűméretét */
+    margin-bottom: 20px; /* Több hely a cím és az összegzés között */
+    text-align: center;
+}
+
+.summary p {
+    font-size: 18px; /* Növeld a szöveg betűméretét */
+    margin: 10px 0; /* Több tér a bekezdések között */
+}
+
+.total p {
+    font-size: 20px; /* Növeld a teljes összeg betűméretét */
+    font-weight: bold;
+    text-align: center;
+}
+
+.total {
+    margin-top: 15px;
+    border-top: 2px solid #A59568;
+    padding-top: 15px; /* Növelheted a paddingot is */
+}
+
+.continue-btn-container {
+    text-align: center; /* Középre igazítja a gombot */
+}
+
+.continue-btn {
+    background-color: #A59568;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.continue-btn:hover {
+    background-color: #776a44;
+}
+
+
+
+
+
+
+
 @keyframes loaderAnimation {
     0% { opacity: 0; transform: translatey(30px); }
     100% { opacity: 1; transform: translatey(0); }

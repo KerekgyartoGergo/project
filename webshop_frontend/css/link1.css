@@ -143,7 +143,7 @@ nav a {
     color: white;
 }
 
-.icon-home, .icon-user, .icon-logout {
+.icon-cart, .icon-user, .icon-logout {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,7 +155,7 @@ nav a {
 
 
 
-.icon-home:hover,
+.icon-cart:hover,
 .icon-user:hover{
     transform: scale(1.1);
     background-color: #464545;
