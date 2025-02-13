@@ -93,6 +93,7 @@ function renderUsers(users) {
 }
 
 
+//felhasználó törlése
 async function deleteUser(userId) {
     if (confirm('Biztosan törölni akarod a felhasználót?')) {
         try {
@@ -138,7 +139,7 @@ async function deleteUser(userId) {
     }
 }
 
-
+//felhasználó szerkeztése
 async function editUser(userId) {
     try {
         const res = await fetch('http://127.0.0.1:3000/api/updateUserRole', {
@@ -184,7 +185,7 @@ async function editUser(userId) {
 
 
 
-
+//termékek lekérése
 async function getProducts () {
     const res = await fetch('http://127.0.0.1:3000/api/products', {
         method: 'GET',
@@ -249,10 +250,8 @@ function renderProducts(products) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Törlés';
         deleteButton.classList.add('delete');
-        deleteButton.addEventListener('click', () => {
-            // Törlés logika itt
-            console.log('Törlés:', product);
-        });
+        deleteButton.addEventListener('click', () => deleteItem(product.product_id)); 
+
 
         actionsCell.appendChild(gombokDiv);
         gombokDiv.appendChild(editButton);
@@ -262,4 +261,49 @@ function renderProducts(products) {
         // Hozzáadjuk a sort a táblázathoz
         tbody.appendChild(row);
     });
+}
+
+
+
+
+//termék törlése
+async function deleteItem(productId) {
+    if (confirm('Biztosan törölni akarod a terméket?')) {
+        try {
+            const res = await fetch('http://127.0.0.1:3000/api/deleteProduct/' + productId, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include' // Hitelesítési adatok automatikus küldése
+            });
+
+
+            // Megpróbáljuk beolvasni a válasz adatokat JSON formátumban
+            let data;
+            try {
+                data = await res.json();
+            } catch (err) {
+                // Ha a JSON parsing hibát okoz, naplózunk és feltételezhetjük, hogy a válasz nem JSON formátumú
+                console.error('JSON parsing error:', err);
+                data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+            }
+
+            console.log(data);
+
+            if (res.ok) {
+                alert('Termék sikeresen törölve');
+                getProducts ();
+            } else if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Ismeretlen hiba');
+            }
+        } catch (error) {
+            console.error('Hálózati hiba történt:', error);
+            alert('Hálózati hiba történt');
+        }
+    } else {
+        alert('A törlési művelet megszakítva');
+    }
 }

@@ -164,7 +164,7 @@ app.post('/api/register', (req, res) => {
 });
 
 
-// v
+// login
 app.post('/api/login', (req, res) => {
     const { email, psw } = req.body;
     const errors = [];
@@ -588,6 +588,34 @@ app.post('/api/upload', authenticateToken, upload.single('pic'), (req, res) => {
 });
 
 
+//termék törlése
+app.delete('/api/deleteProduct/:id', authenticateToken, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultságod termék törlésére' });
+    }
+
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: 'Adja meg a törölni kívánt termék ID-jét' });
+    }
+
+    const sql = 'DELETE FROM products WHERE product_id = ?';
+    pool.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'A megadott ID-vel nem található termék' });
+        }
+
+        return res.status(200).json({ message: 'Termék sikeresen törölve' });
+    });
+});
+
+
 //egy termék lekérdezése
 app.get('/api/getItem/', authenticateToken, (req, res) => {
     const { id } = req.body;
@@ -642,6 +670,17 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
         return res.status(201).json({ message: 'Termék sikeresen frissítve', product_id: result.insertId });
     });
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
