@@ -44,12 +44,6 @@ async function getProducts () {
 
     const products= await res.json();
     console.log(products);
-    Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Nem vagy bejelentkezve!",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
     renderProducts(products);
 }
 
