@@ -315,9 +315,10 @@ app.get('/api/products', authenticateToken, (req, res) => {
 });
 
 
-// kosár tartalmának lekérdezése
+// kosár tartalmának lekérdezése és termékek megjelenítése
 app.get('/api/getCartItems', authenticateToken, (req, res) => {
     const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+
     pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
         if (err) {
             console.error(err);
@@ -330,9 +331,27 @@ app.get('/api/getCartItems', authenticateToken, (req, res) => {
 
         const cart_id = cartResult[0].cart_id;
 
-        const getCartItemsQuery = 'SELECT * FROM cart_items WHERE cart_id = ?';
+        const getCartItemsQuery = `
+            SELECT 
+                ci.cart_item_id, 
+                ci.cart_id, 
+                ci.product_id, 
+                ci.quantity, 
+                p.name AS product_name, 
+                p.description, 
+                p.price, 
+                p.stock, 
+                p.pic AS product_image, 
+                c.category_id, 
+                c.name AS category_name 
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.product_id
+            JOIN categories c ON p.category_id = c.category_id
+            WHERE ci.cart_id = ?`;
+
         pool.query(getCartItemsQuery, [cart_id], (err, result) => {
             if (err) {
+                console.error(err);
                 return res.status(500).json({ error: 'Hiba az SQL-ben', err });
             }
 
