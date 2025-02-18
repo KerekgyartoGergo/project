@@ -7,25 +7,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
     integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <link rel="stylesheet" href="./css/admin.css">
 </head>
 <body>
-    <header >
-
+    <header>
         <div class="menu-logo" title="kezdőlap">
             <span class="menu-logo-arany">Admin </span>Panel
         </div>
-        
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
         <label for="menu-toggle" class="hamburger-menu">
             <span></span>
             <span></span>
             <span></span>
         </label>
-
         <nav>
-
             <a href="#" class="icon-logout">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
             </a>
@@ -86,14 +81,10 @@
     </div>
 
     <div class="admin-container">
-
-<div class="menu">
-    <a href="#users">Felhasználók kezelése</a>
-    <a href="#products">Termékek kezelése</a>
-    
-
-</div>
-
+        <div class="menu">
+            <a href="#users">Felhasználók kezelése</a>
+            <a href="#products">Termékek kezelése</a>
+        </div>
 
         <main class="content">
             <section id="users" class="admin-section">
@@ -109,18 +100,7 @@
                         </tr>
                     </thead>
                     <tbody class="usersList">
-                        <tr>
-                            <td>1</td>
-                            <td>Admin Felhasználó</td>
-                            <td>admin@example.com</td>
-                            <td>Admin</td>
-                            <td>
-                                <div class="gombok">
-                                <button class="edit">Szerkesztés</button>
-                                <button class="delete">Törlés</button>
-                                </div>
-                            </td>
-                        </tr>
+                        <!-- Felhasználói lista dinamikusan töltődik be -->
                     </tbody>
                 </table>
             </section>
@@ -142,19 +122,7 @@
                         </tr>
                     </thead>
                     <tbody class="productsList">
-                        <tr>
-                            <td>1</td>
-                            <td>Wireless Headphones</td>
-                            <td>$120</td>
-                            <td>ez itt egy fasza leírás hehe</td>
-                            <td><img src="../webshop_backend/uploads/2025-02-04-joker.jpg"></td>
-                            
-                            <td  class="gombok">
-                                <button class="edit">Szerkesztés</button>
-                                <button class="delete">Törlés</button>
-                            </td>
-                        </tr>
-                       
+                        <!-- Termékek lista dinamikusan töltődik be -->
                     </tbody>
                 </table>
             </section>
