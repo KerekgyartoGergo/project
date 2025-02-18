@@ -99,6 +99,8 @@ function renderProducts(products){
         const cart =document.createElement('div');
         cart.classList.add('cart');
         cart.textContent=`kosárhoz ad`;
+        cart.addEventListener('click', () => addToCart(product.product_id, 1));
+
 
 
 
@@ -114,6 +116,38 @@ function renderProducts(products){
         row.append(cardDiv)
     }
 }
+
+
+
+
+
+
+
+//termék kosárhoz adása
+async function addToCart(product_id, quantity = 1) {
+    try {
+        const response = await fetch('http://127.0.0.1:3000/api/addCart/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ product_id, quantity })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Hiba történt a termék kosárba helyezésekor.');
+        }
+
+        alert(data.message);
+    } catch (error) {
+        console.error('Hiba a kosárhoz adás során:', error);
+        alert(error.message);
+    }
+}
+
 
 
 

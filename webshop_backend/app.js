@@ -317,48 +317,63 @@ app.get('/api/products', authenticateToken, (req, res) => {
 
 
 //kosárhoz ad
-app.post('/api/addCart', authenticateToken, (req, res) => {
+app.post('/api/addCart/', authenticateToken, (req, res) => {
     if (req.user.role === 'admin') {
         return res.status(403).json({ error: 'Adminnak nincs kosara' });
     }
 
     const { product_id, quantity } = req.body;
 
-    if (!product_id || !quantity){
+    if (!product_id || !quantity) {
         return res.status(400).json({ error: 'Minden mezőt ki kell tölteni' });
     }
 
     // Lekérdezzük a felhasználóhoz tartozó kosár azonosítót
-    const getCartId = 'SELECT cart_id FROM carts WHERE user_id = ?';
-    pool.query(getCartId, [req.user.id], (err, cartResult) => {
+    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
         }
-        console.log(req.user.id);
-        
-        // Ellenőrizzük, hogy van-e eredmény és hogy a cartResult nem üres tömb
+
         if (!cartResult || cartResult.length === 0) {
             return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
         }
-    
-        // Ellenőrizzük, hogy a cartResult[0] objektum tartalmazza-e a cart_id mezőt
-        if (!cartResult[0].cart_id) {
-            return res.status(500).json({ error: 'A kosár azonosítója nem található' });
-        }
-    
+
         const cart_id = cartResult[0].cart_id;
 
-        // Beszúrjuk a terméket a kosárba
-        const insertCartItemQuery = 'INSERT INTO cart_items (cart_item_id, cart_id, product_id, quantity) VALUES (NULL, ?, ?, ?)';
-        pool.query(insertCartItemQuery, [cart_id, product_id, quantity], (err, result) => {
+        // Ellenőrizzük, hogy a termék már létezik-e a kosárban
+        const checkProductQuery = 'SELECT quantity FROM cart_items WHERE cart_id = ? AND product_id = ?';
+        pool.query(checkProductQuery, [cart_id, product_id], (err, productResult) => {
             if (err) {
                 console.error(err);
                 return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
             }
 
-            return res.status(201).json({ message: 'Termék kosárhoz adva', product_id: result.insertId });
-        }); 
+            if (productResult.length > 0) {
+                // Ha már van ilyen termék, növeljük a mennyiséget
+                const newQuantity = productResult[0].quantity + quantity;
+                const updateQuantityQuery = 'UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND product_id = ?';
+
+                pool.query(updateQuantityQuery, [newQuantity, cart_id, product_id], (err) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+                    }
+                    return res.status(200).json({ message: 'Termék mennyisége frissítve', product_id });
+                });
+            } else {
+                // Ha nincs ilyen termék, beszúrjuk újként
+                const insertCartItemQuery = 'INSERT INTO cart_items (cart_item_id, cart_id, product_id, quantity) VALUES (NULL, ?, ?, ?)';
+                pool.query(insertCartItemQuery, [cart_id, product_id, quantity], (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+                    }
+                    return res.status(201).json({ message: 'Termék kosárhoz adva', product_id: result.insertId });
+                });
+            }
+        });
     });
 });
 
