@@ -63,6 +63,7 @@ function renderUsers(users) {
 
         const tdRole = document.createElement('td');
         tdRole.textContent = user.role;
+        tdRole.id='role';
 
         const tdActions = document.createElement('td');
         const gombokDiv = document.createElement('div');
@@ -72,7 +73,17 @@ function renderUsers(users) {
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
         editButton.textContent = 'User <==> Admin';
+        editButton.id='editbtn';
         editButton.addEventListener('click', () => editUser(user.user_id)); // Event listener a szerkeztéshez
+        
+
+        // Feltételes ellenőrzés a role és az editButton szövegének beállításához
+        if (tdRole.textContent === 'user') {
+            editButton.textContent = 'User <==> Admin';
+        } else if (tdRole.textContent === 'admin') {
+            editButton.textContent = 'Admin <==> User';
+        }
+
 
 
         const deleteButton = document.createElement('button');
