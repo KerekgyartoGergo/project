@@ -2,6 +2,9 @@ const btnLogout =document.getElementsByClassName ('icon-logout')[0];
 const btnProfile =document.getElementsByClassName ('icon-user')[0];
 const btnCart =document.getElementsByClassName ('icon-cart')[0];
 const katElements = Array.from(document.getElementsByClassName('kat'));
+const card =document.getElementsByClassName('card')[0];
+
+
 
 window.addEventListener('DOMContentLoaded', getProducts)
 
@@ -11,6 +14,10 @@ katElements.forEach(kat => {
     });
 });
 
+
+card.addEventListener('click', ()=>{
+    window.location.href='../webshop_frontend/teszt.html';
+})
 
 
 btnProfile.addEventListener('click', ()=>{
@@ -141,7 +148,14 @@ async function addToCart(product_id, quantity = 1) {
             throw new Error(data.error || 'Hiba történt a termék kosárba helyezésekor.');
         }
 
-        alert(data.message);
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: data.message,
+            showConfirmButton: false,
+            timer: 1500,
+            theme:'dark'
+          });
     } catch (error) {
         console.error('Hiba a kosárhoz adás során:', error);
         alert(error.message);
