@@ -5,6 +5,9 @@ const btnMenuLogo = document.getElementsByClassName('menu-logo')[0];
 
 btnLogout.addEventListener('click', logout);
 
+window.addEventListener('DOMContentLoaded', getCartItems)
+
+
 btnMenuLogo.addEventListener('click', ()=>{
     window.location.href='../webshop_frontend/home.html';
 });

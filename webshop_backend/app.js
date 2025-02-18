@@ -315,6 +315,37 @@ app.get('/api/products', authenticateToken, (req, res) => {
 });
 
 
+// kosár tartalmának lekérdezése
+app.get('/api/getCartItems', authenticateToken, (req, res) => {
+    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (!cartResult || cartResult.length === 0) {
+            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
+        }
+
+        const cart_id = cartResult[0].cart_id;
+
+        const getCartItemsQuery = 'SELECT * FROM cart_items WHERE cart_id = ?';
+        pool.query(getCartItemsQuery, [cart_id], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+            }
+
+            if (result.length === 0) {
+                return res.status(404).json({ error: 'Nincsenek tételek a kosárban' });
+            }
+
+            return res.status(200).json(result);
+        });
+    });
+});
+
+
 
 //kosárhoz ad
 app.post('/api/addCart/', authenticateToken, (req, res) => {
