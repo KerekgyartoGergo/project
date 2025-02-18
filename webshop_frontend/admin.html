@@ -32,6 +32,34 @@
         </nav>
     </header>
 
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close2">&times;</span>
+            <h2 >Új termék hozzáadása</h2>
+            <form id="addForm">
+                <label for="add_name">Név:</label><br>
+                <input type="text" id="add_name" name="name" ><br><br>
+
+                <label for="add_description">Leírás:</label><br>
+                <input type="text" id="add_description" name="description" ><br><br>
+    
+                <label for="add_price">Ár:</label><br>
+                <input type="number" id="add_price" name="price" ><br><br>
+    
+                <label for="add_stock">Készlet:</label><br>
+                <input type="number" id="add_stock" name="stock" ><br><br>
+    
+                <label for="add_category_id">Kategória ID:</label><br>
+                <input type="number" id="add_category_id" name="category_id" ><br><br>
+    
+                <label for="add_pic">Kép:</label><br>
+                <input type="file" id="add_pic" name="pic" ><br><br>
+    
+                <button type="submit">Hozzáadás</button>
+            </form>
+        </div>
+    </div>
+
 
 
     <div id="editModal" class="modal">

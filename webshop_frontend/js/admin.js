@@ -394,3 +394,79 @@ document.getElementById("editForm").addEventListener("submit", async function(ev
         alert('Hálózati hiba történt');
     }
 });
+
+//termék hozzáadása
+
+const modal2 = document.getElementById("addModal");
+const addProduct = document.getElementsByClassName('add')[0];
+addProduct.addEventListener('click', () => {
+    openAddModal();
+});
+const span2 = document.getElementsByClassName("close2")[0];
+
+span2.addEventListener('click', () => {
+    modal2.style.display="none";
+});
+
+
+function openAddModal() {
+    document.getElementById('add_name').value = '';
+    document.getElementById('add_price').value = '';
+    document.getElementById('add_description').value = '';
+    document.getElementById('add_stock').value = '';
+    document.getElementById('add_category_id').value = '';
+    document.getElementById('add_pic').value = '';  
+
+    // Megjelenítjük a modalt
+    const modal = document.getElementById('addModal');
+    modal.style.display = "block";
+}
+
+// Form submit esemény kezelése
+document.getElementById("addForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    // FormData létrehozása a form adatok küldéséhez
+    const formData = new FormData();
+    formData.append('name', document.getElementById('add_name').value);
+    formData.append('description', document.getElementById('add_description').value);
+    formData.append('price', document.getElementById('add_price').value);
+    formData.append('stock', document.getElementById('add_stock').value);
+    formData.append('category_id', document.getElementById('add_category_id').value);
+    formData.append('pic', document.getElementById('add_pic').files[0]); // Kép hozzáadása
+
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/upload', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'  // Hitelesítési adatok automatikus küldése
+        });
+
+        console.log('HTTP status:', res.status);
+        
+        let data;
+        try {
+            data = await res.json();
+        } catch (err) {
+            console.error('JSON parsing error:', err);
+            data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+        }
+
+        console.log(data);
+
+        if (res.ok) {
+            alert('Termék sikeresen hozzáadva');
+            getProducts();  // Frissítjük a terméklistát
+            const modal = document.getElementById('addModal');
+            modal.style.display = "none";  // Bezárjuk a modalt
+            // További műveletek, például a termék hozzáadása a felülethez
+        } else if (data.error) {
+            alert(data.error);
+        } else {
+            alert('Ismeretlen hiba');
+        }
+    } catch (error) {
+        console.error('Hálózati hiba történt:', error);
+        alert('Hálózati hiba történt');
+    }
+});
