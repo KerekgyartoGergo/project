@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded',getUsers);
 window.addEventListener('DOMContentLoaded', getProducts);
+window.addEventListener('DOMContentLoaded', getCategories);
 
 
 
@@ -422,6 +423,83 @@ function openAddModal() {
     modal.style.display = "block";
 }
 
+
+//kategoria hozzáadása
+
+const modal3 = document.getElementById("addCategorieModal");
+const add_category= document.getElementsByClassName('add2')[0];
+add_category.addEventListener('click', () => {
+    openAddCategoryModal();
+});
+const span3 = document.getElementsByClassName("close3")[0];
+
+span3.addEventListener('click', () => {
+    modal3.style.display="none";
+});
+
+
+function openAddCategoryModal() {
+    document.getElementById('add_categorie_name').value = '';
+    document.getElementById('add_categorie_description').value = '';
+  
+
+    // Megjelenítjük a modalt
+    const modal = document.getElementById('addCategorieModal');
+    modal.style.display = "block";
+}
+
+// Form submit esemény kezelése
+document.getElementById("addCategorrieForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    // FormData létrehozása a form adatok küldéséhez
+    const formData = {
+        name: document.getElementById('add_categorie_name').value,
+        description: document.getElementById('add_categorie_description').value
+    };
+
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/addCategory', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData),
+            credentials: 'include'  // Hitelesítési adatok automatikus küldése
+        });
+
+        
+        let data;
+        try {
+            data = await res.json();
+        } catch (err) {
+            console.error('JSON parsing error:', err);
+            data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+        }
+
+        console.log(data);
+
+        if (res.ok) {
+            alert('Kategória sikeresen hozzáadva');
+             //getCategories();  // Frissítjük a kategórialistát
+            const modal = document.getElementById('addCategorieModal');
+            modal.style.display = "none";  // Bezárjuk a modalt
+        } else if (data.error) {
+            alert(data.error);
+        } else {
+            alert('Ismeretlen hiba');
+        }
+    } catch (error) {
+        console.error('Hálózati hiba történt:', error);
+        alert('Hálózati hiba történt');
+    }
+});
+
+
+
+
+
+
 // Form submit esemény kezelése
 document.getElementById("addForm").addEventListener("submit", async function(event) {
     event.preventDefault();
@@ -470,3 +548,57 @@ document.getElementById("addForm").addEventListener("submit", async function(eve
         alert('Hálózati hiba történt');
     }
 });
+
+
+
+//kategoriak
+async function getCategories() {
+    const res = await fetch('http://127.0.0.1:3000/api/categories', {
+        method: 'GET',
+        credentials: 'include'
+    });
+
+    const categories = await res.json();
+    console.log(categories);
+    renderCategories(categories);
+}
+
+function renderCategories(categories) {
+    const tbody = document.querySelector('.categoriesList');
+    tbody.innerHTML = '';
+
+    categories.forEach((category, index) => {
+        const tr = document.createElement('tr');
+
+        const tdIndex = document.createElement('td');
+        tdIndex.textContent = category.category_id;
+
+        const tdName = document.createElement('td');
+        tdName.textContent = category.name;
+
+        const tdDescription = document.createElement('td');
+        tdDescription.textContent = category.description;
+
+        const tdActions = document.createElement('td');
+        const gombokDiv = document.createElement('div');
+        gombokDiv.classList.add('gombok');
+
+        const editButton = document.createElement('button');
+        editButton.classList.add('edit');
+        editButton.textContent = 'Szerkesztés';
+        editButton.addEventListener('click', () => editCategory(category.category_id));
+
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('delete');
+        deleteButton.textContent = 'Törlés';
+        deleteButton.addEventListener('click', () => deleteCategory(category.category_id));
+
+        tdActions.append(editButton, deleteButton);
+        tdActions.appendChild(gombokDiv);
+        gombokDiv.appendChild(editButton);
+        gombokDiv.appendChild(deleteButton);
+
+        tr.append(tdIndex, tdName, tdDescription, tdActions);
+        tbody.appendChild(tr);
+    });
+}

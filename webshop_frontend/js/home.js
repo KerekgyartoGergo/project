@@ -148,21 +148,17 @@ async function getCategories() {
 
 
 function renderCategories(categories) {
-    const container = document.getElementsByClassName('kategoriak')[0];
+    const container = document.getElementsByClassName('kategoria')[0];
     container.innerHTML = '';
 
     for (const category of categories) {
-        // Kategória div létrehozása
-        const categoryDiv = document.createElement('div');
-        categoryDiv.classList.add('kategoria');
 
         // Kategória név (linkként megjelenítve)
         const categoryLink = document.createElement('a');
         categoryLink.classList.add('kat');
         categoryLink.textContent = category.name;
 
-        categoryDiv.appendChild(categoryLink);
-        container.appendChild(categoryDiv);
+        container.appendChild(categoryLink);
     }
 }
 

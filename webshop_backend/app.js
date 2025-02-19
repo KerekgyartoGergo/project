@@ -636,6 +636,25 @@ app.put('/api/updateUserRole', authenticateToken, (req, res) => {
     });
 });
 
+//új kategoria hozzáadása
+app.post('/api/addCategory', (req, res) => {
+    const { name, description } = req.body;
+
+    if (!name || !description) {
+        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni' });
+    }
+
+    const sql = 'INSERT INTO categories (category_id, name, description) VALUES (NULL, ?, ?)';
+    pool.query(sql, [name, description], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        return res.status(201).json({ message: 'Kategória sikeresen hozzáadva', category_id: result.insertId });
+    });
+});
+
 
 
 // új termek feltöltése

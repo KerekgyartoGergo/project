@@ -56,11 +56,29 @@
     </div>
 
 
+    <div id="addCategorieModal" class="modal">
+        <div class="modal-content">
+            <span class="close3">&times;</span>
+            <h2 >Új termék hozzáadása</h2>
+            <form id="addCategorrieForm">
+                <label for="add_categorie_name">Név:</label><br>
+                <input type="text" id="add_categorie_name" name="name" ><br><br>
+
+                <label for="add_categorie_description">Leírás:</label><br>
+                <input type="text" id="add_categorie_description" name="description" ><br><br>
+    
+                <button type="submit">Hozzáadás</button>
+            </form>
+        </div>
+    </div>
+
+
 
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Termék szerkesztése</h2>
+
             <form id="editForm">
                 <label for="name">Név:</label><br>
                 <input type="text" id="name" name="name"><br><br>
@@ -105,9 +123,12 @@
                 </table>
             </section>
 
+            
+
             <section id="products" class="admin-section">
                 <h2>Termékek kezelése</h2>
                 <button class="add">Új termék hozzáadása</button>
+                <button class="add2">Új kategoria hozzáadása</button>
                 <table>
                     <thead>
                         <tr>
@@ -123,6 +144,24 @@
                     </thead>
                     <tbody class="productsList">
                         <!-- Termékek lista dinamikusan töltődik be -->
+                    </tbody>
+                </table>
+            </section>
+
+
+            <section id="categories" class="admin-section">
+                <h2>Kategóriák kezelése</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Név</th>
+                            <th>Leírás</th>
+                            <th>Műveletek</th>
+                        </tr>
+                    </thead>
+                    <tbody class="categoriesList">
+                        <!-- Kategória lista dinamikusan töltődik be -->
                     </tbody>
                 </table>
             </section>

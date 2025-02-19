@@ -266,7 +266,7 @@ button {
     background-color: #f44336;
     color: white;
 }
-.add {
+.add, .add2 {
     display: block;
     margin: 20px auto;
     background-color: #008CBA;
@@ -376,7 +376,7 @@ button {
 }
 
 /* A bezáró gomb stílusa */
-.close, .close2{
+.close, .close2, .close3{
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -386,7 +386,9 @@ button {
 .close:hover,
 .close:focus,
 .close2:hover,
-.close2:focus{
+.close2:focus,
+.close3:hover,
+.close3:focus{
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -421,8 +423,29 @@ button {
     border-radius: 4px;
     box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
 }
+#addCategorrieForm input[type="text"],
+#addCategorrieForm input[type="number"],
+#addCategorrieForm input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
+}
 
 #editForm button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50; /* Zöld háttér */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#addCategorrieForm button[type="submit"] {
     width: 100%;
     background-color: #4CAF50; /* Zöld háttér */
     color: white;
