@@ -4,38 +4,37 @@
     padding: 0;
     box-sizing: border-box;
 }
-#header{
-    animation: loaderAnimation 1.5s ease-in-out;
-
-}
 
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #383838;
+    min-height: 100vh; /* Az oldal teljes magasságát kitölti */
+    display: flex;
+    flex-direction: column;
 }
 
-/*lábléc*/
-.footer {
+/* footer mindig az alján */
+footer {
+    margin-top: auto; /* Ez biztosítja, hogy a footer az alján helyezkedjen el */
     background-color: #292929;
     color: white;
     padding: 20px 0;
     text-align: center;
-    width: 100%; 
+    width: 100%;
     display: flex;
-    justify-content: flex-end; 
-    align-items: center; 
-    flex-direction: column; 
-    overflow: hidden;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
 }
 
 .footer-content {
     display: flex;
     justify-content: space-around;
-    max-width: 1200px; 
-    width: 100%; 
-    padding: 0 20px; 
-    box-sizing: border-box; 
-    flex-wrap: wrap; 
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
 .footer-column {
@@ -47,7 +46,7 @@ body {
 .footer-column ul {
     list-style: none;
     padding: 0;
-    margin: 2px; 
+    margin: 2px;
 }
 
 .footer-column ul li {
@@ -77,13 +76,11 @@ body {
 
 .footer-column-title {
     cursor: pointer;
-    margin-bottom: 20px; 
-    text-align: center; 
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 /* Responsive design */
-
-
 @media (max-width: 768px) {
     .footer-column {
         flex: 1 1 100%;
@@ -103,11 +100,11 @@ body {
     .footer-column-title {
         text-align: center;
     }
-    .footer-content{
+    .footer-content {
         margin: auto;
-    
     }
 }
+
 /* --- a fejléc a menüvel --- */
 header {
     background-color: #313131;
@@ -117,7 +114,7 @@ header {
     justify-content: space-between; /* vízszintes igazítás */
     position: sticky;
     top: 0;
-    z-index:1000 ;
+    z-index: 1000;
 }
 
 .menu-logo, .menu-logo-arany {
@@ -126,21 +123,20 @@ header {
     text-transform: uppercase;
     user-select: none;
     padding: none;
-    font-family:Comic Sans MS, Comic Sans, cursive;
+    font-family: Comic Sans MS, Comic Sans, cursive;
     cursor: pointer;
-
 }
 
 .menu-logo-arany {
     color: #A59568;
 }
 
-
 /* menü alapállapotban */
 nav {
     display: flex;
     gap: 1rem;
-    font-size: 2rem;}
+    font-size: 2rem;
+}
 
 nav a {
     text-decoration: none;
@@ -157,17 +153,15 @@ nav a {
     transition: ease 500ms;
 }
 
-
-
 .icon-home:hover,
 .icon-user:hover{
     transform: scale(1.1);
     background-color: #464545;
 }
+
 .icon-logout:hover {
     transform: scale(1.1);
     background-color: rgb(221, 75, 75);
-
 }
 
 /* hamburger menü */
@@ -215,7 +209,6 @@ nav a {
         display: none;
     }
 }
-
 
 /* --- tartalom (ahol lesznek a képek --- */
 .container {
@@ -302,21 +295,18 @@ nav a {
     background-color: #cc0000;
 }
 
-
-
-.cart{
+.cart {
     background-color: #A59568;
     border-radius: 20px;
     padding: 15px;
     width: 150px;
     margin: auto;
     display: flex;
-
     justify-content: center;
     cursor: pointer;
-    
 }
-#btnCart{
+
+#btnCart {
     font-size: 1rem;
     color: white;
     background-color: inherit;
@@ -325,39 +315,31 @@ nav a {
     font-weight: 700;
 }
 
-
-
-@media screen and (max-width:426px) {
+@media screen and (max-width: 426px) {
     .card {
         flex: 0 1 100%;
-        flex: 0 1 calc((100%-10px ) / 2);
+        flex: 0 1 calc((100% - 10px) / 2);
     }
-    .cart, #btnCart{
+    .cart, #btnCart {
         font-size: 0.8rem;
-
     }
-    .card-text{
+    .card-text {
         font-size: 10px;
     }
 }
 
-
-
-
-.kategoria{
+.kategoria {
     background-color: #A59568;
     padding: 10px;
     top: 0;
-    z-index:1000 ;
-
+    z-index: 1000;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: flex-start;
-
-    
 }
-.kat{
+
+.kat {
     background-color: #776a44;
     font-size: 1rem;
     padding: 10px;
@@ -366,54 +348,55 @@ nav a {
     color: white;
     font-weight: 500;
 }
-.kat:hover{
+
+.kat:hover {
     transform: scale(1.05);
     background-color: #4b432b;
 }
 
-
-@media screen and (max-width:915px) {
+@media screen and (max-width: 915px) {
     .kategoria {
         flex: 0 1 calc((100% - 20px) / 3);
     }
 }
 
-@media screen and (max-width:426px) {
+@media screen and (max-width: 426px) {
     .kategoria {
         gap: 10px;
     }
-    .kategoria, .kat{
+    .kategoria, .kat {
         font-size: 0.8rem;
     }
 }
 
+/* --- Order Summary --- */
 .order-summary {
     background-color: #292929;
-    padding: 30px; /* Növeld a paddingot */
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
-    width: 400px; /* Növeljük a szélességet */
-    position: absolute; /* Módosítottuk fixed-ről absolute-ra */
-    top: 50%; /* Középen elhelyezkedik a képernyő vertikális irányban */
-    right: 8%; /* A jobb oldalhoz igazítva */
-    transform: translateY(-50%); /* A konténer középre igazítása függőlegesen */
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    right: 8%;
+    transform: translateY(-50%);
     z-index: 1000;
 }
 
 .order-summary h2 {
-    font-size: 2rem; /* Növeld a cím betűméretét */
-    margin-bottom: 20px; /* Több hely a cím és az összegzés között */
+    font-size: 2rem;
+    margin-bottom: 20px;
     text-align: center;
 }
 
 .summary p {
-    font-size: 18px; /* Növeld a szöveg betűméretét */
-    margin: 10px 0; /* Több tér a bekezdések között */
+    font-size: 18px;
+    margin: 10px;
 }
 
 .total p {
-    font-size: 20px; /* Növeld a teljes összeg betűméretét */
+    font-size: 20px;
     font-weight: bold;
     text-align: center;
 }
@@ -421,11 +404,11 @@ nav a {
 .total {
     margin-top: 15px;
     border-top: 2px solid #A59568;
-    padding-top: 15px; /* Növelheted a paddingot is */
+    padding-top: 15px;
 }
 
 .continue-btn-container {
-    text-align: center; /* Középre igazítja a gombot */
+    text-align: center;
 }
 
 .continue-btn {
@@ -443,14 +426,24 @@ nav a {
     background-color: #776a44;
 }
 
+/* Mobilnézet módosítása */
+@media screen and (max-width: 768px) {
+    .order-summary {
+        position: relative; /* Az order-summary-t áthelyezzük a tartalom alá */
+        top: auto;
+        right: auto;
+        margin-top: 20px;
+        transform: none;
+        width: 100%;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        z-index: 1; /* A termékek alatt legyen */
+    }
 
-
-
-
-
-
-@keyframes loaderAnimation {
-    0% { opacity: 0; transform: translatey(30px); }
-    100% { opacity: 1; transform: translatey(0); }
-  }
-    
+    /* Termékek alatti elhelyezés */
+    .container {
+        position: relative;
+        z-index: 0;
+    }
+}
