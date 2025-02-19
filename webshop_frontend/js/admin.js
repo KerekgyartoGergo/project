@@ -567,7 +567,7 @@ function renderCategories(categories) {
     const tbody = document.querySelector('.categoriesList');
     tbody.innerHTML = '';
 
-    categories.forEach((category, index) => {
+    categories.forEach((category) => {
         const tr = document.createElement('tr');
 
         const tdIndex = document.createElement('td');
@@ -586,7 +586,7 @@ function renderCategories(categories) {
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
         editButton.textContent = 'Szerkesztés';
-        editButton.addEventListener('click', () => openEditModal(category.category_id));
+        editButton.addEventListener('click', () => openEditModal(category.category_id ));
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete');
@@ -647,12 +647,12 @@ function openEditModal(category) {
     document.getElementById('edit_categorie_description').value = category.description || '';
 
     // Kategória ID mentése egy változóba
-    currentCategoryId = category.category_id;
+    currentCategoryId = category.id;
 
     modal4.style.display = "block";
 }
 
-document.getElementById("editForm").addEventListener("submit", async function(event) {
+document.getElementById("editCategorrieForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -680,7 +680,7 @@ document.getElementById("editForm").addEventListener("submit", async function(ev
         if (res.ok) {
             alert('Kategória sikeresen frissítve');
             getCategories(); // Frissítjük a kategóriák listáját
-            modal.style.display = "none";
+            modal4.style.display = "none";
             // További műveletek, például a kategória frissítése a felületen
         } else if (data.error) {
             alert(data.error);
