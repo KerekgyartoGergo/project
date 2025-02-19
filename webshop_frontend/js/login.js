@@ -31,7 +31,12 @@ async function login() {
     console.log(data);
 
     if (res.ok) {
-        alert(data.message);
+        Swal.fire({
+            icon:"success",
+            theme:"dark",
+            text:data.message,
+            timer:500
+        })
         
         // Ellenőrizzük a felhasználó szerepkörét
         if (data.role === 'admin') {
@@ -44,10 +49,26 @@ async function login() {
         for (let i = 0; i < data.errors.length; i++) {
             errorMessage += `${data.errors[i].error}\n`;
         }
-        alert(errorMessage);
+
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: errorMessage,
+            theme:"dark"
+          });
     } else if (data.error) {
-        alert(data.error);
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: data.error,
+            theme:"dark"
+          });
     } else {
         alert('Ismeretlen hiba');
+        Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!"
+          });
     }
 }

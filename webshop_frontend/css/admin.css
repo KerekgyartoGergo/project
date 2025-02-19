@@ -376,7 +376,7 @@ button {
 }
 
 /* A bezáró gomb stílusa */
-.close {
+.close, .close2{
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -384,7 +384,9 @@ button {
 }
 
 .close:hover,
-.close:focus {
+.close:focus,
+.close2:hover,
+.close2:focus{
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -408,6 +410,17 @@ button {
     border-radius: 4px;
     box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
 }
+#addForm input[type="text"],
+#addForm input[type="number"],
+#addForm input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
+}
 
 #editForm button[type="submit"] {
     width: 100%;
@@ -419,7 +432,20 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
+#addForm button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50; /* Zöld háttér */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
 #editForm button[type="submit"]:hover {
+    background-color: #45a049; /* Sötétebb zöld hover esetén */
+}
+#addForm button[type="submit"]:hover {
     background-color: #45a049; /* Sötétebb zöld hover esetén */
 }
