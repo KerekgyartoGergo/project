@@ -6,6 +6,7 @@ const card =document.getElementsByClassName('card')[0];
 
 
 
+window.addEventListener('DOMContentLoaded', getCategories)
 window.addEventListener('DOMContentLoaded', getProducts)
 
 katElements.forEach(kat => {
@@ -121,6 +122,47 @@ function renderProducts(products){
         console.log(cardDiv);
 
         row.append(cardDiv)
+    }
+}
+
+
+//kategoriak
+async function getCategories() {
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/categories', {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        if (!res.ok) {
+            throw new Error('Hiba a kategóriák lekérésekor');
+        }
+
+        const categories = await res.json();
+        console.log(categories);
+        renderCategories(categories);
+    } catch (error) {
+        console.error('Hiba:', error);
+    }
+}
+
+
+function renderCategories(categories) {
+    const container = document.getElementsByClassName('kategoriak')[0];
+    container.innerHTML = '';
+
+    for (const category of categories) {
+        // Kategória div létrehozása
+        const categoryDiv = document.createElement('div');
+        categoryDiv.classList.add('kategoria');
+
+        // Kategória név (linkként megjelenítve)
+        const categoryLink = document.createElement('a');
+        categoryLink.classList.add('kat');
+        categoryLink.textContent = category.name;
+
+        categoryDiv.appendChild(categoryLink);
+        container.appendChild(categoryDiv);
     }
 }
 

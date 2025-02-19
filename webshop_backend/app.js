@@ -314,6 +314,23 @@ app.get('/api/products', authenticateToken, (req, res) => {
     });
 });
 
+// az összes kategoria lekérdezése
+app.get('/api/categories', authenticateToken, (req, res) => {
+    const sql = 'SELECT * FROM categories';
+
+    pool.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Nincs még termék' });
+        }
+
+        return res.status(200).json(result);
+    });
+});
+
 
 // kosár tartalmának lekérdezése és termékek megjelenítése
 app.get('/api/getCartItems', authenticateToken, (req, res) => {
