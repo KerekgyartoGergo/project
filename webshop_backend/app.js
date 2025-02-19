@@ -716,6 +716,33 @@ app.delete('/api/deleteProduct/:id', authenticateToken, (req, res) => {
     });
 });
 
+//kategoria törlése
+app.delete('/api/deleteCategory/:id', authenticateToken, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultságod kategória törlésére' });
+    }
+
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: 'Adja meg a törölni kívánt kategória ID-jét' });
+    }
+
+    const sql = 'DELETE FROM categories WHERE category_id = ?';
+    pool.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'A megadott ID-vel nem található kategória' });
+        }
+
+        return res.status(200).json({ message: 'Kategória sikeresen törölve' });
+    });
+});
+
 
 //egy termék lekérdezése
 app.get('/api/getItem/', authenticateToken, (req, res) => {
@@ -737,6 +764,27 @@ app.get('/api/getItem/', authenticateToken, (req, res) => {
         }
 
         return res.status(200).json(result[0]);
+    });
+});
+
+//egy kategoria lekérdezése
+app.get('/api/category/:categoryId', (req, res) => {
+    const categoryId = req.params.categoryId;
+
+    // SQL lekérdezés a kategória adatainak lekérésére
+    const sql = 'SELECT category_id, name, description FROM categories WHERE category_id = ?';
+
+    pool.query(sql, [categoryId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Kategória nem található' });
+        }
+
+        return res.status(200).json({ category: result[0] });
     });
 });
 
@@ -773,7 +821,29 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
 });
 
 
+// Kategória szerkesztése
+app.post('/api/updateCategory', authenticateToken, (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultságod kategória szerkesztésére' });
+    }
 
+    const { name, description, id } = req.body;
+    
+    if (!id) {
+        return res.status(400).json({ error: 'Kategória ID szükséges' });
+    }
+
+    const sql = 'UPDATE categories SET name = COALESCE(NULLIF(?, ""), name), description = COALESCE(NULLIF(?, ""), description) WHERE category_id = ?';
+
+    pool.query(sql, [name, description, id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        return res.status(200).json({ message: 'Kategória sikeresen frissítve' });
+    });
+});
 
 
 

@@ -586,12 +586,16 @@ function renderCategories(categories) {
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
         editButton.textContent = 'Szerkesztés';
-        editButton.addEventListener('click', () => editCategory(category.category_id));
+        editButton.addEventListener('click', () => openEditModal(category.category_id));
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete');
         deleteButton.textContent = 'Törlés';
-        deleteButton.addEventListener('click', () => deleteCategory(category.category_id));
+        deleteButton.addEventListener('click', async () => {
+            if (confirm('Biztosan törölni szeretnéd ezt a kategóriát?')) {
+                await deleteCategory(category.category_id);
+            }
+        });
 
         tdActions.append(editButton, deleteButton);
         tdActions.appendChild(gombokDiv);
@@ -602,3 +606,89 @@ function renderCategories(categories) {
         tbody.appendChild(tr);
     });
 }
+
+
+async function deleteCategory(categoryId) {
+    try {
+        const res = await fetch(`http://127.0.0.1:3000/api/deleteCategory/${categoryId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if (res.ok) {
+            alert('Kategória sikeresen törölve');
+            getCategories(); // Frissítjük a listát
+        } else {
+            alert(data.error || 'Hiba történt a törlés során');
+        }
+    } catch (error) {
+        console.error('Hálózati hiba:', error);
+        alert('Hálózati hiba történt');
+    }
+}
+
+
+
+
+const modal4 = document.getElementById("editCategorieModal");
+const span4 = document.getElementsByClassName("close4")[0];
+let currentCategoryId = null;
+
+span4.addEventListener('click', () => {
+    modal4.style.display = "none";
+});
+
+function openEditModal(category) {
+    // Betöltjük a kategória adatait a modalba
+    document.getElementById('add_categorie_name').value = category.name;
+    document.getElementById('edit_categorie_description').value = category.description || '';
+
+    // Kategória ID mentése egy változóba
+    currentCategoryId = category.category_id;
+
+    modal4.style.display = "block";
+}
+
+document.getElementById("editForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    formData.append('id', currentCategoryId); // ID hozzáadása automatikusan
+
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/updateCategory', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include' // Hitelesítési adatok automatikus küldése
+        });
+        
+        console.log('HTTP status:', res.status);
+        
+        let data;
+        try {
+            data = await res.json();
+        } catch (err) {
+            console.error('JSON parsing error:', err);
+            data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+        }
+
+        console.log(data);
+
+        if (res.ok) {
+            alert('Kategória sikeresen frissítve');
+            getCategories(); // Frissítjük a kategóriák listáját
+            modal.style.display = "none";
+            // További műveletek, például a kategória frissítése a felületen
+        } else if (data.error) {
+            alert(data.error);
+        } else {
+            alert('Ismeretlen hiba');
+        }
+    } catch (error) {
+        console.error('Hálózati hiba történt:', error);
+        alert('Hálózati hiba történt');
+    }
+});
