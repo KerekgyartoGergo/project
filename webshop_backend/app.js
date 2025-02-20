@@ -332,6 +332,34 @@ app.get('/api/categories', authenticateToken, (req, res) => {
 });
 
 
+//keresés atermékekben
+app.get('/api/search', authenticateToken, (req, res) => {
+
+    const searchTerm = `%${req.body.search  || ''}%`;
+    const sql = `SELECT p.*
+                 FROM products p
+                 JOIN categories c ON p.category_id = c.category_id
+                 WHERE p.name LIKE ?
+                    OR p.description LIKE ?
+                    OR c.name LIKE ?
+                    OR c.description LIKE ?`;
+
+    pool.query(sql, [searchTerm, searchTerm, searchTerm, searchTerm], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Nincs találat a keresésre' });
+        }
+
+        return res.status(200).json(result);
+    });
+});
+
+
+
+
 // kosár tartalmának lekérdezése és termékek megjelenítése
 app.get('/api/getCartItems', authenticateToken, (req, res) => {
     const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
