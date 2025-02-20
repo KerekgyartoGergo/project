@@ -127,7 +127,7 @@ nav a {
     color: white;
 }
 
-.icon-cart, .icon-user, .icon-logout {
+.icon-cart, .icon-user, .icon-logout, .icon-search {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -138,7 +138,8 @@ nav a {
 }
 
 .icon-cart:hover,
-.icon-user:hover {
+.icon-user:hover,
+.icon-search:hover {
     transform: scale(1.1);
     background-color: #464545;
 }
@@ -147,6 +148,57 @@ nav a {
     transform: scale(1.1);
     background-color: rgb(221, 75, 75);
 }
+
+/*search*/
+.search11{
+    width: 350px;
+    background: inherit;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+
+.box{
+    position: relative;
+}
+
+.input {
+    padding: 10px;
+    width: 60px;
+    height: 60px;
+    background: inherit;
+    border: 4px none white;
+    border-radius: 50px;
+    box-sizing: border-box;
+    font-family: Comic Sans MS;
+    font-size: 26px;
+    color: #313131;
+    outline: none;
+    transition: .5s;
+}
+.input:hover{
+    color: white;
+}
+.box:hover input{
+    width: 350px;
+    background: inherit;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+.box i{
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translate(-50%,-50%);
+    font-size: 26px;
+    color: white;
+    transition: .2s;
+}
+.box:hover i{
+    opacity: 0;
+    z-index: -1;
+}
+
 
 /* hamburger menü */
 .hamburger-menu {

@@ -334,26 +334,28 @@ app.get('/api/categories', authenticateToken, (req, res) => {
 
 //keresés atermékekben
 app.get('/api/search', authenticateToken, (req, res) => {
+    const searchQuery = req.query.q;
 
-    const searchTerm = `%${req.body.search  || ''}%`;
-    const sql = `SELECT p.*
-                 FROM products p
-                 JOIN categories c ON p.category_id = c.category_id
-                 WHERE p.name LIKE ?
-                    OR p.description LIKE ?
-                    OR c.name LIKE ?
-                    OR c.description LIKE ?`;
+    if (!searchQuery) {
+        return res.status(400).json({ error: 'Search query is required' });
+    }
 
-    pool.query(sql, [searchTerm, searchTerm, searchTerm, searchTerm], (err, result) => {
+    const sqlQuery = `
+        SELECT p.* 
+        FROM products p
+        JOIN categories c ON p.category_id = c.category_id
+        WHERE p.name LIKE ? 
+           OR p.description LIKE ? 
+           OR c.name LIKE ? 
+           OR c.description LIKE ?
+    `;
+    const values = [`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`];
+
+    pool.query(sqlQuery, values, (err, results) => {
         if (err) {
-            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+            return res.status(500).json({ error: 'Database error' });
         }
-
-        if (result.length === 0) {
-            return res.status(404).json({ error: 'Nincs találat a keresésre' });
-        }
-
-        return res.status(200).json(result);
+        res.json(results);
     });
 });
 

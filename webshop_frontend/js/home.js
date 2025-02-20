@@ -219,3 +219,15 @@ async function logout(){
         alert('Hiba a kijelentkezéskor!')
     }
 }
+
+
+
+//keresés
+let txt= document.getElementById('search1').value
+const txttxt =document.getElementById('search1')
+
+txttxt.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+      console.log(txt);  // A mezőben lévő szöveg kiírása a konzolra
+    }
+  });
