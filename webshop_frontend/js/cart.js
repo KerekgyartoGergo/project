@@ -74,6 +74,7 @@ function renderCartItems(cartItems) {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('card-delete');
         deleteButton.textContent = 'Törlés';
+        deleteButton.addEventListener('click', () => deleteItemFromCart(item.product_id))
 
         cardActions.append(cardPrice, quantityInput, deleteButton);
 
@@ -118,5 +119,54 @@ async function logout(){
         window.location.href='../webshop_frontend/index.html';
     }else{
         alert('Hiba a kijelentkezéskor!')
+    }
+}
+
+
+
+
+
+
+
+
+// termék törlését a kosárból
+async function deleteItemFromCart(productId) {
+    if (confirm('Biztosan törölni akarod a terméket a kosárból?')) {
+        try {
+            const res = await fetch('http://127.0.0.1:3000/api/deleteCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',                },
+                body: JSON.stringify({ product_id: productId, quantity: 1 }), // A törlendő termék és mennyiség
+                credentials: 'include' // Hitelesítési adatok automatikus küldése (ha szükséges)
+            });
+
+            // Válasz adatainak beolvasása JSON formátumban
+            let data;
+            try {
+                data = await res.json();
+            } catch (err) {
+                // Ha a JSON parsing hiba, naplózunk
+                console.error('JSON parsing error:', err);
+                data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+            }
+
+            console.log(data);
+
+            if (res.ok) {
+                alert('Termék sikeresen törölve a kosárból');
+                // Itt hívhatod a kosár frissítésére szolgáló funkciót, ha szükséges
+                getProducts(); // Feltételezem, hogy van egy getProducts függvény a kosár frissítésére
+            } else if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Ismeretlen hiba történt');
+            }
+        } catch (error) {
+            console.error('Hálózati hiba történt:', error);
+            alert('Hálózati hiba történt');
+        }
+    } else {
+        alert('A törlési művelet megszakítva');
     }
 }
