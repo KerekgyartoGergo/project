@@ -9,7 +9,7 @@ const path = require('path');
 const validator = require('validator');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { log } = require('console');
+const { log, error } = require('console');
 const nodemailer = require('nodemailer');
 
 const app = express();
@@ -861,6 +861,7 @@ app.post('/api/updateCategory', authenticateToken, (req, res) => {
     
     if (!id) {
         return res.status(400).json({ error: 'Kategória ID szükséges' });
+        
     }
 
     const sql = 'UPDATE categories SET name = COALESCE(NULLIF(?, ""), name), description = COALESCE(NULLIF(?, ""), description) WHERE category_id = ?';
@@ -871,7 +872,7 @@ app.post('/api/updateCategory', authenticateToken, (req, res) => {
             return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
         }
 
-        return res.status(200).json({ message: 'Kategória sikeresen frissítve' });
+        return res.status(200).json({ message: 'Kategória sikeresen frissítve', category_id: result.insertId });
     });
 });
 
