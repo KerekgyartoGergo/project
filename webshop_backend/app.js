@@ -333,8 +333,9 @@ app.get('/api/categories', authenticateToken, (req, res) => {
 
 
 //keresés atermékekben
-app.get('/api/search', authenticateToken, (req, res) => {
-    const searchQuery = req.query.q;
+app.get('/api/search/:searchQuery', authenticateToken, (req, res) => {
+    const searchQuery = req.params.searchQuery;
+    console.log(searchQuery);
 
     if (!searchQuery) {
         return res.status(400).json({ error: 'Search query is required' });
@@ -353,8 +354,10 @@ app.get('/api/search', authenticateToken, (req, res) => {
 
     pool.query(sqlQuery, values, (err, results) => {
         if (err) {
+            console.log(err);
             return res.status(500).json({ error: 'Database error' });
         }
+        console.log(results);
         res.json(results);
     });
 });
@@ -899,20 +902,23 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
 
 // Kategória szerkesztése
 app.post('/api/updateCategory', authenticateToken, (req, res) => {
+    console.log(req.body);
+    const { cat_id, edit_categorie_name, edit_categorie_description } = req.body; 
+
     if (req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Nincs jogosultságod kategória szerkesztésére' });
     }
 
-    const { name, description, id } = req.body;
+    //const { name, description, id } = req.body;
     
-    if (!id) {
+    if (!cat_id) {
         return res.status(400).json({ error: 'Kategória ID szükséges' });
         
     }
 
     const sql = 'UPDATE categories SET name = COALESCE(NULLIF(?, ""), name), description = COALESCE(NULLIF(?, ""), description) WHERE category_id = ?';
 
-    pool.query(sql, [name, description, id], (err, result) => {
+    pool.query(sql, [edit_categorie_name, edit_categorie_description, cat_id], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
