@@ -657,6 +657,7 @@ function openEditCategoryModal(category) {
     currentCategoryId = category.category_id;
 
     console.log("Mentett category_id:", currentCategoryId);
+    document.getElementById('cat_id').textContent = currentCategoryId;
 
     modal4.style.display = "block";
 }
@@ -666,23 +667,18 @@ document.getElementById("editCategorrieForm").addEventListener("submit", async f
     event.preventDefault();
 
     console.log('Elküldés előtt currentCategoryId:', currentCategoryId);
-
-    const formData = new FormData(event.target);
-    formData.append('id', currentCategoryId); // ID hozzáadása automatikusan
-
-
-        // 🛠️ Ellenőrzés: kilogoljuk az összes adatot
-        for (let [key, value] of formData.entries()) {
-            console.log(`FormData tartalom: ${key} = ${value}`);
-        }
-
-
-
+    const edit_categorie_name = document.getElementById('edit_categorie_name').value;
+    const edit_categorie_description = document.getElementById('edit_categorie_description').value;
+    const cat_id = Number(document.getElementById('cat_id').textContent);
+    console.log(`asd: ${cat_id}`);
 
     try {
         const res = await fetch('http://127.0.0.1:3000/api/updateCategory', {
             method: 'POST',
-            body: formData,
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ cat_id, edit_categorie_name, edit_categorie_description }),
             credentials: 'include' // Hitelesítési adatok automatikus küldése
         });
         
