@@ -849,6 +849,52 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
         return res.status(201).json({ message: 'Termék sikeresen frissítve', product_id: result.insertId });
     });
 });
+ //termék szerkesztése2
+ app.post('/api/updateProductsInfo', authenticateToken, upload.single('pic'), (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultságod termék frissítésére' });
+    }
+
+    const pic = req.file ? req.file.filename : null;
+
+    const { Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, Kivitel, Bluetooth_verzió, Hangszóró_meghajtók, Szín, Csatlakozók, Bluetooth, Frekvenciaátvitel, Érzékenység, id } = req.body;
+
+    if (!id) {
+        return res.status(403).json({ error: 'Adj meg egy id-t' });
+    }
+
+    const sql = `
+        UPDATE products
+        SET 
+            Jelátvitel = COALESCE(NULLIF(?, ""), Jelátvitel),
+            Max. működési idő = COALESCE(NULLIF(?, ""), Max. működési idő),
+            Hordhatósági változatok = COALESCE(NULLIF(?, ""), Hordhatósági változatok),
+            Termék típusa = COALESCE(NULLIF(?, ""), Termék típusa),
+            Kivitel = COALESCE(NULLIF(?, ""), Kivitel),
+            Bluetooth verzió = COALESCE(NULLIF(?, ""), Bluetooth verzió),
+            Hangszóró-meghajtók = COALESCE(NULLIF(?, ""), Hangszóró-meghajtók),
+            Szín = COALESCE(NULLIF(?, ""), Szín),
+            Csatlakozók = COALESCE(NULLIF(?, ""), Csatlakozók),
+            Bluetooth = COALESCE(NULLIF(?, ""), Bluetooth),
+            Frekvenciaátvitel = COALESCE(NULLIF(?, ""), Frekvenciaátvitel),
+            Érzékenység = COALESCE(NULLIF(?, ""), Érzékenység),
+            pic = COALESCE(NULLIF(?, ""), pic)
+        WHERE products.product_id = ?`;
+
+    pool.query(sql, [
+        Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, Kivitel, 
+        Bluetooth_verzió, Hangszóró_meghajtók, Szín, Csatlakozók, Bluetooth, 
+        Frekvenciaátvitel, Érzékenység, pic, id
+    ], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        return res.status(200).json({ message: 'Termék sikeresen frissítve' });
+    });
+});
+
 
 
 // Kategória szerkesztése
