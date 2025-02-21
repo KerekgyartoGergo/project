@@ -112,12 +112,48 @@ function updateCartItem(productId, newQuantity) {
             alert(data.error);
         } else {
             console.log('Mennyiség frissítve:', data);
+
+            getCartTotal(); // Új végösszeg lekérése
+
             window.location.reload();
 
         }
     })
     .catch(error => console.error('Hiba a frissítés közben:', error));
 }
+
+async function deleteItemFromCart(productId) {
+    if (confirm('Biztosan törölni akarod a terméket a kosárból?')) {
+        try {
+            const res = await fetch('http://127.0.0.1:3000/api/deleteCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ product_id: productId }), // A törlendő termék
+                credentials: 'include'
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert('Termék sikeresen törölve a kosárból');
+                // Frissítjük a kosár tartalmát közvetlenül a DOM-ban
+                renderCartItems(data.cartItems);  // Közvetlenül újrarendereljük a kosarat
+                getCartTotal(); // Új végösszeg lekérése
+            } else if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Ismeretlen hiba történt');
+            }
+        } catch (error) {
+            console.error('Hálózati hiba történt:', error);
+        }
+    } else {
+        alert('A törlési művelet megszakítva');
+    }
+}
+
 
 
 
