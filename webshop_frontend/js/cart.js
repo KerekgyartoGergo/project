@@ -115,7 +115,7 @@ function updateCartItem(productId, newQuantity) {
 
             getCartTotal(); // Új végösszeg lekérése
 
-            window.location.reload();
+            getCartItems();
 
         }
     })
