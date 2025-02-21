@@ -353,7 +353,6 @@ app.get('/api/search/:searchQuery', authenticateToken, (req, res) => {
     const values = [`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`];
 
     pool.query(sqlQuery, values, (err, results) => {
-        console.log(sqlQuery, [values]);
         if (err) {
             console.log(err);
             return res.status(500).json({ error: 'Database error' });
