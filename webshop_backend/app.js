@@ -853,12 +853,12 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
     });
 });
  //termék szerkesztése2
- app.post('/api/updateProductsInfo', authenticateToken, upload.single('pic'), (req, res) => {
+ app.post('/api/updateProductsInfo', authenticateToken, (req, res) => {
+
     if (req.user.role !== 'admin') {
-        return res.status(403).json({ error: 'Nincs jogosultságod termék frissítésére' });
+        return res.status(403).json({ error: 'Nincs jogosultságod terméfrissítésére' });
     }
 
-    const pic = req.file ? req.file.filename : null;
 
     const { Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, Kivitel, Bluetooth_verzió, Hangszóró_meghajtók, Szín, Csatlakozók, Bluetooth, Frekvenciaátvitel, Érzékenység, id } = req.body;
 
