@@ -3,6 +3,7 @@ const btnProfile =document.getElementsByClassName('icon-user')[0];
 const btnMenuLogo = document.getElementsByClassName('menu-logo')[0];
 
 window.addEventListener('DOMContentLoaded', getCartItems);
+window.addEventListener('DOMContentLoaded', getCartTotal);
 
 btnLogout.addEventListener('click', logout);
 
@@ -78,6 +79,8 @@ function renderCartItems(cartItems) {
             updateCartItemQuantity(item.cart_item_id, newQuantity); // Frissítjük a kosár mennyiségét
         });
 
+        quantityInput.addEventListener('change', () => updateCartItem(item.product_id, quantityInput.value));
+
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('card-delete');
         deleteButton.textContent = 'Törlés';
@@ -91,6 +94,28 @@ function renderCartItems(cartItems) {
     }
 }
 
+
+
+
+function updateCartItem(productId, newQuantity) {
+    fetch('http://127.0.0.1:3000/api/updateCart/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ product_id: productId, quantity: parseInt(newQuantity, 10) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            console.log('Mennyiség frissítve:', data);
+        }
+    })
+    .catch(error => console.error('Hiba a frissítés közben:', error));
+}
 
 
 
@@ -182,4 +207,54 @@ async function deleteItemFromCart(productId) {
     } else {
         alert('A törlési művelet megszakítva');
     }
+}
+
+
+//végösszeg
+
+async function getCartTotal() {
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/getCartTotal', {
+            method: 'GET',
+            credentials: 'include'  // Az autentikációhoz szükséges sütik (cookies) átadása
+        });
+
+        // Ha a válasz nem OK, hibát dobunk
+        if (!res.ok) {
+            throw new Error('Hiba történt a válasz során');
+        }
+
+        const data = await res.json(); // JSON válasz beolvasása
+        console.log(data);
+
+        // Ha van 'total_price' az API válaszban, akkor frissítjük az összes szekciót
+        if (data.total_price !== undefined) {
+            updateOrderSummary(data.total_price); // Rendeljük hozzá az összeghez
+        } else {
+            console.error(data.error); // Hibák megjelenítése konzolon
+            updateOrderSummary(0); // Ha hiba történik, nulla összeggel folytatjuk
+        }
+    } catch (error) {
+        console.error(error); // Hálózati hibák vagy bármilyen más hiba kezelése
+        updateOrderSummary(0); // Ha hiba történt, nulla összeggel folytatjuk
+    }
+}
+
+// Funkció a rendelési összeg frissítésére
+function updateOrderSummary(cartTotal) {
+    const deliveryCost = 1200; // Szállítási költség
+
+    // Győződjünk meg róla, hogy mindkét érték szám típusú
+    const cartTotalAmount = parseFloat(cartTotal) || 0;  // Kosár összegének biztosítása számként
+    const deliveryCostAmount = parseFloat(deliveryCost) || 0; // Szállítási költség biztosítása számként
+
+    // Kiszámítjuk a végösszeget (kosár összeg + szállítási költség)
+    const totalAmount = cartTotalAmount + deliveryCostAmount;
+
+    // Frissítjük az összeg szövegeit
+    document.getElementById('vegosszeg').textContent = `Összeg: ${cartTotalAmount} Ft`;  // Kosár összegének frissítése
+    document.querySelector('.summary p:nth-child(2)').textContent = `Szállítási költség: ${deliveryCostAmount} Ft`;  // Szállítási költség frissítése
+
+    // A végösszeg most a kosár összeg és a szállítási költség összeadva
+    document.querySelector('.total p').textContent = `Végösszeg: ${totalAmount} Ft`;  // Végösszeg frissítése
 }

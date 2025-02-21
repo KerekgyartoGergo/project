@@ -414,6 +414,44 @@ app.get('/api/getCartItems', authenticateToken, (req, res) => {
     });
 });
 
+//kosár végösszeg
+app.get('/api/getCartTotal', authenticateToken, (req, res) => {
+    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+
+    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (!cartResult || cartResult.length === 0) {
+            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
+        }
+
+        const cart_id = cartResult[0].cart_id;
+
+        const getCartTotalQuery = `
+            SELECT 
+                SUM(ci.quantity * p.price) AS total_price
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.product_id
+            WHERE ci.cart_id = ?`;
+
+        pool.query(getCartTotalQuery, [cart_id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+            }
+
+            if (result.length === 0 || result[0].total_price === null) {
+                return res.status(404).json({ error: 'Nincsenek tételek a kosárban' });
+            }
+
+            return res.status(200).json({ total_price: result[0].total_price });
+        });
+    });
+});
+
 
 
 
@@ -477,6 +515,48 @@ app.post('/api/addCart/', authenticateToken, (req, res) => {
         });
     });
 });
+
+//mennyiség frissítése
+app.put('/api/updateCart/', authenticateToken, (req, res) => {
+    if (req.user.role === 'admin') {
+        return res.status(403).json({ error: 'Adminnak nincs kosara' });
+    }
+
+    const { product_id, quantity } = req.body;
+
+    if (!product_id || !quantity || quantity < 1) {
+        return res.status(400).json({ error: 'Érvényes termékazonosító és mennyiség szükséges' });
+    }
+
+    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (!cartResult.length) {
+            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
+        }
+
+        const cart_id = cartResult[0].cart_id;
+
+        const updateQuantityQuery = 'UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND product_id = ?';
+        pool.query(updateQuantityQuery, [quantity, cart_id, product_id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'A termék nem található a kosárban' });
+            }
+
+            return res.status(200).json({ message: 'Termék mennyisége frissítve', product_id, quantity });
+        });
+    });
+});
+
 
 
 //törlés a kosárból
@@ -854,6 +934,7 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
     });
 });
  //termék szerkesztése2
+<<<<<<< HEAD
  app.post('/api/updateProductsInfo', authenticateToken,  (req, res) => {
     if (req.user.role !== 'admin') {
         console.log(req);
@@ -861,6 +942,14 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
     }
 
     
+=======
+ app.post('/api/updateProductsInfo', authenticateToken, (req, res) => {
+
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultságod terméfrissítésére' });
+    }
+
+>>>>>>> 54651ec40cb9700b82f9fdb4a0565a959d2c4910
 
     const { Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, Kivitel, Bluetooth_verzió, Hangszóró_meghajtók, Szín, Csatlakozók, Bluetooth, Frekvenciaátvitel, Érzékenység, id } = req.body;
 
