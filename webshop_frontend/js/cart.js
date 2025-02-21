@@ -72,6 +72,8 @@ function renderCartItems(cartItems) {
         quantityInput.value = item.quantity;
         quantityInput.min = 1;
 
+        quantityInput.addEventListener('change', () => updateCartItem(item.product_id, quantityInput.value));
+
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('card-delete');
         deleteButton.textContent = 'Törlés';
@@ -85,6 +87,28 @@ function renderCartItems(cartItems) {
     }
 }
 
+
+
+
+function updateCartItem(productId, newQuantity) {
+    fetch('http://127.0.0.1:3000/api/updateCart/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ product_id: productId, quantity: parseInt(newQuantity, 10) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            console.log('Mennyiség frissítve:', data);
+        }
+    })
+    .catch(error => console.error('Hiba a frissítés közben:', error));
+}
 
 
 

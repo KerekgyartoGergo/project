@@ -515,6 +515,48 @@ app.post('/api/addCart/', authenticateToken, (req, res) => {
     });
 });
 
+//mennyiség frissítése
+app.put('/api/updateCart/', authenticateToken, (req, res) => {
+    if (req.user.role === 'admin') {
+        return res.status(403).json({ error: 'Adminnak nincs kosara' });
+    }
+
+    const { product_id, quantity } = req.body;
+
+    if (!product_id || !quantity || quantity < 1) {
+        return res.status(400).json({ error: 'Érvényes termékazonosító és mennyiség szükséges' });
+    }
+
+    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (!cartResult.length) {
+            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
+        }
+
+        const cart_id = cartResult[0].cart_id;
+
+        const updateQuantityQuery = 'UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND product_id = ?';
+        pool.query(updateQuantityQuery, [quantity, cart_id, product_id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'A termék nem található a kosárban' });
+            }
+
+            return res.status(200).json({ message: 'Termék mennyisége frissítve', product_id, quantity });
+        });
+    });
+});
+
+
 
 //törlés a kosárból
 app.post('/api/deleteCart', authenticateToken, (req, res) => {
