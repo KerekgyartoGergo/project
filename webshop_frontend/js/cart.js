@@ -105,6 +105,8 @@ function updateCartItem(productId, newQuantity) {
             alert(data.error);
         } else {
             console.log('Mennyiség frissítve:', data);
+            window.location.reload();
+
         }
     })
     .catch(error => console.error('Hiba a frissítés közben:', error));
@@ -181,6 +183,7 @@ async function deleteItemFromCart(productId) {
             if (res.ok) {
                 alert('Termék sikeresen törölve a kosárból');
                 // Itt hívhatod a kosár frissítésére szolgáló funkciót, ha szükséges
+                window.location.reload();
                 getProducts(); // Feltételezem, hogy van egy getProducts függvény a kosár frissítésére
             } else if (data.error) {
                 alert(data.error);
