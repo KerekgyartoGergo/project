@@ -71,13 +71,20 @@ function renderCartItems(cartItems) {
         quantityInput.classList.add('card-quantity');
         quantityInput.value = item.quantity;
         quantityInput.min = 1;
+        quantityInput.dataset.cartItemId = item.cart_item_id; // Adunk egy adatattribútumot az elemhez
+
+        // Eseménykezelő a mennyiség változására
+        quantityInput.addEventListener('change', (e) => {
+            const newQuantity = e.target.value;
+            updateCartItemQuantity(item.cart_item_id, newQuantity); // Frissítjük a kosár mennyiségét
+        });
 
         quantityInput.addEventListener('change', () => updateCartItem(item.product_id, quantityInput.value));
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('card-delete');
         deleteButton.textContent = 'Törlés';
-        deleteButton.addEventListener('click', () => deleteItemFromCart(item.product_id))
+        deleteButton.addEventListener('click', () => deleteItemFromCart(item.product_id));
 
         cardActions.append(cardPrice, quantityInput, deleteButton);
 
@@ -111,6 +118,12 @@ function updateCartItem(productId, newQuantity) {
     })
     .catch(error => console.error('Hiba a frissítés közben:', error));
 }
+
+
+
+
+
+
 
 
 
