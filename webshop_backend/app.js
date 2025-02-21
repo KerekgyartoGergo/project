@@ -414,6 +414,44 @@ app.get('/api/getCartItems', authenticateToken, (req, res) => {
     });
 });
 
+//kosár végösszeg
+app.get('/api/getCartTotal', authenticateToken, (req, res) => {
+    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+
+    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (!cartResult || cartResult.length === 0) {
+            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
+        }
+
+        const cart_id = cartResult[0].cart_id;
+
+        const getCartTotalQuery = `
+            SELECT 
+                SUM(ci.quantity * p.price) AS total_price
+            FROM cart_items ci
+            JOIN products p ON ci.product_id = p.product_id
+            WHERE ci.cart_id = ?`;
+
+        pool.query(getCartTotalQuery, [cart_id], (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+            }
+
+            if (result.length === 0 || result[0].total_price === null) {
+                return res.status(404).json({ error: 'Nincsenek tételek a kosárban' });
+            }
+
+            return res.status(200).json({ total_price: result[0].total_price });
+        });
+    });
+});
+
 
 
 //kosárhoz ad
