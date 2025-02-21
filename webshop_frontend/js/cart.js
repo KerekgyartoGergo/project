@@ -70,11 +70,18 @@ function renderCartItems(cartItems) {
         quantityInput.classList.add('card-quantity');
         quantityInput.value = item.quantity;
         quantityInput.min = 1;
+        quantityInput.dataset.cartItemId = item.cart_item_id; // Adunk egy adatattribútumot az elemhez
+
+        // Eseménykezelő a mennyiség változására
+        quantityInput.addEventListener('change', (e) => {
+            const newQuantity = e.target.value;
+            updateCartItemQuantity(item.cart_item_id, newQuantity); // Frissítjük a kosár mennyiségét
+        });
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('card-delete');
         deleteButton.textContent = 'Törlés';
-        deleteButton.addEventListener('click', () => deleteItemFromCart(item.product_id))
+        deleteButton.addEventListener('click', () => deleteItemFromCart(item.product_id));
 
         cardActions.append(cardPrice, quantityInput, deleteButton);
 
@@ -83,6 +90,12 @@ function renderCartItems(cartItems) {
         row.appendChild(cardDiv);
     }
 }
+
+
+
+
+
+
 
 
 
