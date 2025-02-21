@@ -670,6 +670,15 @@ document.getElementById("editCategorrieForm").addEventListener("submit", async f
     const formData = new FormData(event.target);
     formData.append('id', currentCategoryId); // ID hozzáadása automatikusan
 
+
+        // 🛠️ Ellenőrzés: kilogoljuk az összes adatot
+        for (let [key, value] of formData.entries()) {
+            console.log(`FormData tartalom: ${key} = ${value}`);
+        }
+
+
+
+
     try {
         const res = await fetch('http://127.0.0.1:3000/api/updateCategory', {
             method: 'POST',

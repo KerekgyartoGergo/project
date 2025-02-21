@@ -853,6 +853,7 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
 
 // Kategória szerkesztése
 app.post('/api/updateCategory', authenticateToken, (req, res) => {
+    console.log(req.body);
     if (req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Nincs jogosultságod kategória szerkesztésére' });
     }
