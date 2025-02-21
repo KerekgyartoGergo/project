@@ -164,7 +164,7 @@ async function deleteItemFromCart(productId) {
             }
         } catch (error) {
             console.error('Hálózati hiba történt:', error);
-            alert('Hálózati hiba történt');
+            //alert('Hálózati hiba történt');
         }
     } else {
         alert('A törlési művelet megszakítva');

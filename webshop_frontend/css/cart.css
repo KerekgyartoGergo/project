@@ -319,6 +319,8 @@ nav a {
     .card {
         flex: 0 1 100%;
         flex: 0 1 calc((100% - 10px) / 2);
+        margin-left: auto;
+        margin-right: auto;
     }
     .cart, #btnCart {
         font-size: 0.8rem;
@@ -370,6 +372,7 @@ nav a {
 }
 
 /* --- Order Summary --- */
+/* --- Order Summary --- */
 .order-summary {
     background-color: #292929;
     padding: 30px;
@@ -377,13 +380,14 @@ nav a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
     width: 400px;
-    position: absolute;
+    position: fixed;
     top: 50%;
-    right: 8%;
+    right: 5%;
     transform: translateY(-50%);
     z-index: 1000;
 }
 
+/* Középre igazított szövegek */
 .order-summary h2 {
     font-size: 2rem;
     margin-bottom: 20px;
@@ -408,6 +412,7 @@ nav a {
 }
 
 .continue-btn-container {
+    padding-top: 1rem;
     text-align: center;
 }
 
@@ -426,24 +431,28 @@ nav a {
     background-color: #776a44;
 }
 
-/* Mobilnézet módosítása */
-@media screen and (max-width: 768px) {
+/* Reszponzív dizájn */
+@media screen and (max-width: 1570px) {
     .order-summary {
-        position: relative; /* Az order-summary-t áthelyezzük a tartalom alá */
+        right: 2%;
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .order-summary {
+        position: relative;
         top: auto;
         right: auto;
         margin-top: 20px;
         transform: none;
-        width: 100%;
+        width: 90%;
         max-width: 400px;
         margin-left: auto;
         margin-right: auto;
-        z-index: 1; /* A termékek alatt legyen */
+        z-index: 1;
     }
-
-    /* Termékek alatti elhelyezés */
-    .container {
-        position: relative;
-        z-index: 0;
+    .card{
+        margin: auto;
     }
 }

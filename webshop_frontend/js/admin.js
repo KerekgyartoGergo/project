@@ -586,7 +586,7 @@ function renderCategories(categories) {
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
         editButton.textContent = 'Szerkesztés';
-        editButton.addEventListener('click', () => openEditModal(category.category_id ));
+        editButton.addEventListener('click', () => openEditCategoryModal(category.category_id ));
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete');
@@ -641,7 +641,7 @@ span4.addEventListener('click', () => {
     modal4.style.display = "none";
 });
 
-function openEditModal(category) {
+function openEditCategoryModal(category) {
     // Betöltjük a kategória adatait a modalba
     document.getElementById('add_categorie_name').value = category.name;
     document.getElementById('edit_categorie_description').value = category.description || '';
