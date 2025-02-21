@@ -586,7 +586,7 @@ function renderCategories(categories) {
         const editButton = document.createElement('button');
         editButton.classList.add('edit');
         editButton.textContent = 'Szerkesztés';
-        editButton.addEventListener('click', () => openEditCategoryModal(category.category_id ));
+        editButton.addEventListener('click', () => openEditCategoryModal(category));
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('delete');
@@ -642,18 +642,30 @@ span4.addEventListener('click', () => {
 });
 
 function openEditCategoryModal(category) {
-    // Betöltjük a kategória adatait a modalba
-    document.getElementById('add_categorie_name').value = category.name;
+    console.log('Megnyitásra küldött kategória:', category, typeof category);
+
+    if (typeof category !== "object" || category === null) {
+        console.error("Hibás vagy hiányzó kategória adatok:", category);
+        alert("Hiba: A kategória adatai nem érhetők el.");
+        return;
+    }
+    console.log(category.name, category.description);
+
+    document.getElementById('edit_categorie_name').value = category.name || '';
     document.getElementById('edit_categorie_description').value = category.description || '';
 
-    // Kategória ID mentése egy változóba
-    currentCategoryId = category.id;
+    currentCategoryId = category.category_id;
+
+    console.log("Mentett category_id:", currentCategoryId);
 
     modal4.style.display = "block";
 }
 
+
 document.getElementById("editCategorrieForm").addEventListener("submit", async function(event) {
     event.preventDefault();
+
+    console.log('Elküldés előtt currentCategoryId:', currentCategoryId);
 
     const formData = new FormData(event.target);
     formData.append('id', currentCategoryId); // ID hozzáadása automatikusan
