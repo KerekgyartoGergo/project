@@ -934,7 +934,7 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
     });
 });
  //termék szerkesztése2
-<<<<<<< HEAD
+ 
  app.post('/api/updateProductsInfo', authenticateToken,  (req, res) => {
     if (req.user.role !== 'admin') {
         console.log(req);
@@ -942,14 +942,8 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
     }
 
     
-=======
- app.post('/api/updateProductsInfo', authenticateToken, (req, res) => {
 
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ error: 'Nincs jogosultságod terméfrissítésére' });
-    }
-
->>>>>>> 54651ec40cb9700b82f9fdb4a0565a959d2c4910
+ 
 
     const { Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, Kivitel, Bluetooth_verzió, Hangszóró_meghajtók, Szín, Csatlakozók, Bluetooth, Frekvenciaátvitel, Érzékenység, id } = req.body;
 
