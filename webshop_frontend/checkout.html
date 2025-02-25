@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheShop Checkout</title>
+    <link rel="shortcut icon" href="images/meme1.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="menu-logo">
+            <span class="menu-logo-arany">Dunder</span>Mifflin
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+        <nav>
+            <a href="#" class="icon-home"><i class="fa-solid fa-bag-shopping"></i></a>
+            <a href="#" class="icon-user"><i class="fa-regular fa-user"></i></a>
+            <a href="#" class="icon-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="row">
+            
+            <!-- Checkout form -->
+            <div class="checkout-form">
+                <h2>Szállítási információk</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Név:</label>
+                        <input type="text" id="name" name="name" placeholder="Írd be a neved" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Irányítószám:</label>
+                        <input type="text" id="address" name="address" placeholder="Írd be az irányítószámod" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Város:</label>
+                        <input type="text" id="address" name="address" placeholder="Írd be a városod nevét" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Utca:</label>
+                        <input type="text" id="address" name="address" placeholder="Írd be az utcád nevét" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="payment">Fizetési mód:</label>
+                        <select id="payment" name="payment">
+                            <option value="cash-on-delivery">Készpénzes fizetés</option>
+                            <option value="credit-card">Hitelkártya</option>
+                            <option value="paypal">PayPal</option>
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telefonszám:</label>
+                        <input type="text" id="phone" name="phone" placeholder="Telefonszám" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Rendelés leadása</button>
+                </form>
+            </div>
+            <!-- Rendelés összegzése -->
+        </div>
+        <div class="order-summary">
+            <h2>Rendelés összegzése</h2>
+            
+            <!-- Termékek listája -->
+            <div class="product-list">
+                <div class="product-item">
+                    <img src="images/jbl1-removebg-preview.png" alt="Termék 1" class="product-image">
+                    <div class="product-info">
+                        <p><strong>JBL Fejes</strong></p>
+                        <p>Ár: 5.000 Ft</p>
+                        <p><strong>Mennyiség:</strong> 2 db</p> <!-- Kosárban lévő mennyiség -->
+                    </div>
+                </div>
+                <div class="product-item">
+                    <img src="images/telefon másolata.png" alt="Termék 2" class="product-image">
+                    <div class="product-info">
+                        <p><strong>Csamcsung</strong></p>
+                        <p>Ár: 5.000 Ft</p>
+                        <p><strong>Mennyiség:</strong> 1 db</p> <!-- Kosárban lévő mennyiség -->
+                    </div>
+                </div>
+            </div>
+            
+        
+            <div class="summary">
+                <p><strong>Összeg:</strong> 10.000 Ft</p>
+                <p><strong>Szállítási költség:</strong> 1.200 Ft</p>
+            </div>
+            <div class="total">
+                <p><strong>Végösszeg:</strong> 11.200 Ft</p>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-column-title">Szolgáltatások</h3>
+                <ul>
+                    <li><a href="#">30 napos termékvisszaköldés</a></li>
+                    <li><a href="#">Garancia és szerviz</a></li>
+                    <li><a href="#">Kiterjesztett garancia</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="footer-column-title">Rendelés és szállítás</h3>
+                <ul>
+                    <li><a href="#">Fizetési módok</a></li>
+                    <li><a href="#">Szállítással kapcsolatos részletek</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="footer-column-title">Ügyfélszolgálat</h3>
+                <ul>
+                    <li><a href="#">Elérhetőségek</a></li>
+                    <li><a href="#">Panaszkezelés</a></li>
+                    <li><a href="#">Gyakran ismételt kérdések</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Minden jog fenntartva.</p>
+        </div>
+    </footer>
+
+    <script src="js/checkout.js"></script>
+</body>
+</html>
