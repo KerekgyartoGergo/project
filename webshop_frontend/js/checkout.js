@@ -5,6 +5,8 @@ const btnCart = document.getElementsByClassName('icon-cart')[0];
 
 
 btnLogout.addEventListener('click', logout);
+window.addEventListener('DOMContentLoaded', getCartItems);
+
 
 
 
