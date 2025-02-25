@@ -59,7 +59,27 @@ nav a {
     margin: 0 auto;
     padding: 10px;
     flex-grow: 1; /* Kitölti a rendelkezésre álló helyet */
-} 
+} .icon-home, .icon-user, .icon-logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: ease 500ms;
+}
+
+.icon-home:hover,
+.icon-user:hover{
+    transform: scale(1.1);
+    background-color: #464545;
+}
+
+.icon-logout:hover {
+    transform: scale(1.1);
+    background-color: rgb(221, 75, 75);
+}
+
 
 .hamburger-menu {
     display: none;
