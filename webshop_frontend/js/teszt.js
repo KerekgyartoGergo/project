@@ -24,38 +24,75 @@ btnMenuLogo.addEventListener('click', ()=>{
     window.location.href='../webshop_frontend/home.html';
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-   
+window.addEventListener('DOMContentLoaded', getProduct)
+
+
+async function getProduct() {
+    // Az URL-ből lekérjük a product_id értékét
     const urlParams = new URLSearchParams(window.location.search);
-    const termek = urlParams.get('termek'); 
+    const id = urlParams.get('product_id');
 
-    
-    const termekAdatok = {
-        'Wireless-Noise-Canceling-Headphones': {
-            name: 'Wireless Noise Canceling Headphones',
-            image: 'images/jbl1-removebg-preview.png',
-            price: '$20,456',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.'
-        }
-    };
-
-    
-    if (termekAdatok[termek]) {
-        const product = termekAdatok[termek];
-
-        
-        document.getElementById('productName').textContent = product.name;
-        document.getElementById('productDescription').textContent = product.description;
-        document.getElementById('productPrice').textContent = product.price;
-        document.getElementById('productImage').src = product.image;
-    } else {
-        
-        document.getElementById('productName').textContent = 'Termék nem található';
-        document.getElementById('productDescription').textContent = 'Sajnáljuk, a keresett termék nem elérhető.';
-        document.getElementById('productPrice').textContent = '';
-        document.getElementById('productImage').style.display = 'none';
+    if (!id) {
+        console.error("Nincs megadva product_id az URL-ben.");
+        return;
     }
-});
+    console.log("Lekért termék ID:", id);
+
+    try {
+        // Módosított végpont és helyes GET kérés használata query paraméterrel
+        const res = await fetch(`http://127.0.0.1:3000/api/getItem?id=${id}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!res.ok) {
+            throw new Error(`Hiba a lekérés során: ${res.status}`);
+        }
+
+        const product = await res.json();
+        console.log("Kapott termék adatok:", product);
+
+        renderProduct(product); // A termék megjelenítésére szolgáló függvény
+    } catch (error) {
+        console.error("Hiba történt:", error);
+    }
+}
+
+function renderProduct(product) {
+    // cím és leírás létrehozása
+    const row = document.getElementsByClassName('proba')[0];
+    row.innerHTML = '';
+
+
+        const cim = document.createElement('h2');
+        cim.textContent= product.name;
+
+        const leiras =document.createElement('p');
+        leiras.classList.add('product-description');
+        leiras.textContent= product.description;
+
+
+        row.append(cim);
+        row.append(leiras)
+    
+
+
+        // kép létrehozása
+        const row2 = document.getElementsByClassName('pic-div')[0];
+        row2.innerHTML = '';
+
+
+        const kep = document.createElement('img');
+        kep.classList.add('large-product-img')
+        kep.src=(`http://127.0.0.1:3000/uploads/${product.pic}`)
+
+
+        row2.append(kep)
+}
+
 
 
 async function logout(){

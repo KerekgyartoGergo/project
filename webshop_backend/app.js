@@ -936,8 +936,8 @@ app.delete('/api/deleteCategory/:id', authenticateToken, (req, res) => {
 
 
 //egy termék lekérdezése
-app.get('/api/getItem/', authenticateToken, (req, res) => {
-    const { id } = req.body;
+app.get('/api/getItem', authenticateToken, (req, res) => {
+    const { id } = req.query; // Módosítás: req.body helyett req.query
 
     if (!id) {
         return res.status(400).json({ error: 'Az ID megadása kötelező' });
@@ -946,7 +946,7 @@ app.get('/api/getItem/', authenticateToken, (req, res) => {
     const sql = 'SELECT * FROM products WHERE product_id = ?';
     pool.query(sql, [id], (err, result) => {
         if (err) {
-            console.error(err);
+            console.error('SQL hiba:', err);
             return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
         }
 
@@ -957,6 +957,7 @@ app.get('/api/getItem/', authenticateToken, (req, res) => {
         return res.status(200).json(result[0]);
     });
 });
+
 
 //egy kategoria lekérdezése
 app.get('/api/category/:categoryId', (req, res) => {
