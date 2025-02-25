@@ -74,7 +74,7 @@ function renderCartItems(cartItems) {
 
         // Termék neve
         const productName = document.createElement('p');
-        productName.innerHTML = `<strong>${item.description}</strong>`;
+        productName.innerHTML = `<strong>${item.product_name}</strong>`;
 
         // Termék ára
         const productPrice = document.createElement('p');

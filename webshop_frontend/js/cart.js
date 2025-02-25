@@ -59,7 +59,7 @@ function renderCartItems(cartItems) {
 
         const cardText = document.createElement('p');
         cardText.classList.add('card-text');
-        cardText.textContent = item.description;
+        cardText.textContent = item.product_name;
 
         cardContent.appendChild(cardText);
 
