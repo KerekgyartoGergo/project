@@ -606,6 +606,34 @@ app.post('/api/deleteCart', authenticateToken, (req, res) => {
 });
 
 
+//rendelés részletek
+app.post('/api/addOrder/', authenticateToken, (req, res) => {
+    if (req.user.role === 'admin') {
+        return res.status(403).json({ error: 'Admin nem adhat le rendelést' });
+    }
+
+    const { tel, iranyitoszam, varos, cim } = req.body;
+
+    if (!tel || !iranyitoszam || !varos || !cim) {
+        return res.status(400).json({ error: 'Minden mezőt ki kell tölteni' });
+    }
+
+    const insertOrderQuery = 'INSERT INTO orders (order_id, user_id, order_date, status, tel, iranyitoszam, varos, cim) VALUES (NULL, ?, current_timestamp(), ?, ?, ?, ?, ?)';
+    
+    pool.query(insertOrderQuery, [req.user.id, 'pending', tel, iranyitoszam, varos, cim], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+        return res.status(201).json({ message: 'Rendelés sikeresen létrehozva', order_id: result.insertId });
+    });
+});
+
+
+
+
+
+
 
 
 
