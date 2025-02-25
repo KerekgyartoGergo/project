@@ -631,6 +631,56 @@ app.post('/api/addOrder/', authenticateToken, (req, res) => {
 
 
 
+app.post('/api/addOrderItems', authenticateToken, (req, res) => {
+    const { order_id } = req.body;
+
+    if (!order_id) {
+        return res.status(400).json({ error: 'Hiányzó order_id' });
+    }
+
+    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+
+    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
+        }
+
+        if (!cartResult.length) {
+            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
+        }
+
+        const cart_id = cartResult[0].cart_id;
+
+        const getCartItemsQuery = 'SELECT product_id, quantity FROM cart_items WHERE cart_id = ?';
+
+        pool.query(getCartItemsQuery, [cart_id], (err, cartItems) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Hiba a kosár lekérdezésekor' });
+            }
+
+            if (!cartItems.length) {
+                return res.status(404).json({ error: 'Nincsenek termékek a kosárban' });
+            }
+
+            const insertOrderItemsQuery = 'INSERT INTO order_items (order_id, product_id, quantity) VALUES ?';
+            const values = cartItems.map(item => [order_id, item.product_id, item.quantity]);
+
+            pool.query(insertOrderItemsQuery, [values], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ error: 'Hiba az order_items beszúrásánál' });
+                }
+
+                return res.status(201).json({ message: 'Termékek hozzáadva a rendeléshez', insertedRows: result.affectedRows });
+            });
+        });
+    });
+});
+
+
+
 
 
 
