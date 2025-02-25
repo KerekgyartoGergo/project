@@ -6,6 +6,7 @@ const btnCart = document.getElementsByClassName('icon-cart')[0];
 
 btnLogout.addEventListener('click', logout);
 window.addEventListener('DOMContentLoaded', getCartItems);
+window.addEventListener('DOMContentLoaded', getCartTotal);
 
 
 
@@ -95,4 +96,54 @@ function renderCartItems(cartItems) {
         // Végül hozzáadjuk a terméket a fő sorhoz
         row.appendChild(productItemDiv);
     }
+}
+
+
+
+
+async function getCartTotal() {
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/getCartTotal', {
+            method: 'GET',
+            credentials: 'include'  // Az autentikációhoz szükséges sütik (cookies) átadása
+        });
+
+        // Ha a válasz nem OK, hibát dobunk
+        if (!res.ok) {
+            throw new Error('Hiba történt a válasz során');
+        }
+
+        const data = await res.json(); // JSON válasz beolvasása
+        console.log(data);
+
+        // Ha van 'total_price' az API válaszban, akkor frissítjük az összes szekciót
+        if (data.total_price !== undefined) {
+            updateOrderSummary(data.total_price); // Rendeljük hozzá az összeghez
+        } else {
+            console.error(data.error); // Hibák megjelenítése konzolon
+            updateOrderSummary(0); // Ha hiba történik, nulla összeggel folytatjuk
+        }
+    } catch (error) {
+        console.error(error); // Hálózati hibák vagy bármilyen más hiba kezelése
+        updateOrderSummary(0); // Ha hiba történt, nulla összeggel folytatjuk
+    }
+}
+
+
+function updateOrderSummary(cartTotal) {
+    const deliveryCost = 1200; // Szállítási költség
+
+    // Győződjünk meg róla, hogy mindkét érték szám típusú
+    const cartTotalAmount = parseFloat(cartTotal) || 0;  // Kosár összegének biztosítása számként
+    const deliveryCostAmount = parseFloat(deliveryCost) || 0; // Szállítási költség biztosítása számként
+
+    // Kiszámítjuk a végösszeget (kosár összeg + szállítási költség)
+    const totalAmount = cartTotalAmount + deliveryCostAmount;
+
+    // Frissítjük az összeg szövegeit
+    document.querySelector('.summary p:nth-child(1)').innerHTML = `<strong>Összeg:</strong> ${cartTotalAmount.toLocaleString()} Ft`;  // Kosár összegének frissítése
+    document.querySelector('.summary p:nth-child(2)').innerHTML = `<strong>Szállítási költség:</strong> ${deliveryCostAmount.toLocaleString()} Ft`;  // Szállítási költség frissítése
+
+    // A végösszeg most a kosár összeg és a szállítási költség összeadva
+    document.querySelector('.total p').innerHTML = `<strong>Végösszeg:</strong> ${totalAmount.toLocaleString()} Ft`;  // Végösszeg frissítése
 }

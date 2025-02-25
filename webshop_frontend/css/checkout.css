@@ -59,7 +59,7 @@ nav a {
     margin: 0 auto;
     padding: 10px;
     flex-grow: 1; /* Kitölti a rendelkezésre álló helyet */
-} .icon-home, .icon-user, .icon-logout {
+} .icon-cart, .icon-user, .icon-logout {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,7 +69,7 @@ nav a {
     transition: ease 500ms;
 }
 
-.icon-home:hover,
+.icon-cart:hover,
 .icon-user:hover{
     transform: scale(1.1);
     background-color: #464545;

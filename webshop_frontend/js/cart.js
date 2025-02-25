@@ -1,6 +1,7 @@
 const btnLogout =document.getElementsByClassName('icon-logout')[0];
 const btnProfile =document.getElementsByClassName('icon-user')[0];
 const btnMenuLogo = document.getElementsByClassName('menu-logo')[0];
+const btnFolytatas = document.getElementsByClassName('continue-btn')[0];
 
 window.addEventListener('DOMContentLoaded', getCartItems);
 window.addEventListener('DOMContentLoaded', getCartTotal);
@@ -11,6 +12,10 @@ btnLogout.addEventListener('click', logout);
 
 btnMenuLogo.addEventListener('click', ()=>{
     window.location.href='../webshop_frontend/home.html';
+});
+
+btnFolytatas.addEventListener('click', ()=>{
+    window.location.href='../webshop_frontend/checkout.html';
 });
 
 btnProfile.addEventListener('click', ()=>{
