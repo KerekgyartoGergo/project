@@ -1,0 +1,294 @@
+/* Alap beállítások */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%; /* Beállítjuk a teljes magasságot */
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #383838;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background-color: #313131;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.menu-logo, .menu-logo-arany {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: Comic Sans MS, Comic Sans, cursive;
+    cursor: pointer;
+}
+
+.menu-logo-arany {
+    color: #A59568;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+    font-size: 2rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+}
+
+/* Main */
+.container {
+    width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 10px;
+    flex-grow: 1; /* Kitölti a rendelkezésre álló helyet */
+} .icon-home, .icon-user, .icon-logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: ease 500ms;
+}
+
+.icon-home:hover,
+.icon-user:hover{
+    transform: scale(1.1);
+    background-color: #464545;
+}
+
+.icon-logout:hover {
+    transform: scale(1.1);
+    background-color: rgb(221, 75, 75);
+}
+
+
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    background-color: #292828;
+}
+
+.hamburger-menu span {
+    display: block;
+    height: 4px;
+    background-color: #A59568;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle:checked~nav {
+    display: flex;
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        background-color: #292929;
+        padding: 10px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        font-size: 1.5rem;
+        display: none;
+    }
+}
+
+/* Order Summary */
+.order-summary {
+    background-color: #292929;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    margin-bottom: 30px;
+}
+
+.order-summary .summary p, .order-summary .total p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Checkout Form */
+.checkout-form {
+    background-color: #292929;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    margin-bottom: 10px;
+}
+
+.checkout-form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #464545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+button.submit-btn {
+    background-color: #A59568;
+    color: white;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.submit-btn:hover {
+    background-color: #776a44;
+}
+
+footer {
+    margin-top: auto; /* Ez biztosítja, hogy a footer az alján helyezkedjen el */
+    background-color: #292929;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 2px;
+}
+
+.footer-column ul li {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.footer-column a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    background-color: #222;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0;
+    position: relative;
+    bottom: -20px;
+    left: 0;
+}
+
+.footer-column-title {
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+.product-list {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.product-image {
+    width: 100px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-info p {
+    margin: 5px 0;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+}
