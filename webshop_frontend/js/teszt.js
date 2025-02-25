@@ -1,10 +1,15 @@
 const btnLogout =document.getElementsByClassName ('icon-logout')[0];
 const btnProfile =document.getElementsByClassName ('icon-user')[0];
 const btnCart =document.getElementsByClassName ('icon-home')[0];
+const btnAddToCart = document.getElementsByClassName('add-to-cart-btn')[0];
 const btnMenuLogo = document.getElementsByClassName('menu-logo')[0];
 
 btnLogout.addEventListener('click', ()=>{
     window.location.href='../webshop_frontend/index.html';
+});
+
+btnAddToCart.addEventListener('click', ()=>{
+    cart.addEventListener('click', () => addToCart(product.product_id, 1));
 });
 
 btnProfile.addEventListener('click', ()=>{
@@ -66,5 +71,37 @@ async function logout(){
         window.location.href='../webshop_frontend/index.html';
     }else{
         alert('Hiba a kijelentkezéskor!')
+    }
+}
+
+//termék kosárhoz adása
+async function addToCart(product_id, quantity = 1) {
+    try {
+        const response = await fetch('http://127.0.0.1:3000/api/addCart/', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ product_id, quantity })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Hiba történt a termék kosárba helyezésekor.');
+        }
+
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: data.message,
+            showConfirmButton: false,
+            timer: 1500,
+            theme: 'dark'
+        });
+    } catch (error) {
+        console.error('Hiba a kosárhoz adás során:', error);
+        alert(error.message);
     }
 }
