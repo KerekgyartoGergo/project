@@ -1,8 +1,10 @@
 const btnLogout = document.getElementsByClassName('icon-logout')[0];
 const btnProfile = document.getElementsByClassName('icon-user')[0];
 const btnCart = document.getElementsByClassName('icon-cart')[0];
+
 const katElements = Array.from(document.getElementsByClassName('kat'));
-const card = document.getElementsByClassName('card')[0];
+
+
 
 
 
@@ -16,9 +18,6 @@ katElements.forEach(kat => {
 });
 
 
-card.addEventListener('click', () => {
-    window.location.href = '../webshop_frontend/teszt.html';
-})
 
 
 btnProfile.addEventListener('click', () => {
@@ -51,25 +50,28 @@ async function getProducts() {
 
 function renderProducts(products) {
     const row = document.getElementsByClassName('row')[0];
-    //console.log(row);
     row.innerHTML = '';
 
     for (const product of products) {
-        //card div létrehozása
+        // card div létrehozása
         const cardDiv = document.createElement('div');
         cardDiv.classList.add('card');
 
-        //fejléc
+        // fejléc
         const cardHeaderDiv = document.createElement('div');
         cardHeaderDiv.classList.add('card-header');
         cardHeaderDiv.textContent = product.name;
 
+        // Kattintás esemény hozzáadása a kártya fejlécéhez
+        
 
-
-
-        //cardbody
+        // card body
         const cardBodyDiv = document.createElement('div');
         cardBodyDiv.classList.add('card-body');
+        cardBodyDiv.addEventListener('click', () => {
+            // Navigálás a teszt.html oldalra a termék id-jával
+            window.location.href = `../webshop_frontend/teszt.html?product_id=${product.product_id}`;
+        });
 
         const cardPic = document.createElement('div');
         cardPic.classList.add('pic-div');
@@ -77,23 +79,16 @@ function renderProducts(products) {
         const cardBodyImg = document.createElement('img');
         cardBodyImg.src = `http://127.0.0.1:3000/uploads/${product.pic}`;
 
-
-
-
         cardPic.append(cardBodyImg);
-        cardBodyDiv.append(cardPic)
+        cardBodyDiv.append(cardPic);
 
-
-
-
-        //cardfooter
+        // card footer
         const cardFooterDiv = document.createElement('div');
         cardFooterDiv.classList.add('card-footer');
 
         const markaDiv = document.createElement('div');
         markaDiv.classList.add('marka');
         markaDiv.textContent = `${product.name}`;
-
 
         const termek_nev = document.createElement('div');
         termek_nev.classList.add('termek-nev');
@@ -103,27 +98,21 @@ function renderProducts(products) {
         price.classList.add('price');
         price.textContent = `${product.price} HUF`;
 
-
         const cart = document.createElement('div');
         cart.classList.add('cart');
         cart.textContent = `kosárhoz ad`;
         cart.addEventListener('click', () => addToCart(product.product_id, 1));
 
-
-
-
-        cardFooterDiv.append(markaDiv)
+        cardFooterDiv.append(markaDiv);
         cardFooterDiv.append(termek_nev);
         cardFooterDiv.append(price);
         cardFooterDiv.append(cart);
 
-
         cardDiv.append(cardHeaderDiv, cardBodyDiv, cardFooterDiv);
-        console.log(cardDiv);
-
-        row.append(cardDiv)
+        row.append(cardDiv);
     }
 }
+
 
 
 //kategoriak
