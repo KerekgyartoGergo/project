@@ -147,3 +147,52 @@ function updateOrderSummary(cartTotal) {
     // A végösszeg most a kosár összeg és a szállítási költség összeadva
     document.querySelector('.total p').innerHTML = `<strong>Végösszeg:</strong> ${totalAmount.toLocaleString()} Ft`;  // Végösszeg frissítése
 }
+
+
+
+//rendelés leadása
+document.getElementById('orderForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Megakadályozza az alapértelmezett form elküldést
+    
+    // Form adatainak lekérése
+    const phone = document.getElementById('phone').value;
+    const iranyitoszam = document.getElementById('iranyitoszam').value;
+    const varos = document.getElementById('varos').value;
+    const cim = document.getElementById('cim').value;
+
+    // Form adatainak validálása
+    if (!phone || !iranyitoszam || !varos || !cim) {
+        alert("Minden mezőt ki kell tölteni");
+        return;
+    }
+
+    // POST kérés küldése a backend API-hoz
+    fetch('http://127.0.0.1:3000/api/addOrderWithItems', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',  // Az autentikációhoz szükséges sütik (cookies) átadása
+
+        body: JSON.stringify({
+            tel: phone,
+            iranyitoszam: iranyitoszam,
+            varos: varos,
+            cim: cim,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            alert('Rendelés sikeresen leadva!');
+            // Opcionálisan átirányíthatjuk a felhasználót a rendelés részletező oldalra
+            // window.location.href = `/order/${data.order_id}`;
+        }
+    })
+    .catch(error => {
+        console.error('Hiba történt a rendelés leadásakor:', error);
+        alert('Hiba történt a rendelés leadásakor');
+    });
+});

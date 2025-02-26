@@ -37,30 +37,23 @@
             <!-- Checkout form -->
             <div class="checkout-form">
                 <h2>Szállítási információk</h2>
-                <form>
+                <form id="orderForm">
                     <div class="form-group">
-                        <label for="name">Név:</label>
-                        <input type="text" id="name" name="name" placeholder="Írd be a neved" required>
+                        <label for="iranyitoszam">Irányítószám:</label>
+                        <input type="text" id="iranyitoszam" name="iranyitoszam" placeholder="Írd be az irányítószámod" required>
                     </div>
                     <div class="form-group">
-                        <label for="address">Irányítószám:</label>
-                        <input type="text" id="address" name="address" placeholder="Írd be az irányítószámod" required>
+                        <label for="varos">Város:</label>
+                        <input type="text" id="varos" name="varos" placeholder="Írd be a városod nevét" required>
                     </div>
                     <div class="form-group">
-                        <label for="address">Város:</label>
-                        <input type="text" id="address" name="address" placeholder="Írd be a városod nevét" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Utca:</label>
-                        <input type="text" id="address" name="address" placeholder="Írd be az utcád nevét" required>
+                        <label for="cim">Utca:</label>
+                        <input type="text" id="cim" name="cim" placeholder="Írd be az utcád nevét" required>
                     </div>
                     <div class="form-group">
                         <label for="payment">Fizetési mód:</label>
                         <select id="payment" name="payment">
                             <option value="cash-on-delivery">Készpénzes fizetés</option>
-                            <option value="credit-card">Hitelkártya</option>
-                            <option value="paypal">PayPal</option>
-                            
                         </select>
                     </div>
                     <div class="form-group">

@@ -663,16 +663,55 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
                         return res.status(500).json({ error: 'Hiba az order_items beszúrásánál' });
                     }
 
-                    return res.status(201).json({ 
-                        message: 'Rendelés sikeresen létrehozva és termékek hozzáadva', 
-                        order_id: order_id, 
-                        insertedRows: result.affectedRows 
+                    // E-mail küldés közvetlenül a Nodemailer-rel
+                    const userEmailQuery = 'SELECT email FROM users WHERE user_id = ?';
+                    pool.query(userEmailQuery, [req.user.id], (err, emailResult) => {
+                        console.log(emailResult);
+                        if (err || !emailResult.length) {
+                            console.error(err);
+                            return res.status(500).json({ error: 'Nem sikerült lekérni a felhasználó e-mail címét' });
+                        }
+
+                        const userEmail = emailResult[0].email;
+                        const subject = 'Rendelés sikeresen leadva';
+                        const text = `Kedves vásárló!,\n\nKöszönjük, hogy nálunk vásárolt! A rendelés részletei:\n\nRendelési azonosító: ${order_id}\nTelefonszám: ${tel}\nCím: ${iranyitoszam}, ${varos}, ${cim}\n\nHamarosan értesítjük a szállítás részleteiről.\n\nÜdvözlettel,\nA The Shop csapata`;
+
+                        // Nodemailer konfiguráció
+                        const transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: 'the.shop.orderinfo@gmail.com',
+                                pass: process.env.EMAIL_PSW,
+                            }
+                        });
+
+                        const mailOptions = {
+                            from: 'the.shop.orderinfo@gmail.com',
+                            to: userEmail,
+                            subject: subject,
+                            text: text
+                        };
+
+                        // E-mail küldése
+                        transporter.sendMail(mailOptions, (err, info) => {
+                            if (err) {
+                                console.error(err);
+                                return res.status(500).json({ error: 'Hiba történt az e-mail küldésekor', details: err.message });
+                            }
+
+                            return res.status(201).json({ 
+                                message: 'Rendelés sikeresen létrehozva, termékek hozzáadva és e-mail elküldve', 
+                                order_id: order_id, 
+                                insertedRows: result.affectedRows 
+                            });
+                        });
                     });
                 });
             });
         });
     });
 });
+
 
 
 
