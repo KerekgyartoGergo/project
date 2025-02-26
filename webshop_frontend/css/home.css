@@ -411,12 +411,18 @@ nav a {
 
 @media screen and (max-width: 768px) {
     .kategoria {
+        display: flex;
         gap: 15px;
+        overflow-x: auto; /* Víszintes görgetés engedélyezése */
+        white-space: nowrap; /* A tartalom ne törjön sorba */
+        padding-bottom: 50px; /* Opcionális: tér hozzáadása a görgetéshez */
+        -webkit-overflow-scrolling: touch; /* Görgetés simítása érintőképernyőkön */
     }
 
     .kategoria a {
         font-size: 0.9rem;
-        padding: 8px 16px;
+        padding: 15px 16px;
+        flex-shrink:0; /* A linkek ne zsugorodjanak össze */
     }
 }
 
