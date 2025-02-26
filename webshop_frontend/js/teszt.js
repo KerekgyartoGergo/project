@@ -8,9 +8,6 @@ btnLogout.addEventListener('click', ()=>{
     window.location.href='../webshop_frontend/index.html';
 });
 
-btnAddToCart.addEventListener('click', ()=>{
-    cart.addEventListener('click', () => addToCart(product.product_id, 1));
-});
 
 btnProfile.addEventListener('click', ()=>{
     window.location.href='../webshop_frontend/profile.html';
@@ -25,6 +22,29 @@ btnMenuLogo.addEventListener('click', ()=>{
 });
 
 window.addEventListener('DOMContentLoaded', getProduct)
+
+
+
+// Termék azonosító kinyerése az URL-ből
+const urlParams = new URLSearchParams(window.location.search);
+const product_id = urlParams.get('product_id');
+
+// Gomb kiválasztása és eseményfigyelő hozzáadása
+document.addEventListener('DOMContentLoaded', () => {
+    const addToCartButton = document.querySelector('.add-to-cart-btn');
+
+    if (addToCartButton) {
+        addToCartButton.addEventListener('click', () => {
+            if (product_id) {
+                addToCart(product_id); // A termék azonosító átadása a függvénynek
+            } else {
+                alert('Hiba: A termék azonosítója nem található.');
+            }
+        });
+    }
+});
+
+
 
 
 async function getProduct() {
