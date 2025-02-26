@@ -1,6 +1,6 @@
 const btnLogout =document.getElementsByClassName ('icon-logout')[0];
 const btnProfile =document.getElementsByClassName ('icon-user')[0];
-const btnCart =document.getElementsByClassName ('icon-home')[0];
+const btnCart =document.getElementsByClassName ('icon-cart')[0];
 const btnAddToCart = document.getElementsByClassName('add-to-cart-btn')[0];
 const btnMenuLogo = document.getElementsByClassName('menu-logo')[0];
 
@@ -26,8 +26,8 @@ window.addEventListener('DOMContentLoaded', getProduct)
 
 
 // Termék azonosító kinyerése az URL-ből
-const urlParams = new URLSearchParams(window.location.search);
-const product_id = urlParams.get('product_id');
+const urlParams2 = new URLSearchParams(window.location.search);
+const product_id2 = urlParams2.get('product_id');
 
 // Gomb kiválasztása és eseményfigyelő hozzáadása
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (addToCartButton) {
         addToCartButton.addEventListener('click', () => {
-            if (product_id) {
-                addToCart(product_id); // A termék azonosító átadása a függvénynek
+            if (product_id2) {
+                addToCart(product_id2); // A termék azonosító átadása a függvénynek
             } else {
                 alert('Hiba: A termék azonosítója nem található.');
             }
