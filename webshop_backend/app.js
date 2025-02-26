@@ -606,8 +606,8 @@ app.post('/api/deleteCart', authenticateToken, (req, res) => {
 });
 
 
-//rendelés részletek
-app.post('/api/addOrder/', authenticateToken, (req, res) => {
+//rendelés leadás
+app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
     if (req.user.role === 'admin') {
         return res.status(403).json({ error: 'Admin nem adhat le rendelést' });
     }
@@ -620,64 +620,60 @@ app.post('/api/addOrder/', authenticateToken, (req, res) => {
 
     const insertOrderQuery = 'INSERT INTO orders (order_id, user_id, order_date, status, tel, iranyitoszam, varos, cim) VALUES (NULL, ?, current_timestamp(), ?, ?, ?, ?, ?)';
     
-    pool.query(insertOrderQuery, [req.user.id, 'pending', tel, iranyitoszam, varos, cim], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
-        }
-        return res.status(201).json({ message: 'Rendelés sikeresen létrehozva', order_id: result.insertId });
-    });
-});
-
-
-
-app.post('/api/addOrderItems', authenticateToken, (req, res) => {
-    const { order_id } = req.body;
-
-    if (!order_id) {
-        return res.status(400).json({ error: 'Hiányzó order_id' });
-    }
-
-    const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
-
-    pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
+    pool.query(insertOrderQuery, [req.user.id, 'pending', tel, iranyitoszam, varos, cim], (err, orderResult) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
         }
 
-        if (!cartResult.length) {
-            return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
-        }
+        const order_id = orderResult.insertId;
 
-        const cart_id = cartResult[0].cart_id;
-
-        const getCartItemsQuery = 'SELECT product_id, quantity FROM cart_items WHERE cart_id = ?';
-
-        pool.query(getCartItemsQuery, [cart_id], (err, cartItems) => {
+        const getCartIdQuery = 'SELECT cart_id FROM carts WHERE user_id = ?';
+        
+        pool.query(getCartIdQuery, [req.user.id], (err, cartResult) => {
             if (err) {
                 console.error(err);
-                return res.status(500).json({ error: 'Hiba a kosár lekérdezésekor' });
+                return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
             }
 
-            if (!cartItems.length) {
-                return res.status(404).json({ error: 'Nincsenek termékek a kosárban' });
+            if (!cartResult.length) {
+                return res.status(404).json({ error: 'Nincs kosár a felhasználóhoz' });
             }
 
-            const insertOrderItemsQuery = 'INSERT INTO order_items (order_id, product_id, quantity) VALUES ?';
-            const values = cartItems.map(item => [order_id, item.product_id, item.quantity]);
+            const cart_id = cartResult[0].cart_id;
 
-            pool.query(insertOrderItemsQuery, [values], (err, result) => {
+            const getCartItemsQuery = 'SELECT product_id, quantity FROM cart_items WHERE cart_id = ?';
+            
+            pool.query(getCartItemsQuery, [cart_id], (err, cartItems) => {
                 if (err) {
                     console.error(err);
-                    return res.status(500).json({ error: 'Hiba az order_items beszúrásánál' });
+                    return res.status(500).json({ error: 'Hiba a kosár lekérdezésekor' });
                 }
 
-                return res.status(201).json({ message: 'Termékek hozzáadva a rendeléshez', insertedRows: result.affectedRows });
+                if (!cartItems.length) {
+                    return res.status(404).json({ error: 'Nincsenek termékek a kosárban' });
+                }
+
+                const insertOrderItemsQuery = 'INSERT INTO order_items (order_id, product_id, quantity) VALUES ?';
+                const values = cartItems.map(item => [order_id, item.product_id, item.quantity]);
+                
+                pool.query(insertOrderItemsQuery, [values], (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: 'Hiba az order_items beszúrásánál' });
+                    }
+
+                    return res.status(201).json({ 
+                        message: 'Rendelés sikeresen létrehozva és termékek hozzáadva', 
+                        order_id: order_id, 
+                        insertedRows: result.affectedRows 
+                    });
+                });
             });
         });
     });
 });
+
 
 
 
