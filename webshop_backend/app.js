@@ -164,6 +164,53 @@ app.post('/api/register', (req, res) => {
 });
 
 
+// a profile name szerkesztése
+app.put('/api/editProfileName', authenticateToken, (req, res) => {
+    const user_id = req.user.id;
+    const name = req.body.name;
+
+    //console.log(user_id, name);
+    const sql = 'UPDATE users SET user_name = COALESCE(NULLIF(?, ""), user_name) WHERE user_id = ?';
+
+    pool.query(sql, [name, user_id], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben' });
+        }
+
+        return res.status(200).json({ message: 'Profil név módosítva' });
+    });
+});
+
+
+// profil jelszó módosítása
+app.put('/api/editProfilePsw', authenticateToken, (req, res) => {
+    const user_id = req.user.id;
+    const psw = req.body.psw;
+    const salt = 10;
+
+    console.log(user_id, psw);
+    if (psw === '' || !validator.isLength(psw, { min: 6 })) {
+        return res.status(400).json({ error: 'A jelszónak min 6 karakterből kell állnia!' });
+    }
+
+    bcrypt.hash(psw, salt, (err, hash) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba a sózáskor!' });
+        }
+
+        const sql = 'UPDATE users SET psw = COALESCE(NULLIF(?, ""), psw) WHERE user_id = ?';
+
+        pool.query(sql, [hash, user_id], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Hiba az SQL-ben' });
+            }
+
+            return res.status(200).json({ message: 'Jelszó módosítva! Most kijelentkeztetlek.' });
+        });
+    });
+});
+
+
 // login
 app.post('/api/login', (req, res) => {
     const { email, psw } = req.body;
