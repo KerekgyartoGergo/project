@@ -1157,6 +1157,48 @@ app.post('/api/updateCategory', authenticateToken, (req, res) => {
 
 
 
+// az összes rendelés lekérdezése
+app.get('/api/orders', authenticateToken, (req, res) => {
+    // Ellenőrizzük, hogy a felhasználó admin-e
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultság a megtekintéshez' });
+    }
+
+    const sql = `
+        SELECT 
+            o.order_id, 
+            u.user_id, 
+            u.user_name, 
+            u.email, 
+            p.product_id, 
+            p.name, 
+            p.stock, 
+            p.pic, 
+            oi.quantity
+        FROM webshop.orders o
+        JOIN webshop.users u ON o.user_id = u.user_id
+        JOIN webshop.order_items oi ON o.order_id = oi.order_id
+        JOIN webshop.products p ON oi.product_id = p.product_id
+    `;
+
+    pool.query(sql, (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Nincs még rendelés' });
+        }
+
+        return res.status(200).json(result);
+    });
+});
+
+
+
+
+
+
 
 
 
