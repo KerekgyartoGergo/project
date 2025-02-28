@@ -151,6 +151,7 @@ function updateOrderSummary(cartTotal) {
 
 
 //rendelés leadása
+// Rendelés leadása
 document.getElementById('orderForm').addEventListener('submit', function(event) {
     event.preventDefault(); // Megakadályozza az alapértelmezett form elküldést
     
@@ -162,7 +163,7 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
 
     // Form adatainak validálása
     if (!phone || !iranyitoszam || !varos || !cim) {
-        alert("Minden mezőt ki kell tölteni");
+        alert("Minden mezőt ki kell tölteni!");
         return;
     }
 
@@ -184,15 +185,20 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
     .then(response => response.json())
     .then(data => {
         if (data.error) {
-            alert(data.error);
+            // Ha nincs elég készlet, akkor a details mezőt használjuk az alerthez
+            if (data.details) {
+                alert(`Nincs elegendő készlet az alábbi termékekből:\n\n${data.details}`);
+            } else {
+                alert(data.error);
+            }
         } else {
-            alert('Rendelés sikeresen leadva!');
+            alert('✅ Rendelés sikeresen leadva!');
             // Opcionálisan átirányíthatjuk a felhasználót a rendelés részletező oldalra
             // window.location.href = `/order/${data.order_id}`;
         }
     })
     .catch(error => {
         console.error('Hiba történt a rendelés leadásakor:', error);
-        alert('Hiba történt a rendelés leadásakor');
+        alert('Hiba történt a rendelés leadásakor!');
     });
 });
