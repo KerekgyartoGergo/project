@@ -681,7 +681,7 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
                             service: 'gmail',
                             auth: {
                                 user: 'the.shop.orderinfo@gmail.com',
-                                pass: process.env.EMAIL_PSW,
+                                pass: process.env.EMAIL_PSW2,
                             }
                         });
 
@@ -689,7 +689,26 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
                             from: 'the.shop.orderinfo@gmail.com',
                             to: userEmail,
                             subject: subject,
-                            text: text
+                            html: `
+                                <p>Kedves vásárló!</p>
+                                <p>Köszönjük, hogy nálunk vásárolt!</p>
+                                <p>A rendelés részletei:</p>
+                                <ul>
+                                    <li><b>Rendelési azonosító:</b> ${order_id}</li>
+                                    <li><b>Telefonszám:</b> ${tel}</li>
+                                    <li><b>Cím:</b> ${iranyitoszam}, ${varos}, ${cim}</li>
+                                </ul>
+                                <img src="cid:logoimage" style="width:200px;" />
+                                <p>Hamarosan értesítjük a szállítás részleteiről.</p>
+                                <p>Üdvözlettel,<br><b>A The Shop csapata</b></p>
+                            `,
+                            attachments: [
+                                {
+                                    filename: '2025-02-04-joker.jpg',  // A fájl neve
+                                    path: './uploads/2025-02-04-joker.jpg',  // A fájl elérési útja a szerveren
+                                    cid: 'logoimage'  // Egyedi Content-ID
+                                }
+                            ]
                         };
 
                         // E-mail küldése
