@@ -1,0 +1,497 @@
+/* alap beállítások */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+:target{
+    scroll-margin-top: 100px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #383838;
+}
+#header{
+    animation: loaderAnimation 1.5s ease-in-out;
+}
+
+
+.footer {
+    background-color: #292929;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%; 
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center; 
+    flex-direction: column; 
+    overflow: hidden;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px; 
+    width: 100%; 
+    padding: 0 20px; 
+    box-sizing: border-box; 
+    flex-wrap: wrap; 
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 2px; 
+}
+
+.footer-column ul li {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.footer-column a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-column a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    background-color: #222;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0;
+    position: relative;
+    bottom: -20px;
+    left: 0;
+}
+
+.footer-column-title {
+    cursor: pointer;
+    margin-bottom: 20px; 
+    text-align: center; 
+}
+
+
+
+
+@media (max-width: 768px) {
+    .footer-column {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .footer-column ul {
+        display: none;
+    }
+    .footer-column ul li {
+        text-align: left;
+    }
+
+    .footer-column.active ul {
+        display: block;
+    }
+    .footer-column-title {
+        text-align: center;
+    }
+    .footer-content{
+        margin: auto;
+    
+    }
+}
+
+
+
+header {
+    background-color: #313131;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    position: sticky;
+    top: 0;
+    z-index:1000 ;
+}
+
+.menu-logo, .menu-logo-arany {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    user-select: none;
+    padding: none;
+    font-family:Comic Sans MS, Comic Sans, cursive;
+    cursor: pointer;
+
+}
+
+.menu-logo-arany {
+    color: #A59568;
+}
+
+
+/* menü alapállapotban */
+nav {
+    display: flex;
+    gap: 1rem;
+    font-size: 2rem;}
+
+nav a {
+    text-decoration: none;
+    color: white;
+}
+
+.icon-cart, .icon-user, .icon-logout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    transition: ease 500ms;
+}
+
+
+
+.icon-cart:hover,
+.icon-user:hover{
+    transform: scale(1.1);
+    background-color: #464545;
+}
+.icon-logout:hover {
+    transform: scale(1.1);
+    background-color: rgb(221, 75, 75);
+
+}
+
+/* hamburger menü */
+.hamburger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    background-color: #292828;
+}
+
+.hamburger-menu span {
+    display: block;
+    height: 4px;
+    background-color: #A59568;
+    border-radius: 2px;
+    width: 100%;
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.menu-toggle:checked~nav {
+    display: flex;
+}
+
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: flex;
+    }
+
+    nav {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        background-color: #292929;
+        padding: 10px;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        font-size: 1.5rem;
+        display: none;
+    }
+}
+
+
+
+.container {
+    width: calc(100% -50px);
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+h1, h2 {
+    text-align: center;
+}
+table {
+    border-radius: 20px;
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    color: white;
+
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    
+}
+th {
+    background-color: #292828;
+}
+button {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+
+}
+.edit {
+    background-color: #4CAF50;
+    color: white;
+}
+.delete {
+    background-color: #f44336;
+    color: white;
+}
+.add, .add2 {
+    display: block;
+    margin: 20px auto;
+    background-color: #008CBA;
+    color: white;
+}
+
+.gombok {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    gap: 15%; 
+}
+
+.productsList img{
+    max-width: 150px;
+}
+
+.productsList {
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+
+
+
+.menu {
+    display: flex;
+    justify-content: center; 
+    gap: 20px; 
+    margin-top: 20px; 
+    margin-bottom: 20px;
+}
+
+.menu a {
+    text-decoration: none; 
+    color: white; 
+    font-size: 1rem;
+    padding: 10px 20px; 
+    border-radius: 30px; 
+    font-weight: 600;
+    background-color: #776a44;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+.menu a:hover {
+    background-color: #4b432b; 
+    transform: scale(1.05); 
+}
+
+
+@media screen and (max-width: 768px) {
+    .menu {
+        gap: 15px; 
+    }
+
+    .menu a {
+        font-size: 0.9rem; 
+        padding: 8px 16px; 
+}
+}
+
+
+@media screen and (max-width:915px) {
+    .menu {
+        flex: 0 1 calc((100% - 20px) / 3);
+    }
+}
+
+@media screen and (max-width:426px) {
+    .menu {
+        gap: 10px;
+    }
+    .menu, .kat{
+        font-size: 0.8rem;
+    }
+}
+
+
+
+
+/* A modal háttér stílusa */
+.modal {
+    display: none; /* Alapértelmezés szerint rejtve */
+    position: fixed; /* Rögzített pozíció */
+    z-index: 1000; /* Legyen minden más elem felett */
+    left: 0;
+    top: 0;
+    width: 100%; /* Teljes szélesség */
+    height: 100%; /* Teljes magasság */
+    overflow: auto; /* Görgetés engedélyezése, ha szükséges */
+    background-color: rgb(0,0,0)!important; /* Fekete háttér */
+    background-color: rgba(0,0,0,0.4)!important; /* Fekete háttér áttetszővé téve */
+    padding-top: 50px; /* Tartalom elhelyezése a tetejétől */
+}
+
+/* A modal tartalom doboza */
+.modal-content {
+    background-color: #383838;
+    margin: 5% auto; /* 5% felülről és középre igazítva */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Szélesség, lehet igazítani */
+    max-width: 500px; /* Maximális szélesség */
+    border-radius: 10px; /* Kerekített sarkok */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Árnyék hozzáadása */
+}
+
+/* A bezáró gomb stílusa */
+.close, .close2, .close3, .close4{
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus,
+.close2:hover,
+.close2:focus,
+.close3:hover,
+.close3:focus,
+.close4:hover,
+.close4:focus{
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* A form elemek stílusa */
+#editForm label {
+    margin-top: 10px;
+    display: block;
+    font-weight: bold;
+}
+
+#editForm input[type="text"],
+#editForm input[type="number"],
+#editForm input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
+}
+#addForm input[type="text"],
+#addForm input[type="number"],
+#addForm input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
+}
+#addCategorrieForm input[type="text"],
+#addCategorrieForm input[type="number"],
+#addCategorrieForm input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
+}
+#editCategorrieForm input[type="text"],
+#editCategorrieForm input[type="number"],
+#editCategorrieForm input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
+}
+
+#editForm button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50; /* Zöld háttér */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#addCategorrieForm button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50; /* Zöld háttér */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#editCategorrieForm button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50; /* Zöld háttér */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#addForm button[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50; /* Zöld háttér */
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#editForm button[type="submit"]:hover {
+    background-color: #45a049; /* Sötétebb zöld hover esetén */
+}
+#addForm button[type="submit"]:hover {
+    background-color: #45a049; /* Sötétebb zöld hover esetén */
+}

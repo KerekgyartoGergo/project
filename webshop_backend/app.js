@@ -1187,6 +1187,7 @@ app.get('/api/orders', authenticateToken, (req, res) => {
             u.user_id, 
             u.user_name, 
             u.email, 
+            o.status,
             p.product_id, 
             p.name, 
             p.stock, 
@@ -1212,6 +1213,44 @@ app.get('/api/orders', authenticateToken, (req, res) => {
 });
 
 
+
+app.put('/api/orders/:orderId', authenticateToken, (req, res) => {
+    const { orderId } = req.params;  // A rendelés azonosítója
+    const { status } = req.body;     // A frissítendő státusz
+
+    // Ellenőrizzük, hogy a felhasználó admin-e
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Nincs jogosultság a rendelés szerkesztéséhez' });
+    }
+
+    // Ellenőrizzük, hogy a státusz megfelelő értékkel rendelkezik
+    const validStatuses = ['pending', 'completed', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+        return res.status(400).json({ error: 'Érvénytelen státusz érték' });
+    }
+
+    // Az SQL lekérdezés a rendelés státuszának frissítésére
+    const sql = `
+        UPDATE webshop.orders
+        SET status = ?
+        WHERE order_id = ?
+    `;
+
+    // Az SQL lekérdezés végrehajtása
+    pool.query(sql, [status, orderId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+        }
+
+        // Ha nincs érintett sor, akkor a rendelés nem létezik
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Rendelés nem található' });
+        }
+
+        // A frissítés sikeres volt
+        return res.status(200).json({ success: true, message: 'Rendelés státusza frissítve' });
+    });
+});
 
 
 

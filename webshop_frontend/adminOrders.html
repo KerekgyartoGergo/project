@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/adminOrders.css">
+</head>
+<body>
+    <header>
+        <div class="menu-logo" title="kezdőlap">
+            <span class="menu-logo-arany">Admin </span>Panel
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+        <nav>
+            <a href="#" class="icon-logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+        </nav>
+    </header>
+
+
+    <div id="editStatusModal" class="modal">
+        <div class="modal-content">
+            <span class="close4">&times;</span>
+            <h2 >kategória szerkesztése</h2>
+            <form id="editCategorrieForm">
+                <label style="display: none;" id="cat_id"></label>
+                <label for="edit_categorie_name">Név:</label><br>
+                <input type="text" id="edit_status" name="status" ><br><br>
+
+                <button type="submit">Frissítés</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="admin-container">
+        <div class="menu">
+            <a href="#users">Felhasználók kezelése</a>
+            <a href="#products">Termékek kezelése</a>
+            <a href="#categories">ketegóriák kezelése</a>
+        </div>
+
+        <main class="content">
+
+            
+
+            <section id="orders" class="admin-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rendelés ID</th>
+                            <th>Felhasználó ID</th>
+                            <th>Felhasználó Név</th>
+                            <th>Email</th>
+                            <th>Termék ID</th>
+                            <th>Termék Név</th>
+                            <th>Raktárkészlet</th>
+                            <th>Kép</th>
+                            <th>Mennyiség</th>
+                            <th>status</th>
+                            <th>Műveletek</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ordersList">
+                        <!-- Rendelések lista dinamikusan töltődik be -->
+                    </tbody>
+                </table>
+            </section>
+
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3 class="footer-column-title">Szolgáltatások</h3>
+                <ul>
+                    <li><a href="link1.html">30 napos termékvisszaköldés</a></li>
+                    <li><a href="link2.html">Garancia és szerviz</a></li>
+                    <li><a href="link3.html">Kiterjesztett garancia</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="footer-column-title">Rendelés és szállítás</h3>
+                <ul>
+                    <li><a href="link4.html">Fizetési módok</a></li>
+                    <li><a href="link5.html">Szállítással kapcsolatos részletek</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="footer-column-title">Ügyfélszolgálat</h3>
+                <ul>
+                    <li><a href="link7.html">Elérhetőségek</a></li>
+                    <li><a href="link8.html">Panaszkezelés</a></li>
+                    <li><a href="link9.html">Gyakran ismételt kérdések</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Minden jog fenntartva.</p>
+        </div>
+    </footer>
+
+    <script src="js/adminOrders.js"></script>
+</body>
+</html>
