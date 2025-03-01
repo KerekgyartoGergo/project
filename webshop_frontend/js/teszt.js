@@ -126,6 +126,14 @@ function renderProduct(product) {
     const productSpecs = document.createElement('div');
     productSpecs.classList.add('product-specs');
 
+    const columns = [document.createElement('div'), document.createElement('div'), document.createElement('div')];
+    columns.forEach((col, index) => {
+        col.classList.add('specs-column');
+        if (index === 2) {
+            col.id = 'specs-column2';
+        }
+    });
+
     const specsData = [
         ['Jelátvitel', product.Jelátvitel],
         ['Max. működési idő', product.Max_működési_idő],
@@ -140,9 +148,6 @@ function renderProduct(product) {
         ['Frekvenciaátvitel', product.Frekvenciaátvitel],
         ['Érzékenység', product.Érzékenység]
     ];
-
-    const columns = [document.createElement('div'), document.createElement('div'), document.createElement('div')];
-    columns.forEach(col => col.classList.add('specs-column'));
 
     specsData.forEach((spec, index) => {
         const [title, value] = spec;

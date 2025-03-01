@@ -259,29 +259,41 @@ function renderProducts(products) {
         imageCell.appendChild(image);
         row.appendChild(imageCell);
 
-        // Szerkesztés és törlés gombok
-        const actionsCell = document.createElement('td');
-        const gombokDiv = document.createElement('div');
-        gombokDiv.classList.add('gombok');
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Szerkesztés';
-        editButton.classList.add('edit');
-        editButton.addEventListener('click', () => {
-            openEditModal(product);
-        });
+// Szerkesztés és törlés gombok
+const actionsCell = document.createElement('td');
+const gombokDiv = document.createElement('div');
+gombokDiv.classList.add('gombok');
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Törlés';
-        deleteButton.classList.add('delete');
-        deleteButton.addEventListener('click', () => deleteItem(product.product_id));
+// Szerkesztés gomb
+const editButton = document.createElement('button');
+editButton.textContent = 'Szerkesztés';
+editButton.classList.add('edit');
+editButton.addEventListener('click', () => {
+    openEditModal(product);
+});
 
-        actionsCell.appendChild(gombokDiv);
-        gombokDiv.appendChild(editButton);
-        gombokDiv.appendChild(deleteButton);
-        row.appendChild(actionsCell);
+// Törlés gomb
+const deleteButton = document.createElement('button');
+deleteButton.textContent = 'Törlés';
+deleteButton.classList.add('delete');
+deleteButton.addEventListener('click', () => deleteItem(product.product_id));
 
-        // Hozzáadjuk a sort a táblázathoz
-        tbody.appendChild(row);
+// Részletek gomb - új gomb hozzáadása
+const detailsButton = document.createElement('button');
+detailsButton.textContent = 'Részletek';
+detailsButton.classList.add('details');
+detailsButton.addEventListener('click', () => {
+    openEditModal2(product); // A megfelelő modalt nyitja meg
+});
+
+actionsCell.appendChild(gombokDiv);
+gombokDiv.appendChild(editButton);
+gombokDiv.appendChild(deleteButton);
+gombokDiv.appendChild(detailsButton);  // Hozzáadjuk az új gombot
+row.appendChild(actionsCell);
+
+// Hozzáadjuk a sort a táblázathoz
+tbody.appendChild(row);
     });
 }
 
@@ -395,6 +407,81 @@ document.getElementById("editForm").addEventListener("submit", async function(ev
         alert('Hálózati hiba történt');
     }
 });
+
+
+
+
+
+//termék szerkesztés 2
+const modal5 = document.getElementById("editModal5");
+const closeBtn = document.querySelector(".close5");
+let currentProductId4 = null;
+
+closeBtn.addEventListener("click", () => {
+    modal5.style.display = "none";
+});
+
+function openEditModal2(product) {
+    document.getElementById('Jelátvitel').value = product.Jelátvitel || '';
+    document.getElementById('Max_működési_idő').value = product.Max_működési_idő || '';
+    document.getElementById('Hordhatósági_változatok').value = product.Hordhatósági_változatok || '';
+    document.getElementById('Termék_típusa').value = product.Termék_típusa || '';
+    document.getElementById('Kivitel').value = product.Kivitel || '';
+    document.getElementById('Bluetooth_verzió').value = product.Bluetooth_verzió || '';
+    document.getElementById('Hangszóró_meghajtók').value = product.Hangszóró_meghajtók || '';
+    document.getElementById('Szín').value = product.Szín || '';
+    document.getElementById('Csatlakozók').value = product.Csatlakozók || '';
+    document.getElementById('Bluetooth').value = product.Bluetooth || '';
+    document.getElementById('Frekvenciaátvitel').value = product.Frekvenciaátvitel || '';
+    document.getElementById('Érzékenység').value = product.Érzékenység || '';
+    
+    currentProductId4 = product.product_id;
+    
+    modal5.style.display = "block";
+}
+
+document.getElementById("editForm2").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    formData.append('id', currentProductId4);
+    
+    try {
+        const res = await fetch('http://127.0.0.1:3000/api/updateItemInfo', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
+        });
+        
+        let data;
+        try {
+            data = await res.json();
+        } catch (err) {
+            console.error('JSON parsing error:', err);
+            data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
+        }
+
+        if (res.ok) {
+            alert('Termék sikeresen frissítve');
+            modal5.style.display = "none";
+            // További műveletek, pl. a felület frissítése
+        } else {
+            alert(data.error || 'Ismeretlen hiba');
+        }
+    } catch (error) {
+        console.error('Hálózati hiba:', error);
+        alert('Hálózati hiba történt');
+    }
+});
+
+
+
+
+
+
+
+
+
 
 //termék hozzáadása
 
