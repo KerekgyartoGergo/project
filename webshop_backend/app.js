@@ -1084,57 +1084,60 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
 });
  //termék szerkesztése2
 
- app.post('/api/updateProductsInfo', authenticateToken, (req, res) => {
-    // Csak adminok frissíthetnek
+ app.post('/api/updateItemInfo', authenticateToken, (req, res) => {
+
     if (req.user.role !== 'admin') {
         return res.status(403).json({ error: 'Nincs jogosultságod termék frissítésére' });
     }
 
-    // Kiválasztjuk az adatokat a kérelemből
-    const { 
-        Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, Kivitel, 
-        Bluetooth_verzió, Hangszóró_meghajtók, Szín, Csatlakozók, Bluetooth, 
-        Frekvenciaátvitel, Érzékenység, product_id 
+    const {
+        Jelátvitel,
+        Max_működési_idő,
+        Hordhatósági_változatok,
+        Termék_típusa,
+        Kivitel,
+        Bluetooth_verzió,
+        Hangszóró_meghajtók,
+        Szín,
+        Csatlakozók,
+        Bluetooth,
+        Frekvenciaátvitel,
+        Érzékenység,
+        id
     } = req.body;
 
-    // Ha nincs meg a termék ID, válaszolunk egy hibával
-    if (!product_id) {
-        return res.status(400).json({ error: 'A termék ID megadása kötelező' });
+    if (!id) {
+        return res.status(403).json({ error: 'Adj meg egy id-t' });
     }
 
-    // SQL lekérdezés a termék frissítéséhez
     const sql = `
-        UPDATE products
-        SET 
-            Jelátvitel = COALESCE(NULLIF(?, ""), Jelátvitel),
-            Max_működési_idő = COALESCE(NULLIF(?, ""), Max_működési_idő),
-            Hordhatósági_változatok = COALESCE(NULLIF(?, ""), Hordhatósági_változatok),
-            Termék_típusa = COALESCE(NULLIF(?, ""), Termék_típusa),
-            Kivitel = COALESCE(NULLIF(?, ""), Kivitel),
-            Bluetooth_verzió = COALESCE(NULLIF(?, ""), Bluetooth_verzió),
-            Hangszóró_meghajtók = COALESCE(NULLIF(?, ""), Hangszóró_meghajtók),
-            Szín = COALESCE(NULLIF(?, ""), Szín),
-            Csatlakozók = COALESCE(NULLIF(?, ""), Csatlakozók),
-            Bluetooth = COALESCE(NULLIF(?, ""), Bluetooth),
-            Frekvenciaátvitel = COALESCE(NULLIF(?, ""), Frekvenciaátvitel),
-            Érzékenység = COALESCE(NULLIF(?, ""), Érzékenység)
-        WHERE product_id = ?;
+      UPDATE products SET 
+        Jelátvitel = COALESCE(NULLIF(?, ""), Jelátvitel), 
+        Max_működési_idő = COALESCE(NULLIF(?, ""), Max_működési_idő), 
+        Hordhatósági_változatok = COALESCE(NULLIF(?, ""), Hordhatósági_változatok), 
+        Termék_típusa = COALESCE(NULLIF(?, ""), Termék_típusa), 
+        Kivitel = COALESCE(NULLIF(?, ""), Kivitel), 
+        Bluetooth_verzió = COALESCE(NULLIF(?, ""), Bluetooth_verzió), 
+        Hangszóró_meghajtók = COALESCE(NULLIF(?, ""), Hangszóró_meghajtók), 
+        Szín = COALESCE(NULLIF(?, ""), Szín), 
+        Csatlakozók = COALESCE(NULLIF(?, ""), Csatlakozók), 
+        Bluetooth = COALESCE(NULLIF(?, ""), Bluetooth), 
+        Frekvenciaátvitel = COALESCE(NULLIF(?, ""), Frekvenciaátvitel), 
+        Érzékenység = COALESCE(NULLIF(?, ""), Érzékenység) 
+      WHERE product_id = ?;
     `;
 
-    // Lekérdezés futtatása a paraméterekkel
     pool.query(sql, [
-        Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, Kivitel, 
-        Bluetooth_verzió, Hangszóró_meghajtók, Szín, Csatlakozók, Bluetooth, 
-        Frekvenciaátvitel, Érzékenység, product_id
+        Jelátvitel, Max_működési_idő, Hordhatósági_változatok, Termék_típusa, 
+        Kivitel, Bluetooth_verzió, Hangszóró_meghajtók, Szín, 
+        Csatlakozók, Bluetooth, Frekvenciaátvitel, Érzékenység, id
     ], (err, result) => {
-        // Hiba esetén
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: 'Hiba az adatbázis frissítésekor', details: err  });
+            return res.status(500).json({ error: 'Hiba az SQL lekérdezésben' });
         }
 
-        // Sikeres frissítés
-        return res.status(200).json({ message: 'A termék sikeresen frissítve' });
+        return res.status(200).json({ message: 'Termék sikeresen frissítve' });
     });
 });
 
