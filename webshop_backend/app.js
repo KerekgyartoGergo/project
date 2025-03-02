@@ -332,7 +332,7 @@ app.get('/api/categories', authenticateToken, (req, res) => {
 });
 
 
-//keresés atermékekben
+//keresés a termékekben
 app.get('/api/search/:searchQuery', authenticateToken, (req, res) => {
     const searchQuery = req.params.searchQuery;
     console.log(searchQuery);
@@ -342,16 +342,35 @@ app.get('/api/search/:searchQuery', authenticateToken, (req, res) => {
     }
 
     const sqlQuery = `
-        SELECT p.* 
-        FROM products p
-        JOIN categories c ON p.category_id = c.category_id
-        WHERE p.name LIKE ? 
-           OR p.description LIKE ? 
-           OR c.name LIKE ? 
-           OR c.description LIKE ?
-    `;
-    const values = [`%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`];
-
+    SELECT p.* 
+    FROM products p
+    JOIN categories c ON p.category_id = c.category_id
+    WHERE p.name LIKE ? 
+       OR p.description LIKE ? 
+       OR p.pic LIKE ?
+       OR p.Jelátvitel LIKE ?
+       OR p.Max_működési_idő LIKE ?
+       OR p.Hordhatósági_változatok LIKE ?
+       OR p.Termék_típusa LIKE ?
+       OR p.Kivitel LIKE ?
+       OR p.Bluetooth_verzió LIKE ?
+       OR p.Hangszóró_meghajtók LIKE ?
+       OR p.Szín LIKE ?
+       OR p.Csatlakozók LIKE ?
+       OR p.Bluetooth LIKE ?
+       OR p.Frekvenciaátvitel LIKE ?
+       OR p.Érzékenység LIKE ?
+       OR c.name LIKE ? 
+       OR c.description LIKE ?
+       `;
+       const values = [
+        `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, 
+        `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, 
+        `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, 
+        `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, `%${searchQuery}%`, 
+        `%${searchQuery}%`, `%${searchQuery}%`
+    ];
+    
     pool.query(sqlQuery, values, (err, results) => {
         if (err) {
             console.log(err);
@@ -747,6 +766,7 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
     });
 });
 
+//felhasználó rendelései
 app.get('/api/my-orders', authenticateToken, (req, res) => {
     const userId = req.user.id; // Bejelentkezett felhasználó azonosítója
 
@@ -777,6 +797,8 @@ app.get('/api/my-orders', authenticateToken, (req, res) => {
     });
 });
 
+
+//felhasználó rendelései végösszeg
 
 app.get('/api/getOrderTotal', authenticateToken, (req, res) => {
     const orderId = req.query.order_id; // A rendelés ID a query paraméterek között érkezik
