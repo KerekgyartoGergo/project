@@ -247,3 +247,120 @@ main {
         font-weight: 600;
     }
 }
+
+
+
+
+
+
+/* Rendelések kártyája */
+.order-card {
+    background-color: #313131;
+    width: 1000px;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    color: white;
+    margin-bottom: 30px;
+}
+
+/* Rendelés adatainak megjelenítése */
+.order-card .order-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+/* Termékek táblázat stílusa */
+.order-card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-card th, .order-card td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #666;
+}
+
+.order-card th {
+    background-color: #444;
+    font-size: 1.1rem;
+}
+
+.order-card td {
+    background-color: #2e2e2e;
+}
+
+.order-card img {
+    width: 50px;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Státusz módosító legördülő menü */
+.select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.select select {
+    background-color: #444;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: ease 300ms;
+}
+
+.select select:hover {
+    background-color: #666;
+}
+
+/* Hover effektusok a legördülő menüön */
+.select select:focus {
+    outline: none;
+    border-color: #a59568;
+}
+
+/* Kártyán található mentés gomb stílusa */
+.card .mentes {
+    background-color: #a59568;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: ease 500ms;
+}
+
+.card .mentes:hover {
+    transform: scale(1.05);
+}
+
+/* Gombok általános stílusa */
+button {
+    font-size: 1rem;
+    color: white;
+    background-color: #a59568;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: ease 500ms;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
