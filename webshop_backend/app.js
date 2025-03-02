@@ -747,7 +747,34 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
     });
 });
 
+app.get('/api/my-orders', authenticateToken, (req, res) => {
+    const userId = req.user.id; // Bejelentkezett felhasználó azonosítója
 
+    const sql = `
+        SELECT 
+            o.order_id, 
+            o.status,
+            p.name, 
+            p.pic, 
+            oi.quantity
+        FROM webshop.orders o
+        JOIN webshop.order_items oi ON o.order_id = oi.order_id
+        JOIN webshop.products p ON oi.product_id = p.product_id
+        WHERE o.user_id = ?
+    `;
+
+    pool.query(sql, [userId], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Nincsenek rendeléseid' });
+        }
+
+        return res.status(200).json(result);
+    });
+});
 
 
 
@@ -1254,6 +1281,9 @@ app.put('/api/orders/:orderId', authenticateToken, (req, res) => {
         return res.status(200).json({ success: true, message: 'Rendelés státusza frissítve' });
     });
 });
+
+
+
 
 
 

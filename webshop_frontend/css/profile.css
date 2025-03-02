@@ -71,7 +71,7 @@ nav a {
     color: white;
 }
 
-.icon-home,
+.icon-cart,
 .icon-logout {
     display: flex;
     justify-content: center;
@@ -98,7 +98,7 @@ nav a {
 }
 
 .icon-user:hover,
-.icon-home:hover {
+.icon-cart:hover {
     transform: scale(1.1);
     background-color: #464545;
 }
