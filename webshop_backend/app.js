@@ -51,10 +51,12 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: function(req, file, cb) {
-        const now = new Date().toISOString().split('T')[0];
-        cb(null, `${now}-${file.originalname}`);
+        const now = new Date();
+        const dateString = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}-${now.getHours().toString().padStart(2, '0')}-${now.getMinutes().toString().padStart(2, '0')}-${now.getSeconds().toString().padStart(2, '0')}`;
+        cb(null, `${dateString}-${file.originalname}`);
     }
 });
+
 const upload = multer({
     storage: storage,
     limits: { fileSize: 10 * 1024 * 1024 },
@@ -624,7 +626,6 @@ app.post('/api/deleteCart', authenticateToken, (req, res) => {
     });
 });
 
-//rendelés leadása
 app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
     if (req.user.role === 'admin') {
         return res.status(403).json({ error: 'Admin nem adhat le rendelést' });
@@ -637,7 +638,7 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
     }
 
     const getCartItemsQuery = `
-        SELECT ci.product_id, ci.quantity, p.stock, p.name 
+        SELECT ci.product_id, ci.quantity, p.stock, p.name ,p.pic, p.price
         FROM cart_items ci 
         JOIN products p ON ci.product_id = p.product_id 
         JOIN carts c ON ci.cart_id = c.cart_id 
@@ -648,12 +649,14 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
             console.error(err);
             return res.status(500).json({ error: 'Hiba a kosár lekérdezésekor' });
         }
-
+        
         if (!cartItems.length) {
             return res.status(404).json({ error: 'Nincsenek termékek a kosárban' });
         }
-
+        
         // Ellenőrizzük, hogy minden termékből van-e elég készlet
+        
+        console.log("asdasd",cartItems);
         let stockErrors = [];
         cartItems.forEach(item => {
             if (item.quantity > item.stock) {
@@ -722,7 +725,25 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
 
                     const userEmail = emailResult[0].email;
                     const subject = 'Rendelés sikeresen leadva';
-                    const text = `Kedves vásárló!\n\nKöszönjük, hogy nálunk vásárolt! A rendelés részletei:\n\nRendelési azonosító: ${order_id}\nTelefonszám: ${tel}\nCím: ${iranyitoszam}, ${varos}, ${cim}\n\nÜdvözlettel,\nA The Shop csapata`;
+                    let productListHTML = cartItems.map((item, index) => {
+                        const cid = `productImage${index}`;
+                        return `
+                            <li>
+                                <b>${item.name}</b><br>
+                                Ár: ${item.price} Ft<br>
+                                Mennyiség: ${item.quantity}<br>
+                                <img src="cid:${cid}" alt="${item.name}" width="100px" /><br>
+                            </li>
+                        `;
+                    }).join('');
+
+                    const text = `Kedves vásárló!\n\nKöszönjük, hogy nálunk vásárolt! A rendelés részletei:\n\nRendelési azonosító: ${order_id}\nTelefonszám: ${tel}\nCím: ${iranyitoszam}, ${varos}, ${cim}\n\nTermékek:\n${productListHTML}\n\nÜdvözlettel,\nA The Shop csapata`;
+
+                    const attachments = cartItems.map((item, index) => ({
+                        filename: `${item.name}.jpg`,  // A fájl neve
+                        path: `./uploads/${item.pic}`,  // A fájl elérési útja a szerveren
+                        cid: `productImage${index}`  // Egyedi Content-ID
+                    }));
 
                     const transporter = nodemailer.createTransport({
                         service: 'gmail',
@@ -744,8 +765,13 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
                                    <li><b>Telefonszám:</b> ${tel}</li>
                                    <li><b>Cím:</b> ${iranyitoszam}, ${varos}, ${cim}</li>
                                </ul>
+                               <p><b>Termékek:</b></p>
+                               <ul>
+                                   ${productListHTML}
+                               </ul>
                                <p>Hamarosan értesítjük a szállítás részleteiről.</p>
                                <p>Üdvözlettel,<br><b>A The Shop csapata</b></p>`,
+                        attachments: attachments,
                     };
 
                     transporter.sendMail(mailOptions, (err) => {
@@ -765,6 +791,9 @@ app.post('/api/addOrderWithItems', authenticateToken, (req, res) => {
         });
     });
 });
+
+
+
 
 //felhasználó rendelései
 app.get('/api/my-orders', authenticateToken, (req, res) => {
@@ -1331,8 +1360,47 @@ app.put('/api/orders/:orderId', authenticateToken, (req, res) => {
             return res.status(404).json({ error: 'Rendelés nem található' });
         }
 
-        // A frissítés sikeres volt
-        return res.status(200).json({ success: true, message: 'Rendelés státusza frissítve' });
+        // E-mail küldés a felhasználónak a státusz frissítéséről
+        const userEmailQuery = 'SELECT email FROM users WHERE user_id = (SELECT user_id FROM webshop.orders WHERE order_id = ?)';
+        pool.query(userEmailQuery, [orderId], (err, emailResult) => {
+            if (err || !emailResult.length) {
+                console.error(err);
+                return res.status(500).json({ error: 'Nem sikerült lekérni a felhasználó e-mail címét' });
+            }
+
+            const userEmail = emailResult[0].email;
+            const subject = 'Rendelés státusz frissítve';
+            const text = `Kedves vásárló!\n\nA rendelésed státusza frissült: ${status}.\n\nÜdvözlettel,\nA The Shop csapata`;
+
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'the.shop.orderinfo@gmail.com',
+                    pass: process.env.EMAIL_PSW2,
+                }
+            });
+
+            const mailOptions = {
+                from: 'the.shop.orderinfo@gmail.com',
+                to: userEmail,
+                subject: subject,
+                html: `<p>Kedves vásárló!</p>
+                       <p>A rendelésed státusza frissült: <b>${status}</b>.</p>
+                       <p>Üdvözlettel,<br><b>A The Shop csapata</b></p>`
+            };
+
+            transporter.sendMail(mailOptions, (err) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ error: 'Hiba történt az e-mail küldésekor' });
+                }
+
+                return res.status(200).json({ 
+                    success: true, 
+                    message: 'Rendelés státusza frissítve és e-mail elküldve!' 
+                });
+            });
+        });
     });
 });
 

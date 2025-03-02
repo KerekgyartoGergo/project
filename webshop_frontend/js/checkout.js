@@ -194,7 +194,7 @@ document.getElementById('orderForm').addEventListener('submit', function(event) 
         } else {
             alert('✅ Rendelés sikeresen leadva!');
             // Opcionálisan átirányíthatjuk a felhasználót a rendelés részletező oldalra
-            // window.location.href = `/order/${data.order_id}`;
+             window.location.href = '../webshop_frontend/home.html';
         }
     })
     .catch(error => {
