@@ -756,6 +756,7 @@ app.get('/api/my-orders', authenticateToken, (req, res) => {
             o.status,
             p.name, 
             p.pic, 
+            p.price,
             oi.quantity
         FROM webshop.orders o
         JOIN webshop.order_items oi ON o.order_id = oi.order_id
@@ -775,6 +776,37 @@ app.get('/api/my-orders', authenticateToken, (req, res) => {
         return res.status(200).json(result);
     });
 });
+
+
+app.get('/api/getOrderTotal', authenticateToken, (req, res) => {
+    const orderId = req.query.order_id; // A rendelés ID a query paraméterek között érkezik
+
+    if (!orderId) {
+        return res.status(400).json({ error: 'Nincs megadva rendelés azonosító' });
+    }
+
+    const getOrderTotalQuery = `
+        SELECT 
+            SUM(oi.quantity * p.price) AS total_price
+        FROM order_items oi
+        JOIN products p ON oi.product_id = p.product_id
+        WHERE oi.order_id = ?`;
+
+    pool.query(getOrderTotalQuery, [orderId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Hiba az SQL-ben', err });
+        }
+
+        if (result.length === 0 || result[0].total_price === null) {
+            return res.status(404).json({ error: 'Nincsenek tételek a rendelésben' });
+        }
+
+        return res.status(200).json({ total_price: result[0].total_price });
+    });
+});
+
+
 
 
 

@@ -61,6 +61,7 @@ function renderOrders(orders) {
 
     const groupedOrders = {};
 
+    // Csoportosítjuk a rendeléseket rendelés ID alapján
     orders.forEach(order => {
         if (!groupedOrders[order.order_id]) {
             groupedOrders[order.order_id] = {
@@ -74,17 +75,28 @@ function renderOrders(orders) {
         groupedOrders[order.order_id].products.push(order);
     });
 
+    // Rendelésenként új kártyák létrehozása
     Object.entries(groupedOrders).forEach(([orderId, orderData]) => {
         // Kártya létrehozása
         const card = document.createElement('div');
         card.classList.add('order-card');
 
-        // Fejléc a rendelés adataival
+        // Fejléc a rendelés adataival (Rendelés ID és Státusz)
         const orderHeader = document.createElement('div');
         orderHeader.classList.add('order-header');
         orderHeader.innerHTML = `
-            <span>Rendelés ID: ${orderId}</span>
-            <span>Felhasználó: ${orderData.user_name}</span>
+            <span>Rendelés azonosító: ${orderId}</span>
+            <span>
+              Státusz: ${
+                orderData.status === "pending"
+                  ? "Függőben"
+                  : orderData.status === "cancelled"
+                  ? "Megszakítva"
+                  : orderData.status === "completed"
+                  ? "Kész"
+                  : orderData.status.charAt(0).toUpperCase() + orderData.status.slice(1)
+              }
+            </span>        
         `;
         card.appendChild(orderHeader);
 
@@ -93,11 +105,10 @@ function renderOrders(orders) {
         productTable.innerHTML = `
             <thead>
                 <tr>
-                    <th>Termék ID</th>
                     <th>Termék Név</th>
-                    <th>Raktárkészlet</th>
                     <th>Kép</th>
                     <th>Mennyiség</th>
+                    <th>Ár</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,57 +120,44 @@ function renderOrders(orders) {
         orderData.products.forEach(product => {
             const productRow = document.createElement('tr');
             productRow.innerHTML = `
-                <td>${product.product_id}</td>
                 <td>${product.name}</td>
-                <td>${product.stock}</td>
                 <td><img src="http://127.0.0.1:3000/uploads/${product.pic}" alt="${product.name}" width="50"></td>
                 <td>${product.quantity}</td>
+                <td>${product.price} Ft</td>
             `;
             productTableBody.appendChild(productRow);
         });
 
         card.appendChild(productTable);
 
-        // Státusz módosító legördülő menü
-        const actionsCell = document.createElement('div');
-        actionsCell.classList.add('select');
-        actionsCell.innerHTML = `
-            <select>
-                <option value="pending" ${orderData.status === 'pending' ? 'selected' : ''}>Pending</option>
-                <option value="completed" ${orderData.status === 'completed' ? 'selected' : ''}>Completed</option>
-                <option value="cancelled" ${orderData.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
-            </select>
-        `;
-        
-        // Event listener a státusz frissítésére
-        const statusSelect = actionsCell.querySelector('select');
-        statusSelect.addEventListener('change', () => {
-            const newStatus = statusSelect.value;
-            fetch(`http://127.0.0.1:3000/api/orders/${orderId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ status: newStatus })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('A rendelés státusza sikeresen frissítve!');
-                    getOrders(); // Újra betöltjük a rendeléseket
-                } else {
-                    alert('Hiba a státusz frissítése közben');
-                }
-            })
-            .catch(error => {
-                console.error('Hiba történt:', error);
-                alert('Hiba történt a rendelés frissítése közben');
-            });
-        });
+        // Kérjük le a rendelés végösszegét az API-ból
 
-        card.appendChild(actionsCell);
+fetch(`http://127.0.0.1:3000/api/getOrderTotal?order_id=${orderId}`, {
+    method: 'GET',
+    credentials: 'include'
+})
+    .then(response => response.json())
+    .then(data => {
+        if (data.total_price) {
+            const totalCell = document.createElement('div');
+            totalCell.classList.add('order-total');
+            totalCell.innerHTML = `
+                <span>Végösszeg: ${data.total_price} Ft</span>
+            `;
+            card.appendChild(totalCell);
+        }
+    })
+    .catch(error => {
+        console.error("Hiba a végösszeg lekérésekor:", error);
+        const totalCell = document.createElement('div');
+        totalCell.classList.add('order-total');
+        totalCell.innerHTML = `
+            <span>Végösszeg: Hiba történt</span>
+        `;
+        card.appendChild(totalCell);
+    });
 
         // A kártya hozzáadása a fő listához
         tbody.appendChild(card);
     });
 }
-
