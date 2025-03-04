@@ -152,7 +152,7 @@ nav a {
     color: white;
 }
 
-.icon-cart, .icon-user, .icon-logout {
+.icon-logout {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -164,11 +164,7 @@ nav a {
 
 
 
-.icon-cart:hover,
-.icon-user:hover{
-    transform: scale(1.1);
-    background-color: #464545;
-}
+
 .icon-logout:hover {
     transform: scale(1.1);
     background-color: rgb(221, 75, 75);
@@ -223,14 +219,7 @@ nav a {
 
 
 
-.container {
-    width: calc(100% -50px);
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-}
+
 h1, h2 {
     text-align: center;
 }
@@ -250,101 +239,6 @@ th, td {
 }
 th {
     background-color: #292828;
-}
-button {
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-
-}
-.edit {
-    background-color: #4CAF50;
-    color: white;
-}
-.delete {
-    background-color: #f44336;
-    color: white;
-}
-.add, .add2 {
-    display: block;
-    margin: 20px auto;
-    background-color: #008CBA;
-    color: white;
-}
-
-.gombok {
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    gap: 15%; 
-}
-
-
-
-
-
-
-
-
-td {
-    position: relative;
-    padding: 8px;
-  }
-  
-  .gombok {
-    display: flex;
-    flex-wrap: wrap; /* Ha nincs elég hely, tördelje a gombokat */
-    justify-content: center;
-    gap: 5px;
-  }
-  
-  .gombok button {
-    padding: 6px 12px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    white-space: nowrap; /* Ne törjön sort a szöveg */
-  }
-  
-
-  .details{
-    background-color: #008CBA;
-  }
-  
-  /* Ha a td túl keskeny, a gombok mérete csökken */
-  @media (max-width: 600px) {
-    .gombok {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .gombok button {
-      width: 100%;
-      font-size: 12px;
-      padding: 4px 8px;
-    }
-  }
-  
-
-
-
-
-
-
-
-
-
-.productsList img{
-    max-width: 150px;
-}
-
-.productsList {
-    text-align: center;
-    vertical-align: middle;
-
 }
 
 
@@ -433,7 +327,7 @@ td {
 }
 
 /* A bezáró gomb stílusa */
-.close, .close2, .close3, .close4 .close5{
+.close, .close2, .close3, .close4{
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -447,139 +341,55 @@ td {
 .close3:hover,
 .close3:focus,
 .close4:hover,
-.close5:hover,
-.close4:focus,
-.close5:focus{
+.close4:focus{
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
 
-/* A form elemek stílusa */
-#editForm label {
-    margin-top: 10px;
-    display: block;
-    font-weight: bold;
-}
-#editForm2 label {
-    margin-top: 10px;
-    display: block;
-    font-weight: bold;
-}
 
-#editForm input[type="text"],
-#editForm input[type="number"],
-#editForm input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
-}
-#editForm2 input[type="text"],
-#editForm2 input[type="number"],
-#editForm2 input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
-}
-#addForm input[type="text"],
-#addForm input[type="number"],
-#addForm input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
-}
-#addCategorrieForm input[type="text"],
-#addCategorrieForm input[type="number"],
-#addCategorrieForm input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
-}
-#editCategorrieForm input[type="text"],
-#editCategorrieForm input[type="number"],
-#editCategorrieForm input[type="file"] {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; /* A padding és a border beleszámít a szélességbe */
-}
 
-#editForm button[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50; /* Zöld háttér */
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#editForm2 button[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50; /* Zöld háttér */
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#addCategorrieForm button[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50; /* Zöld háttér */
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#editCategorrieForm button[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50; /* Zöld háttér */
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#addForm button[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50; /* Zöld háttér */
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
-#editForm button[type="submit"]:hover {
-    background-color: #45a049; /* Sötétebb zöld hover esetén */
-}
-#editForm2 button[type="submit"]:hover {
-    background-color: #45a049; /* Sötétebb zöld hover esetén */
-}
-#addForm button[type="submit"]:hover {
-    background-color: #45a049; /* Sötétebb zöld hover esetén */
-}
+
+select {
+    /* Reset Select */
+    appearance: none;
+    outline: 10px red;
+    border: 0;
+    box-shadow: none;
+    /* Personalize */
+    flex: 1;
+    padding: 0 1em;
+    color: #fff;
+    background-color: #292929;
+    background-image: none;
+    cursor: pointer;
+  }
+  /* Remove IE arrow */
+  select::-ms-expand {
+    display: none;
+  }
+  /* Custom Select wrapper */
+  .select {
+    position: relative;
+    display: flex;
+    width: 10em;
+    height: 3em;
+    border-radius: .25em;
+    overflow: hidden;
+  }
+  /* Arrow */
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #34495e;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+  /* Transition */
+  .select:hover::after {
+    color: #f39c12;
+  }

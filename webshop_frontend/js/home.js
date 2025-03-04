@@ -218,13 +218,12 @@ const search_form = document.getElementById('search_form');
 
 search_form.addEventListener('submit', (event) => {
     event.preventDefault();
-    txttxt.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            searchingProduct(txttxt.value);
+});
 
-        }
-    })
-})
+txttxt.addEventListener('input', () => {
+    searchingProduct(txttxt.value);
+});
+
 
 async function searchingProduct(searchQuery) {
     console.log(searchQuery);

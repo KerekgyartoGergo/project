@@ -82,36 +82,100 @@ async function getProduct() {
 }
 
 function renderProduct(product) {
-    // cím és leírás létrehozása
-    const row = document.getElementsByClassName('proba')[0];
-    row.innerHTML = '';
+    // Fő container kiválasztása
+    const container = document.querySelector('.container');
+    container.innerHTML = '';
 
+    // Fő div létrehozása
+    const productDetail = document.createElement('div');
+    productDetail.classList.add('product-detail');
 
-        const cim = document.createElement('h2');
-        cim.textContent= product.name;
-
-        const leiras =document.createElement('p');
-        leiras.classList.add('product-description');
-        leiras.textContent= product.description;
-
-
-        row.append(cim);
-        row.append(leiras)
+    // Kép rész
+    const productImage = document.createElement('div');
+    productImage.classList.add('product-image');
     
+    const picDiv = document.createElement('div');
+    picDiv.classList.add('pic-div');
+    
+    const img = document.createElement('img');
+    img.src = `http://127.0.0.1:3000/uploads/${product.pic || 'default.jpg'}`;
+    img.alt = 'Product Image';
+    img.classList.add('large-product-img');
+    
+    picDiv.appendChild(img);
+    productImage.appendChild(picDiv);
 
+    // Termék információk
+    const productInfo = document.createElement('div');
+    productInfo.classList.add('product-info');
 
-        // kép létrehozása
-        const row2 = document.getElementsByClassName('pic-div')[0];
-        row2.innerHTML = '';
+    const probaDiv = document.createElement('div');
+    probaDiv.classList.add('proba');
+    
+    const title = document.createElement('h2');
+    title.textContent = product.name || '-';
+    
+    const description = document.createElement('p');
+    description.classList.add('product-description');
+    description.textContent = product.description || '-';
+    
+    probaDiv.appendChild(title);
+    probaDiv.appendChild(description);
 
+    // Specifikációk létrehozása
+    const productSpecs = document.createElement('div');
+    productSpecs.classList.add('product-specs');
 
-        const kep = document.createElement('img');
-        kep.classList.add('large-product-img')
-        kep.src=(`http://127.0.0.1:3000/uploads/${product.pic}`)
+    const columns = [document.createElement('div'), document.createElement('div'), document.createElement('div')];
+    columns.forEach((col, index) => {
+        col.classList.add('specs-column');
+        if (index === 2) {
+            col.id = 'specs-column2';
+        }
+    });
 
+    const specsData = [
+        ['Jelátvitel', product.Jelátvitel],
+        ['Max. működési idő', product.Max_működési_idő],
+        ['Hordhatósági változatok', product.Hordhatósági_változatok],
+        ['Termék típusa', product.Termék_típusa],
+        ['Kivitel', product.Kivitel],
+        ['Bluetooth verzió', product.Bluetooth_verzió],
+        ['Hangszóró-meghajtók', product.Hangszóró_meghajtók],
+        ['Szín', product.Szín],
+        ['Csatlakozók', product.Csatlakozók],
+        ['Bluetooth', product.Bluetooth],
+        ['Frekvenciaátvitel', product.Frekvenciaátvitel],
+        ['Érzékenység', product.Érzékenység]
+    ];
 
-        row2.append(kep)
+    specsData.forEach((spec, index) => {
+        const [title, value] = spec;
+        const h3 = document.createElement('h3');
+        h3.textContent = title;
+        const p = document.createElement('p');
+        p.textContent = value || '-';
+        columns[index % 3].appendChild(h3);
+        columns[index % 3].appendChild(p);
+    });
+
+    columns.forEach(col => productSpecs.appendChild(col));
+
+    // Kosárba rakom gomb
+    const addToCartBtn = document.createElement('button');
+    addToCartBtn.classList.add('add-to-cart-btn');
+    addToCartBtn.textContent = 'Kosárba rakom';
+
+    // Összeállítás
+    productInfo.appendChild(probaDiv);
+    productInfo.appendChild(productSpecs);
+    productInfo.appendChild(addToCartBtn);
+    
+    productDetail.appendChild(productImage);
+    productDetail.appendChild(productInfo);
+    container.appendChild(productDetail);
 }
+
 
 
 
