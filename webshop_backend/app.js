@@ -1260,8 +1260,11 @@ app.post('/api/updateItem', authenticateToken, upload.single('pic'), (req, res) 
         Bluetooth,
         Frekvenciaátvitel,
         Érzékenység,
-        id
     } = req.body;
+
+    const id = req.body.id
+
+    console.log(id);
 
     if (!id) {
         return res.status(403).json({ error: 'Adj meg egy id-t' });

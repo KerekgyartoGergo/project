@@ -442,29 +442,38 @@ function openEditModal2(product) {
 
 document.getElementById("editForm2").addEventListener("submit", async function(event) {
     event.preventDefault();
-    
-    const formData = new FormData(event.target);
-    formData.append('id', currentProductId4);
-    
+
+    const formData = {
+        Jelátvitel: document.getElementById('Jelátvitel').value,
+        Max_működési_idő: document.getElementById('Max_működési_idő').value,
+        Hordhatósági_változatok: document.getElementById('Hordhatósági_változatok').value,
+        Termék_típusa: document.getElementById('Termék_típusa').value,
+        Kivitel: document.getElementById('Kivitel').value,
+        Bluetooth_verzió: document.getElementById('Bluetooth_verzió').value,
+        Hangszóró_meghajtók: document.getElementById('Hangszóró_meghajtók').value,
+        Szín: document.getElementById('Szín').value,
+        Csatlakozók: document.getElementById('Csatlakozók').value,
+        Bluetooth: document.getElementById('Bluetooth').value,
+        Frekvenciaátvitel: document.getElementById('Frekvenciaátvitel').value,
+        Érzékenység: document.getElementById('Érzékenység').value,
+        id: currentProductId4 // ID hozzárendelése
+    };
+
     try {
+        console.log("Küldött adatok:", formData);
+
         const res = await fetch('http://127.0.0.1:3000/api/updateItemInfo', {
             method: 'POST',
-            body: formData,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
             credentials: 'include'
         });
-        
-        let data;
-        try {
-            data = await res.json();
-        } catch (err) {
-            console.error('JSON parsing error:', err);
-            data = { error: 'Nem lehetett beolvasni a választ JSON formátumban' };
-        }
+
+        const data = await res.json();
 
         if (res.ok) {
             alert('Termék sikeresen frissítve');
             modal5.style.display = "none";
-            // További műveletek, pl. a felület frissítése
         } else {
             alert(data.error || 'Ismeretlen hiba');
         }
